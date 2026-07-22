@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <link rel="manifest" href="/manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>منصة التداول - ExByteX</title>
@@ -4973,6 +4972,12 @@
            ============================================================ */
 
         </style>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ExByteX">
+    <link rel="apple-touch-icon" href="/icons/icon-192.png">
 </head>
 <body>
 
@@ -6125,7 +6130,6 @@
                 }]
             };
 
-            // Manifest served via /manifest.json
             const manifestLink = document.createElement('link');
             manifestLink.rel = 'manifest';
             manifestLink.href = '/manifest.json';
@@ -6239,7 +6243,7 @@
                         })
                         .catch((err) => {
                             console.warn('⚠️ تعذر تسجيل Service Worker (قد يكون الملف مفتوحاً محلياً):', err.message);
-                            console.log('ℹ️ Service Worker غير متاح');
+                            console.log('ℹ️ SW fallback skipped');
                         });
                 }
             }

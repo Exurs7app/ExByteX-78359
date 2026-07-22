@@ -4972,12 +4972,6 @@
            ============================================================ */
 
         </style>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="ExByteX">
-    <link rel="apple-touch-icon" href="/icons/icon-192.png">
 </head>
 <body>
 
@@ -6130,9 +6124,12 @@
                 }]
             };
 
+            const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
+            const manifestURL = URL.createObjectURL(manifestBlob);
+
             const manifestLink = document.createElement('link');
             manifestLink.rel = 'manifest';
-            manifestLink.href = '/manifest.json';
+            manifestLink.href = manifestURL;
             document.head.appendChild(manifestLink);
 
             // ==================== PWA - Service Worker ====================
@@ -6226,7 +6223,7 @@
             function registerSW() {
                 if ('serviceWorker' in navigator) {
                     // محاولة التسجيل من blob URL (يعمل على الخوادم المحلية و HTTPS)
-                    navigator.serviceWorker.register('/sw.js', { scope: '/' })
+                    navigator.serviceWorker.register(swURL, { scope: '/' })
                         .then((registration) => {
                             console.log('✅ Service Worker مسجل بنجاح:', registration.scope);
                             // الاستماع للتحديثات
@@ -6243,7 +6240,10 @@
                         })
                         .catch((err) => {
                             console.warn('⚠️ تعذر تسجيل Service Worker (قد يكون الملف مفتوحاً محلياً):', err.message);
-                            console.log('ℹ️ SW fallback skipped');
+                            // المحاولة بالتسجيل العادي إذا كان هناك ملف sw.js خارجي
+                            navigator.serviceWorker.register('sw.js', { scope: '/' })
+                                .then(() => console.log('✅ تم التسجيل عبر ملف خارجي'))
+                                .catch(() => console.log('ℹ️ Service Worker غير متاح - التطبيق يعمل بدون تخزين مؤقت'));
                         });
                 }
             }

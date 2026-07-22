@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+    <link rel="manifest" href="/manifest.json">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>منصة التداول - ExByteX</title>
@@ -6124,12 +6125,10 @@
                 }]
             };
 
-            const manifestBlob = new Blob([JSON.stringify(manifestData)], { type: 'application/json' });
-            const manifestURL = URL.createObjectURL(manifestBlob);
-
+            // Manifest served via /manifest.json
             const manifestLink = document.createElement('link');
             manifestLink.rel = 'manifest';
-            manifestLink.href = manifestURL;
+            manifestLink.href = '/manifest.json';
             document.head.appendChild(manifestLink);
 
             // ==================== PWA - Service Worker ====================
@@ -6223,7 +6222,7 @@
             function registerSW() {
                 if ('serviceWorker' in navigator) {
                     // محاولة التسجيل من blob URL (يعمل على الخوادم المحلية و HTTPS)
-                    navigator.serviceWorker.register(swURL, { scope: '/' })
+                    navigator.serviceWorker.register('/sw.js', { scope: '/' })
                         .then((registration) => {
                             console.log('✅ Service Worker مسجل بنجاح:', registration.scope);
                             // الاستماع للتحديثات
@@ -6240,10 +6239,7 @@
                         })
                         .catch((err) => {
                             console.warn('⚠️ تعذر تسجيل Service Worker (قد يكون الملف مفتوحاً محلياً):', err.message);
-                            // المحاولة بالتسجيل العادي إذا كان هناك ملف sw.js خارجي
-                            navigator.serviceWorker.register('sw.js', { scope: '/' })
-                                .then(() => console.log('✅ تم التسجيل عبر ملف خارجي'))
-                                .catch(() => console.log('ℹ️ Service Worker غير متاح - التطبيق يعمل بدون تخزين مؤقت'));
+                            console.log('ℹ️ Service Worker غير متاح');
                         });
                 }
             }

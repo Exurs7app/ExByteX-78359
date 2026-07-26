@@ -764,9 +764,9 @@
         @keyframes dih-blink-c{ 0%,66%{opacity:0.3}  33%{opacity:0.95}  }
         @keyframes dih-blink-d{ 0%{opacity:0.5} 50%{opacity:1} 100%{opacity:0.5} }
         @keyframes dih-net-p  { 0%,100%{opacity:0.22} 50%{opacity:0.45} }
-        .dih-gear-l { animation: dih-spin   9s  linear    infinite; transform-origin:50% 50%; }
-        .dih-gear-r { animation: dih-spin-r 6s  linear    infinite; transform-origin:50% 50%; }
-        .dih-gear-s { animation: dih-spin   3.8s linear   infinite; transform-origin:50% 50%; }
+        .dih-gear-l { animation: dih-spin   9s  linear    infinite; transform-origin:50% 50%; will-change:transform; }
+        .dih-gear-r { animation: dih-spin-r 6s  linear    infinite; transform-origin:50% 50%; will-change:transform; }
+        .dih-gear-s { animation: dih-spin   3.8s linear   infinite; transform-origin:50% 50%; will-change:transform; }
         .dih-svg-r1 { animation: dih-pulse-o 3s   ease-in-out infinite; }
         .dih-svg-r2 { animation: dih-pulse-o 3.5s ease-in-out infinite 0.6s; }
         .dih-svg-r3 { animation: dih-pulse-o 4s   ease-in-out infinite 1.2s; }
@@ -1101,7 +1101,7 @@
             font-family: 'Segoe UI', 'Tajawal', 'Cairo', 'Helvetica Neue', sans-serif;
             background: var(--bg);
             color: var(--text);
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1), color 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
             min-height: 100dvh;
             display: flex;
@@ -1152,7 +1152,7 @@
             padding: 16px 16px 32px;
             background: var(--bg);
             z-index: 10;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             overflow-y: auto;
             overflow-x: hidden;
             -webkit-overflow-scrolling: touch;
@@ -1182,7 +1182,7 @@
             margin-top: 24px;
             margin-bottom: 12px;
             box-shadow: 0 8px 30px rgba(59, 130, 246, 0.35);
-            animation: logoFloat 3s ease-in-out infinite;
+            animation: logoFloat 3s ease-in-out infinite; will-change: transform;
             flex-shrink: 0;
         }
         @keyframes logoFloat {
@@ -1221,7 +1221,7 @@
             padding: 22px 20px;
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border);
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
         }
 
         /* زر التثبيت في شاشة تسجيل الدخول */
@@ -1236,7 +1236,7 @@
             align-items: center;
             gap: 12px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
             animation: fadeSlideIn 0.5s ease;
             flex-shrink: 0;
         }
@@ -1302,7 +1302,7 @@
             font-size: 14px;
             background: var(--input-bg);
             color: var(--text);
-            transition: all 0.25s ease;
+            transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
             font-family: inherit;
             outline: none;
         }
@@ -1364,7 +1364,7 @@
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
             font-family: inherit;
             letter-spacing: 0.3px;
             position: relative;
@@ -1458,9 +1458,9 @@
         .captcha-box { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: nowrap; }
         .captcha-canvas-wrap { flex-shrink: 0; border-radius: 10px; overflow: hidden; border: 2px solid var(--border); background: var(--bg-tertiary); width: 155px; min-width: 155px; max-width: 155px; }
         .captcha-canvas-wrap canvas { display: block; width: 155px !important; }
-        .captcha-refresh-btn { background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; color: var(--accent); font-size: 20px; width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+        .captcha-refresh-btn { background: var(--bg-tertiary); border: 2px solid var(--border); border-radius: 10px; color: var(--accent); font-size: 20px; width: 44px; height: 44px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background-color 0.2s, color 0.2s, transform 0.2s; flex-shrink: 0; }
         .captcha-refresh-btn:hover { background: var(--accent-light); border-color: var(--accent); transform: rotate(20deg) scale(1.05); }
-        .captcha-input { flex: 1; min-width: 0; padding: 11px 10px; border: 2px solid var(--input-border); border-radius: 10px; font-size: 14px; background: var(--input-bg); color: var(--text); font-family: inherit; outline: none; transition: all 0.25s; letter-spacing: 3px; font-weight: 700; }
+        .captcha-input { flex: 1; min-width: 0; padding: 11px 10px; border: 2px solid var(--input-border); border-radius: 10px; font-size: 14px; background: var(--input-bg); color: var(--text); font-family: inherit; outline: none; transition: border-color 0.25s, box-shadow 0.25s, background-color 0.25s; letter-spacing: 3px; font-weight: 700; }
         .captcha-input:focus { border-color: var(--input-focus); box-shadow: 0 0 0 4px rgba(59,130,246,0.1); }
         .captcha-input.error { border-color: #ef4444; animation: shake 0.5s ease; }
         .captcha-hint { font-size: 11px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
@@ -1480,7 +1480,7 @@
             flex-direction: column;
             background: var(--bg);
             z-index: 5;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1), transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .platform-screen.hidden {
             opacity: 0;
@@ -1555,7 +1555,7 @@
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border);
             margin-bottom: 14px;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
         }
         .card:hover {
             box-shadow: var(--card-shadow-hover);
@@ -1739,7 +1739,7 @@
             cursor: pointer;
             padding: 8px 12px;
             border-radius: 14px;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
             color: var(--text-muted);
             font-size: 11px;
             font-weight: 600;
@@ -1754,7 +1754,7 @@
         .nav-item svg {
             width: 22px;
             height: 22px;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
         }
         .nav-item.active svg {
             stroke: var(--accent);
@@ -1867,7 +1867,7 @@
                 transparent  95%,
                 transparent 100%
             );
-            animation: fabRingSpin 2.2s linear infinite;
+            animation: fabRingSpin 2.2s linear infinite; will-change: transform;
             z-index: 2;
         }
         @keyframes fabRingSpin {
@@ -1896,12 +1896,14 @@
             border: 1.5px solid rgba(16,185,129,0.45);
             box-shadow: 0 0 8px rgba(16,185,129,0.2) inset;
             animation: pwaRing1Spin 3.5s linear infinite;
+            will-change: transform;
         }
         .pwa-fab-orbit-ring-2 {
             width: 72px; height: 72px;
             margin: -36px 0 0 -36px;
             border: 1px dashed rgba(52,211,153,0.3);
             animation: pwaRing2Spin 5.5s linear infinite reverse;
+            will-change: transform;
         }
         @keyframes pwaRing1Spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
         @keyframes pwaRing2Spin { from { transform: rotate(0deg); } to { transform: rotate(-360deg); } }
@@ -1914,9 +1916,9 @@
             top: 50%; left: 50%;
             transform-origin: 0 0;
         }
-        .pwa-fab-orb-1 { width:5px;height:5px;margin:-2.5px 0 0 -2.5px;background:radial-gradient(circle,#6ee7b7,#10b981);box-shadow:0 0 6px #6ee7b7;animation:pwaOrbIt 3.5s linear infinite; }
-        .pwa-fab-orb-2 { width:4px;height:4px;margin:-2px 0 0 -2px;background:radial-gradient(circle,#34d399,#059669);box-shadow:0 0 5px #34d399;animation:pwaOrbIt 3.5s linear infinite;animation-delay:-1.17s; }
-        .pwa-fab-orb-3 { width:3px;height:3px;margin:-1.5px 0 0 -1.5px;background:radial-gradient(circle,#a7f3d0,#10b981);box-shadow:0 0 4px #a7f3d0;animation:pwaOrbIt 3.5s linear infinite;animation-delay:-2.33s; }
+        .pwa-fab-orb-1 { width:5px;height:5px;margin:-2.5px 0 0 -2.5px;background:radial-gradient(circle,#6ee7b7,#10b981);box-shadow:0 0 6px #6ee7b7;animation:pwaOrbIt 3.5s linear infinite;will-change:transform; }
+        .pwa-fab-orb-2 { width:4px;height:4px;margin:-2px 0 0 -2px;background:radial-gradient(circle,#34d399,#059669);box-shadow:0 0 5px #34d399;animation:pwaOrbIt 3.5s linear infinite;animation-delay:-1.17s;will-change:transform; }
+        .pwa-fab-orb-3 { width:3px;height:3px;margin:-1.5px 0 0 -1.5px;background:radial-gradient(circle,#a7f3d0,#10b981);box-shadow:0 0 4px #a7f3d0;animation:pwaOrbIt 3.5s linear infinite;animation-delay:-2.33s;will-change:transform; }
         @keyframes pwaOrbIt {
             from { transform: rotate(0deg)   translateX(27px); }
             to   { transform: rotate(360deg) translateX(27px); }
@@ -1958,13 +1960,12 @@
             z-index: 4;
             width: 22px;
             height: 22px;
-            filter: drop-shadow(0 0 5px rgba(16,185,129,0.9));
             animation: pwaIconGlow 3.6s ease-in-out infinite;
         }
         @keyframes pwaIconGlow {
-            0%,100% { filter: drop-shadow(0 0 4px rgba(16,185,129,0.7)); transform: translateY(0); }
-            33%     { filter: drop-shadow(0 0 9px rgba(52,211,153,1));   transform: translateY(1.5px); }
-            66%     { filter: drop-shadow(0 0 9px rgba(110,231,183,1));  transform: translateY(-1px); }
+            0%,100% { opacity: 0.85; transform: translateY(0); }
+            33%     { opacity: 1;    transform: translateY(1.5px); }
+            66%     { opacity: 1;    transform: translateY(-1px); }
         }
 
         /* تلميح نصي عند التحويم */
@@ -2050,7 +2051,7 @@
                 transparent  94%,
                 transparent 100%
             );
-            animation: fabRingSpin 2.6s linear infinite reverse;
+            animation: fabRingSpin 2.6s linear infinite reverse; will-change: transform;
             z-index: 2;
         }
         .lang-fab-ring::after {
@@ -2080,14 +2081,11 @@
             z-index: 4;
             width: 22px;
             height: 22px;
-            animation: globeSpin 6s linear infinite;
-            filter: drop-shadow(0 0 5px rgba(99,102,241,0.9));
+            animation: globeSpin 6s linear infinite; will-change: transform;
         }
         @keyframes globeSpin {
-            0%   { filter: drop-shadow(0 0 4px rgba(99,102,241,0.7)); }
-            33%  { filter: drop-shadow(0 0 9px rgba(6,182,212,1));    }
-            66%  { filter: drop-shadow(0 0 9px rgba(139,92,246,1));   }
-            100% { filter: drop-shadow(0 0 4px rgba(99,102,241,0.7)); }
+            from { transform: rotate(0deg); opacity: 0.9; }
+            to   { transform: rotate(360deg); opacity: 0.9; }
         }
 
         /* شارة اللغة الحالية */
@@ -2516,12 +2514,14 @@
             border: 1.5px solid rgba(16,185,129,0.4);
             box-shadow: 0 0 8px rgba(16,185,129,0.2) inset;
             animation: globeRing1Spin 3.5s linear infinite;
+            will-change: transform;
         }
         .hh-globe-orbit-ring-2 {
             width: 72px; height: 72px;
             margin: -36px 0 0 -36px;
             border: 1px dashed rgba(52,211,153,0.28);
             animation: globeRing2Spin 5.5s linear infinite reverse;
+            will-change: transform;
         }
         @keyframes globeRing1Spin {
             from { transform: rotate(0deg); }
@@ -2679,9 +2679,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(5,13,26,0.85);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            background: rgba(5,13,26,0.97);
             border-bottom: 1px solid rgba(6,182,212,0.15);
         }
         .pc-header-modern::before {
@@ -2701,7 +2699,7 @@
             border: 1px solid rgba(6,182,212,0.2);
             display: flex; align-items: center; justify-content: center;
             cursor: pointer;
-            transition: all 0.25s;
+            transition: background-color 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s, transform 0.25s, opacity 0.25s;
             position: relative;
             z-index: 1;
         }
@@ -2745,9 +2743,9 @@
             animation: pcLineShimmer 3s linear infinite;
         }
         @keyframes pcLineShimmer {
-            0%   { opacity:0.5; filter: blur(0px); }
-            50%  { opacity:1;   filter: blur(1px); }
-            100% { opacity:0.5; filter: blur(0px); }
+            0%   { opacity: 0.4; }
+            50%  { opacity: 1; }
+            100% { opacity: 0.4; }
         }
         .pc-profile-card::after {
             content: '';
@@ -2787,10 +2785,8 @@
             margin: 14px 16px 0;
             border-radius: 18px;
             overflow: hidden;
-            background: rgba(8,18,36,0.7);
+            background: rgba(8,18,36,0.97);
             border: 1px solid rgba(6,182,212,0.12);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
 
         }
         @keyframes pcItemsIn {
@@ -2868,7 +2864,7 @@
             font-weight: 700;
             cursor: pointer;
             font-family: inherit;
-            transition: all 0.2s;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s, opacity 0.2s;
             display: flex; align-items: center; justify-content: center; gap: 8px;
 
         }
@@ -2889,11 +2885,9 @@
         .pc-invite-card {
             margin: 14px 16px 0;
             border-radius: 18px;
-            background: rgba(8,18,36,0.7);
+            background: rgba(8,18,36,0.97);
             border: 1px solid rgba(99,102,241,0.2);
             padding: 16px 18px;
-
-            backdrop-filter: blur(12px);
             position: relative;
             overflow: hidden;
         }
@@ -3195,7 +3189,7 @@
             cursor: pointer;
             font-family: inherit;
             font-weight: 600;
-            transition: all 0.2s;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s, opacity 0.2s;
             flex-shrink: 0;
             line-height: 1.4;
         }
@@ -3237,7 +3231,7 @@
             border-radius: 50%;
             background: #22c55e;
             box-shadow: 0 0 6px #22c55e;
-            animation: livePulse 1.1s ease-in-out infinite;
+            animation: livePulse 1.1s ease-in-out infinite; will-change: transform, opacity;
             flex-shrink: 0;
         }
         @keyframes livePulse {
@@ -3356,10 +3350,8 @@
             margin-bottom: 16px;
             padding: 10px 6px;
             border-radius: 18px;
-            background: rgba(16,185,129,0.06);
+            background: rgba(16,185,129,0.1);
             border: 1px solid rgba(16,185,129,0.14);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
         }
         .qa-item {
             background: transparent;
@@ -3484,7 +3476,6 @@
             justify-content: center;
             border: 1.5px solid rgba(255,255,255,0.50);
             z-index: 1;
-            backdrop-filter: blur(4px);
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
             transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
         }
@@ -3645,7 +3636,7 @@
             color: var(--text-secondary);
             border: none;
             font-family: inherit;
-            transition: all 0.2s;
+            transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.2s, opacity 0.2s;
         }
         .deriv-interval-btn.active {
             background: #10b981;
@@ -4024,7 +4015,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.15s;
+            transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s, opacity 0.15s;
             flex-shrink: 0;
             font-family: inherit;
         }
@@ -4066,7 +4057,7 @@
             font-weight: 700;
             cursor: pointer;
             font-family: inherit;
-            transition: all 0.15s;
+            transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s, opacity 0.15s;
             text-align: center;
         }
         .deriv-preset-btn:active { background: rgba(16,185,129,0.2); color: #10b981; border-color: #10b981; }
@@ -4115,7 +4106,7 @@
             border-radius: 6px;
             border: 1px solid rgba(245,158,11,0.35);
             background: rgba(245,158,11,0.08);
-            transition: all 0.15s;
+            transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s, opacity 0.15s;
         }
         .deriv-mult-val:active { background: rgba(245,158,11,0.2); }
         .deriv-center-btns {
@@ -4134,7 +4125,7 @@
             justify-content: center;
             cursor: pointer;
             box-shadow: 0 4px 16px rgba(16,185,129,0.4);
-            transition: all 0.15s;
+            transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s, opacity 0.15s;
         }
         .deriv-play-btn-pro:active { transform: scale(0.93); box-shadow: 0 2px 8px rgba(16,185,129,0.3); }
         .deriv-play-btn-pro svg { width: 20px; height: 20px; }
@@ -4148,7 +4139,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s, opacity 0.15s;
         }
         .deriv-stop-btn:active { background: rgba(239,68,68,0.3); }
         .deriv-stop-btn svg { width: 15px; height: 15px; }
@@ -4173,7 +4164,7 @@
             cursor: pointer;
             border: none;
             font-family: inherit;
-            transition: all 0.15s;
+            transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s, opacity 0.15s;
         }
         .deriv-sl-btn { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
         .deriv-tp-btn { background: rgba(16,185,129,0.15); color: #10b981; border: 1px solid rgba(16,185,129,0.3); }
@@ -4224,7 +4215,7 @@
             justify-content: center;
             cursor: pointer;
             user-select: none;
-            transition: all 0.15s;
+            transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s, opacity 0.15s;
         }
         .deriv-zoom-btn:active { background: rgba(16,185,129,0.3); color: #10b981; }
         .deriv-chart-type-btns {
@@ -4244,7 +4235,7 @@
             font-size: 10px;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: background-color 0.15s, color 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s, opacity 0.15s;
         }
         .deriv-chart-type-btn.active { background: rgba(16,185,129,0.2); color: #10b981; border-color: rgba(16,185,129,0.5); }
         .deriv-crosshair {
@@ -4491,8 +4482,6 @@
             background: rgba(255,255,255,0.03);
             border: 1px solid rgba(16,185,129,0.15);
             min-width: 78px;
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
             animation: splashStatIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
         .splash-stat:nth-child(1) { animation-delay: 0.35s; }
@@ -4518,7 +4507,6 @@
         #splashScreen.fade-out {
             opacity: 0;
             transform: scale(1.05);
-            filter: blur(6px);
             pointer-events: none;
         }
             
@@ -4647,7 +4635,7 @@
         .dep-chain-btn {
             display: flex; align-items: center; gap: 5px;
             padding: 8px 14px; border-radius: 8px; cursor: pointer; font-family: inherit;
-            font-size: 13px; font-weight: 700; transition: all 0.22s;
+            font-size: 13px; font-weight: 700; transition: background-color 0.22s, color 0.22s, border-color 0.22s, box-shadow 0.22s, transform 0.22s, opacity 0.22s;
             border: 1.5px solid rgba(255,255,255,0.18);
             background: transparent; color: var(--text-secondary,#8b9ab8);
         }
@@ -4666,7 +4654,7 @@
             display: none; position: fixed; inset: 0; z-index: 100001;
         }
         #depCurrOverlay {
-            position: absolute; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px);
+            position: absolute; inset: 0; background: rgba(0,0,0,0.72);
         }
         #depCurrPanel {
             position: absolute; bottom: 0; left: 0; right: 0;
@@ -6083,6 +6071,242 @@
         body.light-mode #derivPanelOverlay #derivPanelPlan { background: transparent !important; }
         body.light-mode #derivPanelOverlay #derivPanelSupport { background: transparent !important; }
 
+        /* =====================================================
+           Arabic / RTL Performance Optimizations
+           ===================================================== */
+
+        /* 1. Remove letter-spacing for Arabic (RTL) — Arabic is a connected script;
+              letter-spacing breaks ligatures and forces expensive per-glyph layout */
+        :root:lang(ar) *,
+        [dir='rtl'] * {
+            letter-spacing: 0 !important;
+            word-spacing: normal !important;
+        }
+
+        /* 2. Speed up text rendering for Arabic — 'optimizeLegibility' is very costly
+              for Arabic because of complex shaping; use 'optimizeSpeed' instead */
+        :root:lang(ar),
+        [dir='rtl'] {
+            text-rendering: optimizeSpeed;
+        }
+
+        /* 3. Promote the app container and all continuously animated elements to their
+              own GPU compositing layers so animations don't force main-thread paints */
+        .app-container {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+        }
+
+        /* 4. Isolate the ticker scroll so its animation never triggers a page repaint */
+        .notif-ticker-outer {
+            contain: layout style;
+            isolation: isolate;
+        }
+
+        /* 5. Ensure gear / fab / globe animations run on the GPU compositor thread */
+        .dih-gear-l, .dih-gear-r, .dih-gear-s,
+        .pwa-fab-orbit-ring-1, .pwa-fab-orbit-ring-2,
+        .pwa-fab-orb, .pwa-fab-orb-1, .pwa-fab-orb-2, .pwa-fab-orb-3,
+        .pwa-fab-ring,
+        .notif-ticker-slider {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        /* 6. Keep animated SVG rings on the GPU layer */
+        .dih-svg-r1, .dih-svg-r2, .dih-svg-r3,
+        .dih-svg-scan, .dih-net {
+            will-change: opacity;
+        }
+
+        /* 7. Prevent direction-change from propagating an expensive layout
+              reflow through every descendant — contain inline layout for
+              major screen panels */
+        .platform-screen, .auth-screen {
+            contain: layout;
+        }
+
+        /* 8. Throttle tab-panel paint cost — inactive tabs are display:none
+              but mark active ones as isolated painting contexts */
+        #tabHome, #tabMarkets, #tabDerivatives, #tabPerpetual, #tabAccount {
+            isolation: isolate;
+        }
+
+        /* =====================================================
+           Deep Performance Optimizations v2
+           ===================================================== */
+
+        /* Scroll containers: GPU-composited scroll, no repaints */
+        .platform-screen,
+        #personalCenterScreen,
+        #depositModal,
+        #withdrawModal,
+        #exchangeModal,
+        #walletCurrencyScreen,
+        #walletFuturesScreen,
+        #walletPerpetualScreen,
+        #internalTransferModal,
+        #itHistoryScreen,
+        #pcKYCScreen,
+        #pcHelpScreen,
+        #pcLoginPassScreen,
+        #pcPayPassScreen {
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: auto;
+            overscroll-behavior: contain;
+        }
+
+        /* Tab panels: paint isolation — inactive tabs don't cause repaint */
+        #tabHome, #tabMarkets, #tabDerivatives, #tabPerpetual, #tabAccount {
+            contain: paint layout;
+            isolation: isolate;
+        }
+
+        /* Bottom nav: promote to own layer so page scroll doesn't repaint it */
+        .bottom-nav {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            will-change: transform;
+            contain: layout style paint;
+        }
+
+        /* PWA / Lang FABs: own compositing layer */
+        .pwa-fab-outer, .lang-fab-outer {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            contain: layout style paint;
+        }
+
+        /* Ticker: fully isolated compositing layer */
+        .notif-ticker-outer {
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            contain: strict;
+        }
+
+        /* Market list & holdings: contain paint so price updates
+           don't repaint the whole page */
+        #marketsList, #holdingsList, #perpList, #coinPickerList {
+            contain: paint layout;
+        }
+
+        /* Remove expensive filter: drop-shadow from static elements that
+           used to be animated — keep only on truly static decorations */
+        .pwa-fab-icon { filter: none !important; }
+
+        /* Reduce scroll repaints: avoid painting outside scroll container */
+        .auth-screen, .platform-screen {
+            overflow-anchor: none;
+        }
+
+        /* Prevent scroll-linked layout reflows on large lists */
+        #marketsList, #holdingsList {
+            will-change: contents;
+        }
+
+        /* GPU layer for all spinning SVG elements (dih gears, ticker) */
+        .dih-gear-l, .dih-gear-r, .dih-gear-s,
+        .notif-ticker-slider {
+            transform: translateZ(0);
+        }
+
+        /* Reduce paint area for pulsing glow elements */
+        .pwa-fab-glow, .globe-glow {
+            contain: strict;
+            will-change: opacity;
+        }
+
+        /* Prevent scroll chaining and improve scroll smoothness */
+        #personalCenterScreen,
+        #pcKYCScreen,
+        #pcHelpScreen,
+        #pcLoginPassScreen,
+        #pcPayPassScreen,
+        #depositModal,
+        #withdrawModal,
+        #exchangeModal,
+        #walletCurrencyScreen,
+        #walletFuturesScreen,
+        #walletPerpetualScreen,
+        #internalTransferModal,
+        #itHistoryScreen {
+            overscroll-behavior-y: contain;
+        }
+
+        /* Ensure main content tabs use GPU-composited scrolling */
+        .tab-content, .tab-panel, #tabHome, #tabMarkets,
+        #tabDerivatives, #tabPerpetual, #tabAccount {
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+        }
+
+        /* Prevent filter/paint triggers during scroll for price numbers */
+        .price-value, .ticker-price, .asset-value,
+        [id$="Price"], [id$="Val"], [id*="price"], [id*="Price"] {
+            contain: layout style;
+        }
+
+        /* Remove box-shadow from list items to cut scroll repaint cost */
+        /* (Override heavy shadows on rows inside scrollable lists) */
+        #marketsList > *, #holdingsList > * {
+            box-shadow: none !important;
+        }
+
+
+        /* ════════════════════════════════════════════════════════════════════
+           FIX: إصلاح كامل احترافي للتوهج والأنيميشن — الكرة الأرضية والإعدادات
+           ════════════════════════════════════════════════════════════════════ */
+
+        /* 1. إزالة قص الرسم (contain:paint) عن تبويب الصفحة الرئيسية
+              كانت تقطع حلقات المدار والتوهج التي تمتد خارج حدود الزر */
+        #tabHome {
+            contain: layout !important;
+        }
+
+        /* 2. زر الكرة الأرضية: السماح بالبريق والتوهج خارج الزر
+              (نفس تعريف زر الإعدادات الذي يعمل بشكل صحيح) */
+        .hh-globe-btn {
+            overflow: visible !important;
+        }
+
+        /* 3. الـ wrap: ضمان عدم قص حلقات المدار والتوهج */
+        .hh-icon-wrap,
+        #tabHome .hh-icon-wrap {
+            overflow: visible !important;
+        }
+
+        /* 4. ترتيب الطبقات: التوهج خلف الحلقات، الحلقات خلف الزر */
+        .hh-globe-glow,
+        .hh-settings-glow {
+            z-index: 0;
+        }
+        .hh-globe-orbit-ring,
+        .hh-orbit-ring,
+        .hh-globe-orb,
+        .hh-orb {
+            z-index: 1;
+        }
+        .hh-icon-btn {
+            z-index: 2;
+        }
+
+        /* 5. الهيدر بدون تثبيت — يسمح بتأثيرات التوهج مع ضمان ظهور UID فوقها */
+        #tabHome .home-header {
+            position: relative !important;
+            z-index: 2 !important;
+            margin: -16px -16px 0 !important;
+            padding: 6px 14px 8px !important;
+            background: var(--bg, #0a1628) !important;
+        }
+        /* شريط UID يُرسم فوق أي تأثيرات فائضة من أزرار الهيدر */
+        #tabHome .hh-uid-bar {
+            position: relative !important;
+            z-index: 5 !important;
+            background: var(--bg, #0a1628) !important;
+        }
+
 </style>
 </head>
 <body>
@@ -6415,36 +6639,8 @@
 
                     <!-- ========== هيدر الصفحة الرئيسية ========== -->
                     <div class="home-header">
-                        <!-- يسار: أيقونة الجلوب + أيقونة الجرس -->
+                        <!-- يسار: أيقونة الإعدادات + عنوان -->
                         <div class="home-header-left">
-                            <!-- جلوب / اللغة -->
-                            <div class="hh-icon-wrap">
-                                <span class="hh-globe-glow"></span>
-                                <span class="hh-globe-orbit-ring hh-globe-orbit-ring-2"></span>
-                                <span class="hh-globe-orbit-ring hh-globe-orbit-ring-1"></span>
-                                <span class="hh-globe-orb hh-globe-orb-1"></span>
-                                <span class="hh-globe-orb hh-globe-orb-2"></span>
-                                <span class="hh-globe-orb hh-globe-orb-3"></span>
-                                <button class="hh-icon-btn hh-globe-btn" onclick="openLangPicker()">
-                                    <span class="hh-globe-emoji">🌎</span>
-                                </button>
-                                <span class="hh-ar-badge" id="langBadge">AR</span>
-                            </div>
-                            <!-- زر السجل -->
-                            <button id="homeLogBtn" onclick="openHomeLog()" style="margin-right:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:5px 11px;color:var(--text,#e2e8f0);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background 0.2s;font-family:inherit;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);" onmouseenter="this.style.background='rgba(37,133,255,0.18)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="homeLogBtnLabel">سجل</span></button>
-
-                        </div>
-
-                        <!-- يمين: عنوان + أيقونة الإعدادات -->
-                        <div class="home-header-right">
-                            <!-- نص العنوان مع سهم وخط متحرك -->
-                            <div class="hh-title-area" onclick="openPersonalCenter()">
-                                <div class="hh-title-wrapper">
-                                    <span class="hh-title-text" id="headerTitle">الإعدادات</span>
-                                    <span class="hh-title-underline"></span>
-                                </div>
-                                <span class="hh-title-arrow">‹</span>
-                            </div>
                             <!-- زر الإعدادات مع حلقات مدارية وتوهج -->
                             <div class="hh-icon-wrap">
                                 <span class="hh-settings-glow"></span>
@@ -6467,6 +6663,33 @@
                                         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                                     </svg>
                                 </button>
+                            </div>
+                            <!-- نص العنوان مع سهم وخط متحرك -->
+                            <div class="hh-title-area" onclick="openPersonalCenter()">
+                                <div class="hh-title-wrapper">
+                                    <span class="hh-title-text" id="headerTitle">الإعدادات</span>
+                                    <span class="hh-title-underline"></span>
+                                </div>
+                                <span class="hh-title-arrow">›</span>
+                            </div>
+                        </div>
+
+                        <!-- يمين: زر السجل + أيقونة الكرة الأرضية -->
+                        <div class="home-header-right">
+                            <!-- زر السجل -->
+                            <button id="homeLogBtn" onclick="openHomeLog()" style="margin-left:6px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.13);border-radius:20px;padding:5px 11px;color:var(--text,#e2e8f0);font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background 0.2s;font-family:inherit;" onmouseenter="this.style.background='rgba(37,133,255,0.18)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span id="homeLogBtnLabel">سجل</span></button>
+                            <!-- جلوب / اللغة -->
+                            <div class="hh-icon-wrap">
+                                <span class="hh-globe-glow"></span>
+                                <span class="hh-globe-orbit-ring hh-globe-orbit-ring-2"></span>
+                                <span class="hh-globe-orbit-ring hh-globe-orbit-ring-1"></span>
+                                <span class="hh-globe-orb hh-globe-orb-1"></span>
+                                <span class="hh-globe-orb hh-globe-orb-2"></span>
+                                <span class="hh-globe-orb hh-globe-orb-3"></span>
+                                <button class="hh-icon-btn hh-globe-btn" onclick="openLangPicker()">
+                                    <span class="hh-globe-emoji">🌎</span>
+                                </button>
+                                <span class="hh-ar-badge" id="langBadge">AR</span>
                             </div>
                         </div>
                     </div>
@@ -6783,7 +7006,7 @@
                     </div>
 
                     <!-- أزرار الإجراءات السريعة -->
-                    <div id="assetActionBar" class="quick-actions" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:0;padding:10px 6px;border-radius:0;border-bottom:1px solid var(--border,#1e3a5f);background:rgba(16,185,129,0.06);border-top:1px solid rgba(16,185,129,0.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);">
+                    <div id="assetActionBar" class="quick-actions" style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px;margin-bottom:0;padding:10px 6px;border-radius:0;border-bottom:1px solid var(--border,#1e3a5f);background:rgba(16,185,129,0.06);border-top:1px solid rgba(16,185,129,0.14);">
                         <!-- اضافة عملة -->
                         <button class="qa-item" onclick="assetAction('transfer')">
                             <span class="qa-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
@@ -7187,7 +7410,7 @@
                 </div>
 
                 <!-- ==================== مودال اختيار العملة ==================== -->
-                <div id="coinPickerOverlay" onclick="hideCoinPicker()" style="display:none;position:fixed;inset:0;z-index:90000;background:rgba(0,0,0,0.55);backdrop-filter:blur(2px);"></div>
+                <div id="coinPickerOverlay" onclick="hideCoinPicker()" style="display:none;position:fixed;inset:0;z-index:90000;background:rgba(0,0,0,0.55);"></div>
                 <div id="coinPickerSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:90001;background:#0f1e33;border-radius:18px 18px 0 0;padding:0 0 calc(env(safe-area-inset-bottom) + 10px);max-height:75vh;overflow:hidden;direction:rtl;transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);transform:translateY(100%);">
                     <!-- مقبض السحب -->
                     <div style="display:flex;justify-content:center;padding:10px 0 2px;">
@@ -14061,8 +14284,7 @@ function hhCopyUID(){
         0 -8px 32px rgba(0,0,0,0.45),
         0 -2px 8px rgba(16,185,129,0.08) !important;
     padding: 6px 6px max(16px, env(safe-area-inset-bottom)) !important;
-    backdrop-filter: blur(20px) saturate(1.4);
-    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    /* backdrop-filter removed for perf */
     gap: 2px !important;
     /* خط علوي ملوّن */
     position: absolute;
@@ -15071,14 +15293,14 @@ body.light-mode #assetActionBar {
 #tabAccount #walletFuturesVal,
 #tabAccount #walletPerpetualVal {
     font-variant-numeric: tabular-nums;
-    transition: opacity .25s ease, transform .25s ease, filter .25s ease;
+    transition: opacity .25s ease, transform .25s ease;
 }
 #tabAccount .asset-value-pulse {
     animation: assetValuePulse .48s cubic-bezier(.2,.8,.2,1);
 }
 @keyframes assetValuePulse {
-    0% { opacity: .35; transform: translateY(4px) scale(.98); filter: blur(2px); }
-    100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    0% { opacity: .35; transform: translateY(4px) scale(.98); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 #tabAccount #assetEyeBtn,
 #tabAccount button[onclick="assetRefreshProfit()"] {

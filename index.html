@@ -2552,23 +2552,23 @@
         .hh-globe-orb-1 {
             width: 5px; height: 5px;
             margin: -2.5px 0 0 -2.5px;
-            background: radial-gradient(circle, #6ee7b7, #10b981);
-            box-shadow: 0 0 6px #6ee7b7;
+            background: radial-gradient(circle, #ff4444, #cc0000);
+            box-shadow: 0 0 8px #ff2222, 0 0 14px rgba(255,0,0,0.7);
             animation: globeOrbIt 3.5s linear infinite;
         }
         .hh-globe-orb-2 {
             width: 4px; height: 4px;
             margin: -2px 0 0 -2px;
-            background: radial-gradient(circle, #34d399, #059669);
-            box-shadow: 0 0 5px #34d399;
+            background: radial-gradient(circle, #ff2222, #b91c1c);
+            box-shadow: 0 0 7px #ff2222, 0 0 12px rgba(255,0,0,0.6);
             animation: globeOrbIt 3.5s linear infinite;
             animation-delay: -1.17s;
         }
         .hh-globe-orb-3 {
             width: 3px; height: 3px;
             margin: -1.5px 0 0 -1.5px;
-            background: radial-gradient(circle, #a7f3d0, #10b981);
-            box-shadow: 0 0 4px #a7f3d0;
+            background: radial-gradient(circle, #ff6666, #dc2626);
+            box-shadow: 0 0 6px #ff4444, 0 0 10px rgba(255,0,0,0.5);
             animation: globeOrbIt 3.5s linear infinite;
             animation-delay: -2.33s;
         }
@@ -3034,23 +3034,23 @@
         .hh-orb-1 {
             width: 5px; height: 5px;
             margin: -2.5px 0 0 -2.5px;
-            background: radial-gradient(circle, #93c5fd, #6366f1);
-            box-shadow: 0 0 6px #93c5fd;
+            background: radial-gradient(circle, #ff4444, #cc0000);
+            box-shadow: 0 0 8px #ff2222, 0 0 14px rgba(255,0,0,0.7);
             animation: orbIt1 3.5s linear infinite;
         }
         .hh-orb-2 {
             width: 4px; height: 4px;
             margin: -2px 0 0 -2px;
-            background: radial-gradient(circle, #a78bfa, #3b82f6);
-            box-shadow: 0 0 5px #a78bfa;
+            background: radial-gradient(circle, #ff2222, #b91c1c);
+            box-shadow: 0 0 7px #ff2222, 0 0 12px rgba(255,0,0,0.6);
             animation: orbIt2 3.5s linear infinite;
             animation-delay: -1.17s;
         }
         .hh-orb-3 {
             width: 3px; height: 3px;
             margin: -1.5px 0 0 -1.5px;
-            background: radial-gradient(circle, #38bdf8, #818cf8);
-            box-shadow: 0 0 4px #38bdf8;
+            background: radial-gradient(circle, #ff6666, #dc2626);
+            box-shadow: 0 0 6px #ff4444, 0 0 10px rgba(255,0,0,0.5);
             animation: orbIt3 3.5s linear infinite;
             animation-delay: -2.33s;
         }
@@ -6004,8 +6004,7 @@
             font-size: 14px !important;
         }
         #tabHome .hh-ar-badge {
-            font-size: 8px !important;
-            padding: 1px 3px !important;
+            display: none !important;
         }
         #tabHome .hh-orbit-ring-1 {
             width: 42px !important; height: 42px !important;
@@ -6321,8 +6320,8 @@
         #tabHome .home-header {
             position: relative !important;
             z-index: 2 !important;
-            margin: -16px -16px 0 !important;
-            padding: 6px 14px 8px !important;
+            margin: 0 -16px 0 !important;
+            padding: max(10px, env(safe-area-inset-top)) 14px 8px !important;
             background: var(--bg, #0a1628) !important;
         }
         /* شريط UID يُرسم فوق أي تأثيرات فائضة من أزرار الهيدر */
@@ -6332,6 +6331,79 @@
             background: var(--bg, #0a1628) !important;
         }
 
+
+        /* ========================================================
+           FIX: أيقونتا الإعدادات والكرة الأرضية + التوهج
+           المشاكل:
+           1. التوهج والحلقات المدارية كانت تُقطع لأن overflow لم يكن visible
+           2. الأيقونات كانت تبدو خلف شريط UID لأنه يُرسم بعدهما في DOM
+           3. shimmer داخل hh-icon-btn كان يُقطع بسبب overflow:hidden
+           ======================================================== */
+
+        /* السماح للتوهج والحلقات بالامتداد خارج الـ icon-wrap */
+        .hh-icon-wrap {
+            overflow: visible !important;
+            position: relative !important;
+            z-index: 20 !important;   /* فوق شريط UID */
+        }
+
+        /* السماح للـ home-header بالامتداد بصريًّا دون قطع */
+        .home-header {
+            overflow: visible !important;
+            position: relative !important;
+            z-index: 10 !important;
+        }
+        .home-header-left,
+        .home-header-right {
+            overflow: visible !important;
+            position: relative !important;
+        }
+
+        /* شريط UID يبقى تحت الأيقونات في الـ stacking */
+        .hh-uid-bar {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* السماح لـ shimmer (::before) بالخروج من حدود الزر بشكل طبيعي:
+           نُبقي overflow:hidden على الزر نفسه لأنه مقصود للـ shimmer الداخلي
+           لكن نُضيف padding شفاف لمنطقة hh-icon-wrap حتى لا يُقطع التوهج الخارجي */
+
+        /* تصحيح: إعطاء مساحة كافية في أسفل home-header
+           حتى لا ينزل التوهج فوق شريط UID */
+        #tabHome .home-header {
+            padding-bottom: 20px !important;
+            margin-bottom: -4px !important;
+        }
+
+        /* التوهج الخارجي للإعدادات والكرة — تأكيد الظهور */
+        .hh-settings-glow,
+        .hh-globe-glow {
+            pointer-events: none !important;
+            z-index: 0 !important;
+        }
+
+        /* الحلقات المدارية — تأكيد الظهور */
+        .hh-orbit-ring,
+        .hh-globe-orbit-ring,
+        .hh-orb,
+        .hh-globe-orb {
+            pointer-events: none !important;
+            z-index: 1 !important;
+        }
+
+        /* الزر نفسه فوق كل العناصر الزخرفية */
+        .hh-icon-btn {
+            position: relative !important;
+            z-index: 2 !important;
+        }
+
+        /* main-content: السماح بـ overflow-x visible حتى لا يُقطع التوهج الجانبي */
+        .main-content {
+            overflow-x: visible !important;
+        }
+
+        /* END FIX */
 </style>
 
 <!-- تحسين احترافي ديناميكي لعنصر التحقق من الهوية — لا يغيّر أي وظيفة -->
@@ -6460,6 +6532,588 @@
         }
         .pc-kyc-menu-item:hover .pc-kyc-status-icon { transform: none; }
     }
+</style>
+
+<style id="pro-upgrade-v2">
+/* ═══════════════════════════════════════════════════════════════════
+   PROFESSIONAL UPGRADE v2 — Settings + Globe — Ultra-Alive & Smart
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ─── SHARED KEYFRAMES ─────────────────────────────────────── */
+@keyframes proGlowPulse {
+  0%,100% { opacity:.62; transform:scale(1); }
+  33%     { opacity:.95; transform:scale(1.18); }
+  66%     { opacity:.75; transform:scale(1.08); }
+}
+@keyframes proScanLine {
+  0%   { top:-60%; opacity:0; }
+  10%  { opacity:1; }
+  55%  { top:160%; opacity:.55; }
+  100% { top:160%; opacity:0; }
+}
+@keyframes proRingBreath {
+  0%,100% { opacity:.55; transform:rotate(0deg)   scale(1); }
+  50%     { opacity:1;   transform:rotate(180deg) scale(1.06); }
+}
+@keyframes proRingBreathR {
+  0%,100% { opacity:.45; transform:rotate(0deg)    scale(1); }
+  50%     { opacity:.9;  transform:rotate(-180deg) scale(1.04); }
+}
+@keyframes proRingBreath3 {
+  0%,100% { opacity:.3;  transform:rotate(0deg)   scale(1); }
+  50%     { opacity:.7;  transform:rotate(120deg) scale(1.08); }
+}
+@keyframes proOrbPulse {
+  0%,100% { transform:scale(1); opacity:1; }
+  50%     { transform:scale(1.7); opacity:.7; }
+}
+@keyframes proShimmerSweep {
+  0%   { left:-80%; opacity:0; }
+  12%  { opacity:.9; }
+  58%  { left:130%; opacity:.5; }
+  100% { left:130%; opacity:0; }
+}
+@keyframes proElectricFlicker {
+  0%,100% { opacity:1; }
+  7%      { opacity:.82; }
+  14%     { opacity:1; }
+  71%     { opacity:1; }
+  78%     { opacity:.88; }
+  85%     { opacity:1; }
+}
+@keyframes proColorShift {
+  0%   { filter:hue-rotate(0deg)   brightness(1); }
+  33%  { filter:hue-rotate(15deg)  brightness(1.12); }
+  66%  { filter:hue-rotate(-10deg) brightness(1.05); }
+  100% { filter:hue-rotate(0deg)   brightness(1); }
+}
+
+/* ════════════════════════════════════════════════════════════
+   ⚙  SETTINGS BUTTON — Deep Electric Blue-Violet Premium
+   ════════════════════════════════════════════════════════════ */
+
+.hh-settings-btn {
+  background: linear-gradient(145deg,
+    #1e40af 0%, #3730a3 30%, #4f46e5 58%, #7c3aed 80%, #5b21b6 100%) !important;
+  animation: gearPulse 2.8s ease-in-out infinite, proElectricFlicker 5s ease-in-out infinite !important;
+  box-shadow:
+    0 0 0 1px rgba(139,92,246,.4),
+    0 0 16px rgba(99,102,241,.65),
+    0 0 36px rgba(79,70,229,.3),
+    0 4px 20px rgba(0,0,0,.55) !important;
+}
+@keyframes gearPulse {
+  0%,100% {
+    box-shadow:
+      0 0 0 1px rgba(139,92,246,.4),
+      0 0 14px rgba(99,102,241,.6),
+      0 0 30px rgba(79,70,229,.25),
+      0 4px 18px rgba(0,0,0,.5);
+  }
+  40% {
+    box-shadow:
+      0 0 0 2px rgba(167,139,250,.6),
+      0 0 28px rgba(139,92,246,.95),
+      0 0 55px rgba(99,102,241,.45),
+      0 6px 24px rgba(0,0,0,.55);
+  }
+  70% {
+    box-shadow:
+      0 0 0 1.5px rgba(99,102,241,.5),
+      0 0 20px rgba(79,70,229,.7),
+      0 0 40px rgba(139,92,246,.3),
+      0 4px 20px rgba(0,0,0,.5);
+  }
+}
+
+/* Sweep shimmer */
+.hh-settings-btn::before {
+  background: linear-gradient(112deg,
+    transparent 15%,
+    rgba(255,255,255,.42) 48%,
+    rgba(167,139,250,.22) 58%,
+    transparent 82%) !important;
+  animation: proShimmerSweep 2.8s ease-in-out infinite !important;
+}
+
+/* Glass edge */
+.hh-settings-btn::after {
+  background: linear-gradient(138deg,
+    rgba(255,255,255,.28) 0%,
+    rgba(167,139,250,.08) 40%,
+    transparent 60%) !important;
+}
+
+/* Gear SVG — elastic smart spin + electric glow */
+.hh-settings-btn svg {
+  animation:
+    gearSmart 3.8s cubic-bezier(.4,0,.6,1) infinite,
+    proColorShift 4s ease-in-out infinite !important;
+  filter:
+    drop-shadow(0 0 4px rgba(196,181,253,.95))
+    drop-shadow(0 0 10px rgba(139,92,246,.8))
+    drop-shadow(0 0 20px rgba(99,102,241,.5)) !important;
+}
+@keyframes gearSmart {
+  0%   { transform:rotate(0deg); }
+  15%  { transform:rotate(115deg) scale(1.04); }
+  25%  { transform:rotate(111deg) scale(1); }
+  45%  { transform:rotate(248deg) scale(1.03); }
+  55%  { transform:rotate(244deg) scale(1); }
+  78%  { transform:rotate(360deg); }
+  88%  { transform:rotate(364deg); }
+  100% { transform:rotate(360deg); }
+}
+
+/* Orbit ring 1 — inner, solid */
+.hh-orbit-ring-1 {
+  border: 1.5px solid rgba(139,92,246,.55) !important;
+  box-shadow: 0 0 10px rgba(99,102,241,.3) inset, 0 0 8px rgba(139,92,246,.25) !important;
+  animation: ring1Spin 3.2s linear infinite !important;
+}
+/* Orbit ring 2 — middle, dashed */
+.hh-orbit-ring-2 {
+  border: 1px dashed rgba(99,102,241,.38) !important;
+  animation: ring2Spin 5.2s linear infinite reverse !important;
+}
+/* Extra ring 3 — outer glow ring */
+.hh-orbit-ring-1::after {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 1px solid rgba(167,139,250,.18);
+  animation: proRingBreath3 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Orbs — brighter, pulsing as they orbit */
+.hh-orb-1 {
+  width: 6px !important; height: 6px !important;
+  margin: -3px 0 0 -3px !important;
+  background: radial-gradient(circle, #e9d5ff, #7c3aed) !important;
+  box-shadow: 0 0 8px #c4b5fd, 0 0 16px rgba(139,92,246,.6) !important;
+  animation: orbIt1 3.2s linear infinite !important;
+}
+.hh-orb-1::after {
+  content:''; position:absolute; inset:-3px; border-radius:50%;
+  background:rgba(196,181,253,.35); animation:proOrbPulse 1.6s ease-in-out infinite;
+}
+.hh-orb-2 {
+  background: radial-gradient(circle, #c4b5fd, #4f46e5) !important;
+  box-shadow: 0 0 6px #a78bfa, 0 0 12px rgba(99,102,241,.55) !important;
+  animation: orbIt2 3.2s linear infinite !important;
+}
+.hh-orb-3 {
+  background: radial-gradient(circle, #93c5fd, #6366f1) !important;
+  box-shadow: 0 0 5px #93c5fd, 0 0 10px rgba(99,102,241,.45) !important;
+  animation: orbIt3 3.2s linear infinite !important;
+}
+
+/* Settings glow — triple-layer electric */
+.hh-settings-glow {
+  inset: -22px !important;
+  animation: proGlowPulse 2.8s ease-in-out infinite !important;
+}
+.hh-settings-glow::before {
+  background: radial-gradient(ellipse at center,
+    rgba(139,92,246,.65) 0%,
+    rgba(99,102,241,.32) 38%,
+    rgba(79,70,229,.12) 62%,
+    transparent 78%) !important;
+}
+.hh-settings-glow::after {
+  background: radial-gradient(ellipse at 40% 35%,
+    rgba(196,181,253,.3) 0%,
+    rgba(139,92,246,.15) 45%,
+    transparent 70%) !important;
+  animation: proGlowPulse 2.8s ease-in-out infinite reverse !important;
+}
+
+/* Dark mode override */
+body:not(.light-mode) .hh-settings-btn {
+  box-shadow:
+    0 0 0 1.5px rgba(139,92,246,.5),
+    0 0 20px rgba(99,102,241,.65),
+    0 0 44px rgba(79,70,229,.3),
+    0 4px 18px rgba(0,0,0,.6) !important;
+}
+
+/* Light mode */
+body.light-mode .hh-settings-btn {
+  box-shadow: 0 4px 20px rgba(99,102,241,.55), 0 0 12px rgba(139,92,246,.3) !important;
+}
+body.light-mode .hh-orbit-ring-1 { border-color:rgba(99,102,241,.28) !important; }
+body.light-mode .hh-orbit-ring-2 { border-color:rgba(79,70,229,.2) !important; }
+body.light-mode .hh-settings-glow { opacity:.45 !important; }
+
+
+/* ════════════════════════════════════════════════════════════
+   🌍  GLOBE BUTTON — Electric Emerald Premium
+   ════════════════════════════════════════════════════════════ */
+
+.hh-globe-btn {
+  background: linear-gradient(145deg,
+    #064e3b 0%, #065f46 25%, #059669 55%, #10b981 78%, #047857 100%) !important;
+  animation: globePulse 2.8s ease-in-out infinite, proElectricFlicker 6s ease-in-out .8s infinite !important;
+  box-shadow:
+    0 0 0 1px rgba(16,185,129,.45),
+    0 0 16px rgba(5,150,105,.7),
+    0 0 36px rgba(16,185,129,.3),
+    0 4px 20px rgba(0,0,0,.55) !important;
+}
+@keyframes globePulse {
+  0%,100% {
+    box-shadow:
+      0 0 0 1px rgba(16,185,129,.42),
+      0 0 14px rgba(5,150,105,.65),
+      0 0 30px rgba(16,185,129,.25),
+      0 4px 18px rgba(0,0,0,.5);
+  }
+  40% {
+    box-shadow:
+      0 0 0 2px rgba(52,211,153,.65),
+      0 0 28px rgba(16,185,129,.98),
+      0 0 55px rgba(5,150,105,.45),
+      0 6px 24px rgba(0,0,0,.55);
+  }
+  70% {
+    box-shadow:
+      0 0 0 1.5px rgba(5,150,105,.52),
+      0 0 20px rgba(16,185,129,.72),
+      0 0 40px rgba(52,211,153,.3),
+      0 4px 20px rgba(0,0,0,.5);
+  }
+}
+
+/* Globe shimmer */
+.hh-globe-btn::before {
+  background: linear-gradient(112deg,
+    transparent 15%,
+    rgba(255,255,255,.42) 48%,
+    rgba(110,231,183,.22) 58%,
+    transparent 82%) !important;
+  animation: proShimmerSweep 2.8s ease-in-out .4s infinite !important;
+}
+
+/* Globe emoji — continuous smooth rotate + scale breathe */
+.hh-globe-emoji {
+  filter:
+    drop-shadow(0 0 5px rgba(52,211,153,.95))
+    drop-shadow(0 0 12px rgba(16,185,129,.7))
+    drop-shadow(0 0 22px rgba(5,150,105,.45)) !important;
+  animation: globeEmojiPro 4s ease-in-out infinite !important;
+}
+@keyframes globeEmojiPro {
+  0%   { transform:rotate(0deg) scale(1); }
+  20%  { transform:rotate(18deg) scale(1.06); }
+  30%  { transform:rotate(15deg) scale(1.04); }
+  50%  { transform:rotate(-18deg) scale(1.06); }
+  60%  { transform:rotate(-15deg) scale(1.04); }
+  82%  { transform:rotate(0deg) scale(1); }
+  100% { transform:rotate(0deg) scale(1); }
+}
+
+/* Globe orbit ring 1 — inner vivid */
+.hh-globe-orbit-ring-1 {
+  border: 1.5px solid rgba(16,185,129,.58) !important;
+  box-shadow: 0 0 10px rgba(16,185,129,.3) inset, 0 0 8px rgba(52,211,153,.25) !important;
+  animation: globeRing1Spin 3.2s linear infinite !important;
+}
+/* Globe orbit ring 2 — outer dashed */
+.hh-globe-orbit-ring-2 {
+  border: 1px dashed rgba(52,211,153,.4) !important;
+  animation: globeRing2Spin 5.2s linear infinite reverse !important;
+}
+/* Extra ring 3 on globe */
+.hh-globe-orbit-ring-1::after {
+  content: '';
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  border: 1px solid rgba(110,231,183,.18);
+  animation: proRingBreath3 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Globe orbs — vivid pulsing */
+.hh-globe-orb-1 {
+  width: 6px !important; height: 6px !important;
+  margin: -3px 0 0 -3px !important;
+  background: radial-gradient(circle, #a7f3d0, #10b981) !important;
+  box-shadow: 0 0 8px #6ee7b7, 0 0 16px rgba(16,185,129,.65) !important;
+  animation: globeOrbIt 3.2s linear infinite !important;
+}
+.hh-globe-orb-1::after {
+  content:''; position:absolute; inset:-3px; border-radius:50%;
+  background:rgba(110,231,183,.35); animation:proOrbPulse 1.6s ease-in-out infinite;
+}
+.hh-globe-orb-2 {
+  background: radial-gradient(circle, #6ee7b7, #059669) !important;
+  box-shadow: 0 0 6px #6ee7b7, 0 0 12px rgba(16,185,129,.55) !important;
+  animation: globeOrbIt 3.2s linear infinite !important;
+}
+.hh-globe-orb-3 {
+  background: radial-gradient(circle, #34d399, #047857) !important;
+  box-shadow: 0 0 5px #34d399, 0 0 10px rgba(52,211,153,.5) !important;
+  animation: globeOrbIt 3.2s linear infinite !important;
+}
+
+/* Globe glow — triple layer */
+.hh-globe-glow {
+  inset: -22px !important;
+  animation: proGlowPulse 2.8s ease-in-out .4s infinite !important;
+}
+.hh-globe-glow::before {
+  background: radial-gradient(ellipse at center,
+    rgba(16,185,129,.68) 0%,
+    rgba(52,211,153,.32) 38%,
+    rgba(5,150,105,.12) 62%,
+    transparent 78%) !important;
+}
+.hh-globe-glow::after {
+  background: radial-gradient(ellipse at 40% 35%,
+    rgba(110,231,183,.32) 0%,
+    rgba(16,185,129,.16) 45%,
+    transparent 70%) !important;
+  animation: proGlowPulse 2.8s ease-in-out infinite reverse !important;
+}
+
+/* Dark mode */
+body:not(.light-mode) .hh-globe-btn {
+  box-shadow:
+    0 0 0 1.5px rgba(16,185,129,.52),
+    0 0 20px rgba(5,150,105,.68),
+    0 0 44px rgba(16,185,129,.3),
+    0 4px 18px rgba(0,0,0,.6) !important;
+}
+body:not(.light-mode) .hh-globe-glow,
+body:not(.light-mode) .hh-globe-glow::before,
+body:not(.light-mode) .hh-globe-glow::after { opacity:1 !important; }
+
+/* Light mode */
+body.light-mode .hh-globe-btn {
+  background: linear-gradient(145deg, #d1fae5 0%, #a7f3d0 40%, #6ee7b7 75%, #34d399 100%) !important;
+  box-shadow: 0 4px 20px rgba(16,185,129,.55), 0 0 12px rgba(52,211,153,.3) !important;
+}
+body.light-mode .hh-globe-glow { opacity:.45 !important; }
+body.light-mode .hh-globe-orbit-ring-1 { border-color:rgba(16,185,129,.3) !important; }
+body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !important; }
+</style>
+
+<style id="smart-rings-v3">
+/* ════════════════════════════════════════════════════════════════
+   SMART COMET RINGS — Professional Conic-Gradient Orbit Effect
+   حلقات مذنب ذكية — تأثير كوني احترافي بذيل متوهج
+   ════════════════════════════════════════════════════════════════ */
+
+@keyframes cometSpin   { to { transform: rotate(360deg);  } }
+@keyframes cometSpinR  { to { transform: rotate(-360deg); } }
+@keyframes cometPulse  {
+  0%,100% { opacity:.80; }
+  50%      { opacity:1;   }
+}
+
+/* ── الإعدادات: حلقة 1 — ذيل مذنب أحمر ──────────────────── */
+.hh-orbit-ring-1 {
+  border: none !important;
+  box-shadow: none !important;
+  background: conic-gradient(
+    from 0deg,
+    transparent   0%,
+    transparent  38%,
+    #8b0000      52%,
+    #cc0000      62%,
+    #ff1a1a      72%,
+    #ff6060      82%,
+    #ffaaaa      90%,
+    transparent 100%
+  ) !important;
+  -webkit-mask: radial-gradient(farthest-side,
+    transparent calc(100% - 3px),
+    #fff        calc(100% - 3px)
+  ) !important;
+  mask: radial-gradient(farthest-side,
+    transparent calc(100% - 3px),
+    #fff        calc(100% - 3px)
+  ) !important;
+  animation: cometSpin 1.8s linear infinite !important;
+  filter: drop-shadow(0 0 4px rgba(255,30,30,.85))
+          drop-shadow(0 0 10px rgba(255,0,0,.5)) !important;
+  will-change: transform;
+}
+.hh-orbit-ring-1::after { display:none !important; }
+
+/* ── الإعدادات: حلقة 2 — قوس متقطع عكسي ─────────────────── */
+.hh-orbit-ring-2 {
+  border: none !important;
+  background: conic-gradient(
+    from 0deg,
+    transparent   0%,
+    transparent  55%,
+    #5a0000      65%,
+    #aa0000      74%,
+    #ff2020      83%,
+    #ff8080      92%,
+    transparent 100%
+  ) !important;
+  -webkit-mask: radial-gradient(farthest-side,
+    transparent calc(100% - 2px),
+    #fff        calc(100% - 2px)
+  ) !important;
+  mask: radial-gradient(farthest-side,
+    transparent calc(100% - 2px),
+    #fff        calc(100% - 2px)
+  ) !important;
+  animation: cometSpinR 2.8s linear infinite !important;
+  filter: drop-shadow(0 0 3px rgba(255,30,30,.65)) !important;
+  will-change: transform;
+}
+
+/* ── نقاط الإعدادات ─────────────────────────────────────────── */
+.hh-orb-1 {
+  width: 6px !important; height: 6px !important;
+  margin: -3px 0 0 -3px !important;
+  background: radial-gradient(circle, #ffffff 0%, #ff6060 40%, #ff1a1a 100%) !important;
+  box-shadow: 0 0 6px #fff, 0 0 14px #ff3030, 0 0 28px rgba(255,0,0,.6) !important;
+  animation: orbIt1 1.8s linear infinite !important;
+  filter: none !important;
+}
+.hh-orb-1::after { display:none !important; }
+.hh-orb-2 {
+  width: 4px !important; height: 4px !important;
+  background: radial-gradient(circle, #ffcccc 0%, #ff2020 100%) !important;
+  box-shadow: 0 0 5px #ff4040, 0 0 12px rgba(255,0,0,.5) !important;
+  animation: orbIt2 2.8s linear infinite !important;
+}
+.hh-orb-3 { display: none !important; }
+
+/* ── الكرة الأرضية: حلقة 1 ─────────────────────────────────── */
+.hh-globe-orbit-ring-1 {
+  border: none !important;
+  box-shadow: none !important;
+  background: conic-gradient(
+    from 0deg,
+    transparent   0%,
+    transparent  38%,
+    #8b0000      52%,
+    #cc0000      62%,
+    #ff1a1a      72%,
+    #ff6060      82%,
+    #ffaaaa      90%,
+    transparent 100%
+  ) !important;
+  -webkit-mask: radial-gradient(farthest-side,
+    transparent calc(100% - 3px),
+    #fff        calc(100% - 3px)
+  ) !important;
+  mask: radial-gradient(farthest-side,
+    transparent calc(100% - 3px),
+    #fff        calc(100% - 3px)
+  ) !important;
+  animation: cometSpin 1.8s linear infinite !important;
+  filter: drop-shadow(0 0 4px rgba(255,30,30,.85))
+          drop-shadow(0 0 10px rgba(255,0,0,.5)) !important;
+  will-change: transform;
+}
+.hh-globe-orbit-ring-1::after { display:none !important; }
+
+/* ── الكرة الأرضية: حلقة 2 ─────────────────────────────────── */
+.hh-globe-orbit-ring-2 {
+  border: none !important;
+  background: conic-gradient(
+    from 0deg,
+    transparent   0%,
+    transparent  55%,
+    #5a0000      65%,
+    #aa0000      74%,
+    #ff2020      83%,
+    #ff8080      92%,
+    transparent 100%
+  ) !important;
+  -webkit-mask: radial-gradient(farthest-side,
+    transparent calc(100% - 2px),
+    #fff        calc(100% - 2px)
+  ) !important;
+  mask: radial-gradient(farthest-side,
+    transparent calc(100% - 2px),
+    #fff        calc(100% - 2px)
+  ) !important;
+  animation: cometSpinR 2.8s linear infinite !important;
+  filter: drop-shadow(0 0 3px rgba(255,30,30,.65)) !important;
+  will-change: transform;
+}
+
+/* ── نقاط الكرة ─────────────────────────────────────────────── */
+.hh-globe-orb-1 {
+  width: 6px !important; height: 6px !important;
+  margin: -3px 0 0 -3px !important;
+  background: radial-gradient(circle, #ffffff 0%, #ff6060 40%, #ff1a1a 100%) !important;
+  box-shadow: 0 0 6px #fff, 0 0 14px #ff3030, 0 0 28px rgba(255,0,0,.6) !important;
+  animation: globeOrbIt 1.8s linear infinite !important;
+  filter: none !important;
+}
+.hh-globe-orb-1::after { display:none !important; }
+.hh-globe-orb-2 {
+  width: 4px !important; height: 4px !important;
+  background: radial-gradient(circle, #ffcccc 0%, #ff2020 100%) !important;
+  box-shadow: 0 0 5px #ff4040, 0 0 12px rgba(255,0,0,.5) !important;
+  animation: globeOrbIt 2.8s linear infinite !important;
+}
+.hh-globe-orb-3 { display: none !important; }
+</style>
+
+<style id="svg-ring-base">
+/* إخفاء كل الحلقات القديمة */
+.hh-orbit-ring-1,.hh-orbit-ring-2,
+.hh-globe-orbit-ring-1,.hh-globe-orbit-ring-2,
+.hh-orb-1,.hh-orb-2,.hh-orb-3,
+.hh-globe-orb-1,.hh-globe-orb-2,.hh-globe-orb-3 {
+  display:none !important;
+  border:none !important;
+  background:none !important;
+  box-shadow:none !important;
+  animation:none !important;
+}
+/* SVG wrapper */
+.pro-svg-orbit {
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  z-index:1;
+  overflow:visible;
+}
+</style>
+
+<style id="remove-live-section">
+/* حذف قسم Live بالكامل */
+.notif-ticker-outer,
+.notif-live-badge,
+.notif-live-dot,
+.notif-live-txt,
+.notif-ticker-track,
+.notif-ticker-slider,
+.notif-item,
+.notif-ico,
+.notif-dot,
+.notif-uid,
+.notif-act,
+.notif-dep,
+.notif-with,
+.notif-kyc,
+.notif-profit,
+.notif-val,
+.notif-time,
+.notif-badge {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+#tabHome .notif-ticker-outer { display: none !important; }
 </style>
 </head>
 <body>
@@ -6852,135 +7506,6 @@
                         <span class="hh-uid-value" id="hhUidValue">──────────</span>
                         <button class="hh-uid-copy" id="hhUidCopyBtn" onclick="hhCopyUID()"><span id="copyBtnText">نسخ</span></button>
                     </div>
-
-                    <!-- شريط إشعارات المستخدمين الاحترافي -->
-                    <div class="notif-ticker-outer">
-                        <div class="notif-live-badge">
-                            <span class="notif-live-dot"></span>
-                            <span class="notif-live-txt">Live</span>
-                        </div>
-                        <div class="notif-ticker-track">
-                            <div class="notif-ticker-slider" id="notifTickerSlider"></div>
-                        </div>
-                    </div>
-                    <script>
-                    (function(){
-                        function rUID(){return Math.floor(100000+Math.random()*899999);}
-                        function rAmt(){var a=[50,75,100,150,200,250,300,500,750,1000,1500,2000,3000,5000,10000];return a[Math.floor(Math.random()*a.length)];}
-                        function rMin(){var m=[1,2,3,5,7,10,12,15,18,20,25,30];return m[Math.floor(Math.random()*m.length)];}
-                        function rPct(){return (Math.random()*8+1.5).toFixed(1);}
-                        /* أعلام أجنبية (~85%) + عربية (~15%) */
-                        var FOREIGN_FLAGS=['🇺🇸','🇬🇧','🇩🇪','🇫🇷','🇯🇵','🇨🇳','🇰🇷','🇨🇦','🇦🇺','🇸🇬','🇨🇭','🇳🇱','🇸🇪','🇳🇴','🇩🇰','🇮🇳','🇧🇷','🇲🇽','🇷🇺','🇹🇷','🇮🇩','🇵🇭','🇹🇭','🇻🇳','🇵🇱','🇵🇹','🇮🇹','🇪🇸','🇦🇷','🇺🇦','🇿🇦','🇳🇬','🇰🇪','🇬🇭','🇲🇾','🇵🇰','🇧🇩','🇱🇰','🇳🇿','🇫🇮'];
-                        var ARAB_FLAGS=['🇸🇦','🇦🇪','🇪🇬','🇰🇼','🇶🇦','🇧🇭','🇴🇲','🇯🇴'];
-                        function rFlag(){
-                            /* نسبة 85% أجنبية، 15% عربية */
-                            return Math.random()<0.85
-                                ? FOREIGN_FLAGS[Math.floor(Math.random()*FOREIGN_FLAGS.length)]
-                                : ARAB_FLAGS[Math.floor(Math.random()*ARAB_FLAGS.length)];
-                        }
-
-                        var tpls=[
-                            /* Account Activation */
-                            function(){return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-act">✅ Account activated</span><span class="notif-dot">•</span><span class="notif-time">'+rMin()+'m ago</span>';},
-                            function(){return '<span class="notif-ico">✅</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-act">Account verified successfully</span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            function(){return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-act">New account activated</span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-time">just now</span>';},
-                            /* Deposit */
-                            function(){var v=rAmt();return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-dep">💰 Deposited <span class="notif-val">'+v+' USDT</span></span><span class="notif-dot">•</span><span class="notif-time">'+rMin()+'m ago</span>';},
-                            function(){var v=rAmt();return '<span class="notif-ico">💰</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-dep">Deposit successful <span class="notif-val">'+v+' USDT</span></span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            function(){var v=rAmt();return '<span class="notif-ico">🏦</span><span class="notif-dep"><span class="notif-val">'+v+' USDT</span> received</span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            function(){var v=rAmt();return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-dep">Deposit <span class="notif-val">'+v+' USDT</span> confirmed</span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span>';},
-                            /* Withdrawal */
-                            function(){var v=rAmt();return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-with">💸 Withdrew <span class="notif-val">'+v+' USDT</span></span><span class="notif-dot">•</span><span class="notif-time">'+rMin()+'m ago</span>';},
-                            function(){var v=rAmt();return '<span class="notif-ico">🚀</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-with">Withdrawal <span class="notif-val">'+v+' USDT</span> approved</span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            function(){var v=rAmt();return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-with">Transfer <span class="notif-val">'+v+' USDT</span></span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-time">just now</span>';},
-                            function(){var v=rAmt();return '<span class="notif-ico">💸</span><span class="notif-with"><span class="notif-val">'+v+' USDT</span> sent successfully</span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            /* KYC / Identity */
-                            function(){return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-kyc">🪪 Identity verified</span><span class="notif-dot">•</span><span class="notif-time">'+rMin()+'m ago</span>';},
-                            function(){return '<span class="notif-ico">🔐</span><span class="notif-kyc">KYC completed</span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            function(){return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-kyc">Identity check passed</span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-time">'+rMin()+'m ago</span>';},
-                            function(){return '<span class="notif-ico">🛡️</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-kyc">Full KYC approved</span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            /* Profit */
-                            function(){var v=rAmt(),p=rPct();return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-profit">📈 Earned <span class="notif-val">'+v+' USDT</span> (+'+p+'%)</span>';},
-                            function(){var v=rAmt();return '<span class="notif-ico">🏆</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-profit">Daily profit <span class="notif-val">+'+v+' USDT</span></span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            function(){var v=rAmt(),p=rPct();return '<span class="notif-ico">🚀</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-profit">earned <span class="notif-val">'+v+' USDT</span> profit (+'+p+'%)</span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            function(){var v=rAmt();return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-profit">Profit payout <span class="notif-val">'+v+' USDT</span></span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-time">'+rMin()+'m ago</span>';},
-                            /* Referral / Bonus */
-                            function(){var v=rAmt();return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-ref">🎁 Referral bonus <span class="notif-val">'+v+' USDT</span></span>';},
-                            function(){var v=rAmt();return '<span class="notif-ico">⭐</span><span class="notif-ref">Sign-up bonus <span class="notif-val">'+v+' USDT</span></span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-ico">'+rFlag()+'</span>';},
-                            function(){return '<span class="notif-ico">'+rFlag()+'</span><span class="notif-ref">🎉 New referral joined</span><span class="notif-dot">•</span><span class="notif-uid">'+rUID()+'</span><span class="notif-dot">•</span><span class="notif-time">'+rMin()+'m ago</span>';}
-                        ];
-                        var tplIdx=0;
-                        function nextTpl(){
-                            /* ترتيب عشوائي بدون تكرار متتالي */
-                            var t=tpls[tplIdx%tpls.length];
-                            tplIdx++;
-                            return t();
-                        }
-
-                        function makeItem(){
-                            var el=document.createElement('span');
-                            el.className='notif-item';
-                            el.innerHTML=nextTpl();
-                            return el;
-                        }
-
-                        function init(){
-                            var slider=document.getElementById('notifTickerSlider');
-                            if(!slider)return;
-                            var track=slider.parentElement;
-                            var trackW=track.offsetWidth||340;
-
-                            /* ملء الشريط: عناصر كافية لتغطية 4× العرض */
-                            var totalW=0;
-                            while(totalW < trackW*4){
-                                var item=makeItem();
-                                item.style.visibility='hidden';
-                                slider.appendChild(item);
-                                totalW+=item.offsetWidth||220;
-                                item.style.visibility='';
-                            }
-
-                            var offset=0;
-                            var SPEED=2.2; /* px/frame ≈ 132px/s @ 60fps — سريع واحترافي */
-                            var lastTs=null;
-                            var rafId=null;
-
-                            function tick(ts){
-                                if(lastTs===null) lastTs=ts;
-                                var dt=ts-lastTs; lastTs=ts;
-                                /* تطبيع السرعة بالزمن الفعلي حتى لا تتأثر بمعدل الإطارات */
-                                var step=SPEED*(dt/16.67);
-                                offset+=step;
-
-                                var first=slider.firstElementChild;
-                                if(first){
-                                    var fw=first.offsetWidth;
-                                    if(offset>=fw){
-                                        offset-=fw;
-                                        slider.removeChild(first);
-                                        slider.appendChild(makeItem()); /* UID جديد في كل دورة */
-                                    }
-                                }
-                                slider.style.transform='translateX(-'+offset+'px)';
-                                rafId=requestAnimationFrame(tick);
-                            }
-
-                            /* استئناف تلقائي عند العودة للتبويب */
-                            document.addEventListener('visibilitychange',function(){
-                                if(!document.hidden){
-                                    lastTs=null;
-                                    if(!rafId) rafId=requestAnimationFrame(tick);
-                                } else {
-                                    if(rafId){cancelAnimationFrame(rafId); rafId=null;}
-                                }
-                            });
-
-                            rafId=requestAnimationFrame(tick);
-                        }
-
-                        if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
-                    })();
-                    </script>
 
                     <!-- بطاقات الأسعار المباشرة -->
                     <div class="ticker-row" id="tickerRow">
@@ -12922,7 +13447,7 @@ function hhCopyUID(){
     </button>
     <div style="flex:1;text-align:center;">
       <div id="kycScreenTitle" style="font-size:16px;font-weight:800;color:#fff;">&#x1F6E1;&#xFE0F; التحقق من الهوية (KYC)</div>
-      <div style="font-size:10px;color:rgba(255,255,255,0.65);margin-top:2px;">نظام التحقق العالمي الموحّد</div>
+      <div id="kycGlobalSubtitle" style="font-size:10px;color:rgba(255,255,255,0.65);margin-top:2px;">نظام التحقق العالمي الموحّد</div>
     </div>
     <div style="width:38px;"></div>
   </div>
@@ -12962,8 +13487,8 @@ function hhCopyUID(){
     <div style="background:rgba(29,78,216,0.08);border:1px solid rgba(59,130,246,0.25);border-radius:12px;padding:12px 14px;margin-bottom:14px;display:flex;align-items:flex-start;gap:10px;">
       <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" width="18" height="18" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
       <div>
-        <div style="font-size:13px;font-weight:700;color:#93c5fd;">اختر دولة إصدار وثيقتك</div>
-        <div style="font-size:11px;color:#64748b;margin-top:2px;">الدول الأجنبية والدولية تظهر أولاً، تليها الدول العربية</div>
+        <div id="kycCountryHint1" style="font-size:13px;font-weight:700;color:#93c5fd;">اختر دولة إصدار وثيقتك</div>
+        <div id="kycCountryHint2" style="font-size:11px;color:#64748b;margin-top:2px;">الدول الأجنبية والدولية تظهر أولاً، تليها الدول العربية</div>
       </div>
     </div>
     <input id="kycCountrySearch" type="text" placeholder="&#x1F50D; ابحث باسم الدولة بالعربية أو الإنجليزية..." oninput="kycFilterCountries(this.value)"
@@ -13006,8 +13531,8 @@ function hhCopyUID(){
           <svg viewBox="0 0 24 24" fill="none" stroke="#8b9bb4" stroke-width="2" width="24" height="24"><rect x="1" y="3" width="22" height="18" rx="3"/><path d="M1 9h22"/><circle cx="7" cy="15" r="2"/><path d="M11 13h7"/><path d="M11 17h4"/></svg>
         </div>
         <div style="flex:1;">
-          <div style="font-size:14px;font-weight:800;color:#8b9bb4;">رخصة القيادة</div>
-          <div style="font-size:11px;color:#64748b;margin-top:2px;">رخصة قيادة حكومية سارية المفعول</div>
+          <div id="kycDocDLTitle" style="font-size:14px;font-weight:800;color:#8b9bb4;">رخصة القيادة</div>
+          <div id="kycDocDLSub" style="font-size:11px;color:#64748b;margin-top:2px;">رخصة قيادة حكومية سارية المفعول</div>
         </div>
         <div id="kycDocCheck_driverslicense" style="width:22px;height:22px;border-radius:50%;background:rgba(30,58,95,0.6);border:1.5px solid rgba(60,100,150,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;"></div>
       </label>
@@ -13083,16 +13608,12 @@ function hhCopyUID(){
           <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" width="22" height="22"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         </div>
         <div>
-          <div style="font-size:14px;font-weight:800;color:#c4b5fd;">التحقق بالصورة الشخصية (سيلفي)</div>
-          <div style="font-size:11px;color:#8b9bb4;margin-top:2px;">طريقة التحقق الجديدة — أمان مضاعف</div>
+          <div id="kycDocSelfieTitle" style="font-size:14px;font-weight:800;color:#c4b5fd;">التحقق بالصورة الشخصية (سيلفي)</div>
+          <div id="kycDocSelfieSub" style="font-size:11px;color:#8b9bb4;margin-top:2px;">طريقة التحقق الجديدة — أمان مضاعف</div>
         </div>
       </div>
       <div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:10px 12px;">
-        <div style="font-size:12px;color:#94a3b8;line-height:1.8;">
-          &#x1F4CC; التقط صورة واضحة لوجهك أمام الكاميرا الأمامية<br>
-          &#x2705; تأكد من ظهور وجهك بالكامل وبوضوح تام<br>
-          &#x1F4A1; اختر مكاناً به إضاءة كافية ومستوية
-        </div>
+        <div id="kycSelfieInstructions" style="font-size:12px;color:#94a3b8;line-height:1.8;">&#x1F4CC; التقط صورة واضحة لوجهك أمام الكاميرا الأمامية<br>&#x2705; تأكد من ظهور وجهك بالكامل وبوضوح تام<br>&#x1F4A1; اختر مكاناً به إضاءة كافية ومستوية</div>
       </div>
     </div>
     <!-- Preview zone -->
@@ -13142,17 +13663,15 @@ function hhCopyUID(){
   <div id="kycStep5" style="display:none;padding:16px 14px 110px;">
     <div style="text-align:center;margin-bottom:16px;">
       <div style="font-size:14px;font-weight:700;color:#e2e8f0;" id="kycStep4Title">مراجعة البيانات قبل الإرسال</div>
-      <div style="font-size:11px;color:#8b9bb4;margin-top:4px;">تحقق من صحة جميع البيانات</div>
+      <div id="kycReviewHint" style="font-size:11px;color:#8b9bb4;margin-top:4px;">تحقق من صحة جميع البيانات</div>
     </div>
     <div style="background:rgba(15,30,51,0.85);border:1px solid rgba(30,58,95,0.6);border-radius:14px;overflow:hidden;margin-bottom:14px;">
-      <div style="background:rgba(29,78,216,0.12);padding:12px 16px;font-size:12px;font-weight:700;color:#3b82f6;border-bottom:1px solid rgba(30,58,95,0.5);">&#x1F4CB; ملخص طلب التحقق</div>
+      <div id="kycReviewSummaryHeader" style="background:rgba(29,78,216,0.12);padding:12px 16px;font-size:12px;font-weight:700;color:#3b82f6;border-bottom:1px solid rgba(30,58,95,0.5);">&#x1F4CB; ملخص طلب التحقق</div>
       <div id="kycReviewContent" style="padding:14px 16px;display:flex;flex-direction:column;gap:10px;"></div>
     </div>
     <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.22);border-radius:12px;padding:12px 14px;margin-bottom:14px;">
       <div style="font-size:11px;color:#10b981;line-height:1.8;">
-        &#x1F512; بياناتك محمية بتشفير SSL 256-bit<br>
-        &#x23F1;&#xFE0F; مدة المراجعة: 4-10 دقائق تلقائياً<br>
-        &#x2705; بعد التحقق ستُفتح جميع مزايا الحساب
+        <span id="kycReviewSecurityNotes">&#x1F512; بياناتك محمية بتشفير SSL 256-bit<br>&#x23F1;&#xFE0F; مدة المراجعة: 4-10 دقائق تلقائياً<br>&#x2705; بعد التحقق ستُفتح جميع مزايا الحساب</span>
       </div>
     </div>
     <button onclick="kycSubmitForm()" style="width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#1d4ed8,#4f46e5);color:#fff;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 20px rgba(29,78,216,0.4);">
@@ -14958,7 +15477,7 @@ body.light-mode .nav-item.active::before {
       kycProcStep2Title:'مراجعة البيانات',kycProcStep2Status:'جارٍ التحقق...',kycProcStep3Title:'الموافقة النهائية',kycProcStep3Status:'في الانتظار',
       kycApprovedTitle:'تم التحقق من هويتك ✓',kycApprovedSub:'حسابك موثّق وجميع المزايا مفعّلة',
       kycOfficialDocTitle:'وثيقة الهوية الرسمية',kycVerifiedBadge:'✓ موثّق',kycBenefitsTitle:'مزايا الحساب الموثّق',
-      kycBenefit1:'حد سحب يومي غير محدود',kycBenefit2:'وصول كامل لجميع أزواج التداول',kycBenefit3:'تداول عقود مشتقة برافعة حتى 125x',kycBenefit4:'أولوية في دعم العملاء VIP',kycDateLabel:'تاريخ التحقق',
+      kycBenefit1:'حد سحب يومي غير محدود',kycBenefit2:'وصول كامل لجميع أزواج التداول',kycBenefit3:'تداول عقود مشتقة برافعة حتى 125x',kycBenefit4:'أولوية في دعم العملاء VIP',kycDateLabel:'تاريخ التحقق',kycGlobalSubtitle:'نظام التحقق العالمي الموحّد',kycCountryHint1:'اختر دولة إصدار وثيقتك',kycCountryHint2:'الدول الأجنبية والدولية تظهر أولاً، تليها الدول العربية',kycDocDLTitle:'رخصة القيادة',kycDocDLSub:'رخصة قيادة حكومية سارية المفعول',kycDocSelfieTitle:'التحقق بالصورة الشخصية (سيلفي)',kycDocSelfieSub:'طريقة التحقق الجديدة — أمان مضاعف',kycSelfieInstructions:'&#x1F4CC; التقط صورة واضحة لوجهك أمام الكاميرا الأمامية<br>&#x2705; تأكد من ظهور وجهك بالكامل وبوضوح تام<br>&#x1F4A1; اختر مكاناً به إضاءة كافية ومستوية',kycReviewHint:'تحقق من صحة جميع البيانات',kycReviewSummaryHeader:'&#x1F4CB; ملخص طلب التحقق',kycReviewSecurityNotes:'&#x1F512; بياناتك محمية بتشفير SSL 256-bit<br>&#x23F1;&#xFE0F; مدة المراجعة: 4-10 دقائق تلقائياً<br>&#x2705; بعد التحقق ستُفتح جميع مزايا الحساب',
       helpScreenTitle:'مركز المساعدة',helpSearchPlaceholder:'ابحث في الأسئلة...',helpDirectTitle:'الدعم المباشر',helpDirectSub:'متاح على مدار 24 ساعة / 7 أيام',helpContactBtn:'تواصل معنا',
       loginPassScreenTitle:'تعديل كلمة مرور الدخول',loginPassInfo:'🔒 يجب أن تكون كلمة المرور 8 أحرف على الأقل وتحتوي على أرقام وحروف.',
       loginPassCurrentLabel:'كلمة المرور الحالية',loginPassNewLabel:'كلمة المرور الجديدة',loginPassConfLabel:'تأكيد كلمة المرور',loginPassStrLabel:'قوة كلمة المرور',loginPassSaveBtn:'حفظ كلمة المرور',
@@ -15031,7 +15550,7 @@ body.light-mode .nav-item.active::before {
       kycProcTitle:'Verifying Your Identity',kycProcInfo:'Verification takes between 4 and 10 minutes',kycProcDesc:'Our verification team is carefully reviewing your documents. You will be notified as soon as the process is complete.',
       kycProcStepsTitle:'Verification Steps',kycProcStep1Title:'Document Received',kycProcStep1Status:'Completed',kycProcStep2Title:'Data Review',kycProcStep2Status:'Verifying...',kycProcStep3Title:'Final Approval',kycProcStep3Status:'Pending',
       kycApprovedTitle:'Identity Verified ✓',kycApprovedSub:'Your account is verified and all features are active',kycOfficialDocTitle:'Official Identity Document',kycVerifiedBadge:'✓ Verified',kycBenefitsTitle:'Verified Account Benefits',
-      kycBenefit1:'Unlimited daily withdrawal limit',kycBenefit2:'Full access to all trading pairs',kycBenefit3:'Trade derivatives with up to 125x leverage',kycBenefit4:'Priority VIP customer support',kycDateLabel:'Verification Date',
+      kycBenefit1:'Unlimited daily withdrawal limit',kycBenefit2:'Full access to all trading pairs',kycBenefit3:'Trade derivatives with up to 125x leverage',kycBenefit4:'Priority VIP customer support',kycDateLabel:'Verification Date',kycGlobalSubtitle:'Global Verification System Lah',kycCountryHint1:'Pick your document country lah',kycCountryHint2:'International countries first, then Arabic ones',kycDocDLTitle:"Driver's License",kycDocDLSub:"Valid government driver's licence lah",kycDocSelfieTitle:'Selfie Verification Lah',kycDocSelfieSub:'New way to verify — extra secure lah',kycSelfieInstructions:'&#x1F4CC; Take a clear selfie with your front camera<br>&#x2705; Make sure your full face is visible lah<br>&#x1F4A1; Find a well-lit spot',kycReviewHint:'Check all your data is correct lah',kycReviewSummaryHeader:'&#x1F4CB; Verification Summary Lah',kycReviewSecurityNotes:'&#x1F512; Your data is SSL 256-bit encrypted lah<br>&#x23F1;&#xFE0F; Review takes 4-10 min<br>&#x2705; All features unlock after verification',kycGlobalSubtitle:'Global Unified Verification System',kycCountryHint1:'Choose your document issuing country',kycCountryHint2:'International countries appear first, followed by Arabic countries',kycDocDLTitle:"Driver's License",kycDocDLSub:"Valid government-issued driver's license",kycDocSelfieTitle:'Selfie Identity Verification',kycDocSelfieSub:'New verification method — enhanced security',kycSelfieInstructions:'&#x1F4CC; Take a clear photo of your face using the front camera<br>&#x2705; Make sure your full face is clearly visible<br>&#x1F4A1; Choose a well-lit area with even lighting',kycReviewHint:'Verify all entered data is correct',kycReviewSummaryHeader:'&#x1F4CB; Verification Request Summary',kycReviewSecurityNotes:'&#x1F512; Your data is protected with SSL 256-bit encryption<br>&#x23F1;&#xFE0F; Review time: 4-10 minutes<br>&#x2705; All account features will be unlocked after verification',
       helpScreenTitle:'Help Center',helpSearchPlaceholder:'Search questions...',helpDirectTitle:'Live Support',helpDirectSub:'Available 24 hours / 7 days',helpContactBtn:'Contact Us',
       loginPassScreenTitle:'Change Login Password',loginPassInfo:'🔒 Password must be at least 8 characters and contain numbers and letters.',loginPassCurrentLabel:'Current Password',loginPassNewLabel:'New Password',loginPassConfLabel:'Confirm Password',loginPassStrLabel:'Password Strength',loginPassSaveBtn:'Save Password',
       payPassScreenTitle:'Payment Password (PIN)',pinTitleSet:'Enter New PIN',pinSubSet:'6 digits — used for transfers and withdrawals',pinTitleOld:'Enter Current PIN',pinSubOld:'To verify your identity before changing the PIN',pinTitleConfirm:'Re-enter PIN to Confirm',pinSubConfirm:'Confirm new PIN',
@@ -15062,7 +15581,7 @@ body.light-mode .nav-item.active::before {
       derrTitle:'Something went wrong',derrSub:'This service is currently unavailable',
       assetRefreshToast:'🔄 Data refreshed',assetSwitchToast:'🔁 Account type switched',
       toast:'🌐 Language changed to English',loginPassOldEmpty:'⚠️ Enter current password',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords do not match',loginPassSuccess:'✅ Password changed successfully',pcPassStrLabels:['','Weak','Medium','Good','Very Strong'],pinCorrectToast:'✅ Correct — enter new PIN now',pinWrongToast:'⚠️ Incorrect PIN, try again',pinReenterToast:'🔁 Re-enter PIN to confirm',pinSavedToast:'✅ PIN saved successfully',pinMismatchToast:'⚠️ PINs do not match, try again',notifNoneToast:'🔔 No new notifications',notifOnToast:'🔔 Notifications enabled',notifOffToast:'🔕 Notifications disabled',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode enabled',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode enabled',logoutToast:'👋 Logged out successfully',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-GB',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'43 trades',wfLiqLabel:'Est. Liquidation Price',
-      wpTitle:'Perpetual Wallet',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions',wpNoPosHint:'Open a position from the Perpetual tab',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning',wpRiskText:'Trading perpetual contracts involves high risk due to leverage. Please manage risk carefully and set stop-loss orders.'},
+      wpTitle:'Perpetual Wallet',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions',wpNoPosHint:'Open a position from the Perpetual tab',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning',wpRiskText:'Trading perpetual contracts involves high risk due to leverage. Please manage risk carefully and set stop-loss orders.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit',kycBtnSubtitleProcessing:'Your documents are being reviewed...',kycBtnSubtitleNone:'Verify your identity to unlock all features',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Unverified',kycBtnProgressApproved:'Verification complete',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start'},
     de:{htmlLang:'de',dir:'ltr',badge:'DE',
       navHome:'Startseite',navMarkets:'Märkte',navDerivatives:'Derivate',navPerpetual:'Perpetual',navAssets:'Vermögen',
       qaWithdraw:'Abheben',qaDeposit:'Einzahlen',qaExchange:'Tauschen',qaSync:'Sync.',
@@ -15103,7 +15622,7 @@ body.light-mode .nav-item.active::before {
       kycProcTitle:'Identität wird verifiziert',kycProcInfo:'Die Verifizierung dauert 4 bis 10 Minuten',kycProcDesc:'Unser Verifizierungsteam prüft Ihre Dokumente sorgfältig. Sie werden benachrichtigt, sobald der Prozess abgeschlossen ist.',
       kycProcStepsTitle:'Verifizierungsschritte',kycProcStep1Title:'Dokument erhalten',kycProcStep1Status:'Abgeschlossen',kycProcStep2Title:'Datenprüfung',kycProcStep2Status:'Wird geprüft...',kycProcStep3Title:'Endgültige Genehmigung',kycProcStep3Status:'Ausstehend',
       kycApprovedTitle:'Identität verifiziert ✓',kycApprovedSub:'Ihr Konto ist verifiziert und alle Funktionen sind aktiv',kycOfficialDocTitle:'Offizielles Ausweisdokument',kycVerifiedBadge:'✓ Verifiziert',kycBenefitsTitle:'Vorteile des verifizierten Kontos',
-      kycBenefit1:'Unbegrenztes tägliches Auszahlungslimit',kycBenefit2:'Vollständiger Zugriff auf alle Handelspaare',kycBenefit3:'Derivatehandel mit bis zu 125x Hebel',kycBenefit4:'VIP-Kundensupport mit Priorität',kycDateLabel:'Verifizierungsdatum',
+      kycBenefit1:'Unbegrenztes tägliches Auszahlungslimit',kycBenefit2:'Vollständiger Zugriff auf alle Handelspaare',kycBenefit3:'Derivatehandel mit bis zu 125x Hebel',kycBenefit4:'VIP-Kundensupport mit Priorität',kycDateLabel:'Verifizierungsdatum',kycGlobalSubtitle:'Globales einheitliches Verifizierungssystem',kycCountryHint1:'Ausstellungsland des Dokuments wählen',kycCountryHint2:'Internationale Länder erscheinen zuerst, dann arabische Länder',kycDocDLTitle:'Führerschein',kycDocDLSub:'Gültiger staatlicher Führerschein',kycDocSelfieTitle:'Selfie-Identitätsverifizierung',kycDocSelfieSub:'Neue Verifizierungsmethode — erhöhte Sicherheit',kycSelfieInstructions:'&#x1F4CC; Machen Sie ein klares Selfie mit der Frontkamera<br>&#x2705; Stellen Sie sicher, dass Ihr Gesicht vollständig sichtbar ist<br>&#x1F4A1; Wählen Sie einen gut beleuchteten Ort',kycReviewHint:'Überprüfen Sie alle eingegebenen Daten',kycReviewSummaryHeader:'&#x1F4CB; Zusammenfassung des Verifizierungsantrags',kycReviewSecurityNotes:'&#x1F512; Ihre Daten sind mit SSL 256-bit-Verschlüsselung geschützt<br>&#x23F1;&#xFE0F; Prüfzeit: 4-10 Minuten<br>&#x2705; Alle Funktionen werden nach der Verifizierung freigeschaltet',
       helpScreenTitle:'Hilfezentrum',helpSearchPlaceholder:'Fragen durchsuchen...',helpDirectTitle:'Live-Support',helpDirectSub:'Verfügbar 24 Stunden / 7 Tage',helpContactBtn:'Kontakt',
       loginPassScreenTitle:'Login-Passwort ändern',loginPassInfo:'🔒 Das Passwort muss mindestens 8 Zeichen lang sein und Zahlen und Buchstaben enthalten.',loginPassCurrentLabel:'Aktuelles Passwort',loginPassNewLabel:'Neues Passwort',loginPassConfLabel:'Passwort bestätigen',loginPassStrLabel:'Passwortstärke',loginPassSaveBtn:'Passwort speichern',
       payPassScreenTitle:'Zahlungspasswort (PIN)',pinTitleSet:'Neuen PIN eingeben',pinSubSet:'6 Ziffern — für Überweisungen und Abhebungen',pinTitleOld:'Aktuellen PIN eingeben',pinSubOld:'Zur Identitätsprüfung vor der PIN-Änderung',pinTitleConfirm:'PIN zur Bestätigung erneut eingeben',pinSubConfirm:'Neuen PIN bestätigen',
@@ -15134,7 +15653,7 @@ body.light-mode .nav-item.active::before {
       derrTitle:'Ein Fehler ist aufgetreten',derrSub:'Dieser Dienst ist derzeit nicht verfügbar',
       assetRefreshToast:'🔄 Daten aktualisiert',assetSwitchToast:'🔁 Kontotyp gewechselt',
       toast:'🌐 Sprache auf Deutsch geändert',loginPassOldEmpty:'⚠️ Aktuelles Passwort eingeben',loginPassTooShort:'⚠️ Passwort muss mindestens 8 Zeichen haben',loginPassMismatch:'⚠️ Passwörter stimmen nicht überein',loginPassSuccess:'✅ Passwort erfolgreich geändert',pcPassStrLabels:['','Schwach','Mittel','Gut','Sehr stark'],pinCorrectToast:'✅ Richtig — neuen PIN eingeben',pinWrongToast:'⚠️ Falscher PIN, erneut versuchen',pinReenterToast:'🔁 PIN zur Bestätigung erneut eingeben',pinSavedToast:'✅ PIN erfolgreich gespeichert',pinMismatchToast:'⚠️ PINs stimmen nicht überein',notifNoneToast:'🔔 Keine neuen Benachrichtigungen',notifOnToast:'🔔 Benachrichtigungen aktiviert',notifOffToast:'🔕 Benachrichtigungen deaktiviert',darkModeLabel:'Dunkelmodus',darkModeToast:'🌙 Dunkelmodus aktiviert',lightModeLabel:'Hellmodus',lightModeToast:'☀️ Hellmodus aktiviert',logoutToast:'👋 Erfolgreich abgemeldet',kycLabelCountryIssue:'Ausstellungsland',kycLabelDocType:'Dokumenttyp',dateLocale:'de-DE',wfTitle:'Futures-Wallet',wfBalanceLabel:'Gesamtguthaben',wfUnrealizedLabel:'Nicht realisierter Gesamt-PnL:',wfAvailMarginLabel:'Verfügbare Margin',wfPosMrgLabel:'Positions-Margin',wfOrdMrgLabel:'Auftrags-Margin',wfMrgRatioLabel:'Margin-Verhältnis',wfMaxLevLabel:'Max. Hebel',wfTodayPerfLabel:'Heutige Performance',wfTodayProfitLabel:'Heutiger Gewinn',wfTradesCountLabel:'Trades',wfTradesUnit:'Trades',wfWinRateLabel:'Gewinnrate',wfWinRateUnit:'der Trades',wfOpenPosLabel:'Offene Positionen',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Kaufen (Long)',wfEntryPriceLabel:'Einstiegspreis',wfCurPriceLabel:'Aktueller Preis',wfPnlLabel:'PnL',wfNoPosLabel:'Keine weiteren offenen Positionen',wfTotalProfitLabel:'Gesamtgewinn (Gesamt)',wfTotalTradesLabel:'Ausgeführte Trades gesamt',wfTotalTradesVal:'43 Trades',wfLiqLabel:'Gesch. Liquidationspreis',
-      wpTitle:'Perpetual-Wallet',wpBalanceLabel:'Gesamtguthaben',wpUnrealizedLabel:'Nicht realisierter PnL:',wpAvailMarginLabel:'Verfügbare Margin',wpPosMrgLabel:'Positions-Margin',wpTotalPosLabel:'Gesamtpositionswert',wpMrgRatioLabel:'Margin-Verhältnis',wpMaxLevLabel:'Max. Hebel',wpFundingRateTitle:'Aktueller Finanzierungssatz',wpEvery8h:'Alle 8h',wpOpenPosLabel:'Offene Perpetual-Positionen',wpNoPosMsg:'Keine offenen Perpetual-Positionen',wpNoPosHint:'Position im Perpetual-Tab öffnen',wpStatsLabel:'Wallet-Statistiken',wpTotalFundingLabel:'Gezahlte Finanzierungsgebühren',wpTotalProfitLabel:'Gesamtgewinn',wpTradesLabel:'Anzahl der Trades',wpAvgLevLabel:'Ø Hebel',wpRiskTitle:'Risikowarnung',wpRiskText:'Der Handel mit Perpetual-Kontrakten ist mit hohen Risiken durch den Hebel verbunden. Bitte verwalten Sie das Risiko sorgfältig und setzen Sie Stop-Loss-Orders.'},
+      wpTitle:'Perpetual-Wallet',wpBalanceLabel:'Gesamtguthaben',wpUnrealizedLabel:'Nicht realisierter PnL:',wpAvailMarginLabel:'Verfügbare Margin',wpPosMrgLabel:'Positions-Margin',wpTotalPosLabel:'Gesamtpositionswert',wpMrgRatioLabel:'Margin-Verhältnis',wpMaxLevLabel:'Max. Hebel',wpFundingRateTitle:'Aktueller Finanzierungssatz',wpEvery8h:'Alle 8h',wpOpenPosLabel:'Offene Perpetual-Positionen',wpNoPosMsg:'Keine offenen Perpetual-Positionen',wpNoPosHint:'Position im Perpetual-Tab öffnen',wpStatsLabel:'Wallet-Statistiken',wpTotalFundingLabel:'Gezahlte Finanzierungsgebühren',wpTotalProfitLabel:'Gesamtgewinn',wpTradesLabel:'Anzahl der Trades',wpAvgLevLabel:'Ø Hebel',wpRiskTitle:'Risikowarnung',wpRiskText:'Der Handel mit Perpetual-Kontrakten ist mit hohen Risiken durch den Hebel verbunden. Bitte verwalten Sie das Risiko sorgfältig und setzen Sie Stop-Loss-Orders.',kycBtnSubtitleApproved:'Identität verifiziert — unbegrenztes Auszahlungslimit',kycBtnSubtitleProcessing:'Ihre Dokumente werden geprüft...',kycBtnSubtitleNone:'Identität bestätigen, um alle Funktionen zu nutzen',kycBtnBadgeApproved:'Verifiziert ✓',kycBtnBadgeProcessing:'In Prüfung',kycBtnBadgeNone:'Nicht verifiziert',kycBtnProgressApproved:'Verifizierung abgeschlossen',kycBtnProgressProcessing:'Prüfung läuft',kycBtnProgressNone:'Bereit zum Start'},
     fr:{htmlLang:'fr',dir:'ltr',badge:'FR',
       navHome:'Accueil',navMarkets:'Marchés',navDerivatives:'Dérivés',navPerpetual:'Perpétuel',navAssets:'Actifs',
       qaWithdraw:'Retrait',qaDeposit:'Dépôt',qaExchange:'Échange',qaSync:'Sync.',
@@ -15175,7 +15694,7 @@ body.light-mode .nav-item.active::before {
       kycProcTitle:'Vérification en cours',kycProcInfo:'La vérification prend entre 4 et 10 minutes',kycProcDesc:'Notre équipe de vérification examine vos documents avec soin. Vous serez notifié dès la fin du processus.',
       kycProcStepsTitle:'Étapes de vérification',kycProcStep1Title:'Document reçu',kycProcStep1Status:'Terminé',kycProcStep2Title:'Examen des données',kycProcStep2Status:'En cours...',kycProcStep3Title:'Approbation finale',kycProcStep3Status:'En attente',
       kycApprovedTitle:'Identité vérifiée ✓',kycApprovedSub:'Votre compte est vérifié et toutes les fonctionnalités sont actives',kycOfficialDocTitle:"Document d'identité officiel",kycVerifiedBadge:'✓ Vérifié',kycBenefitsTitle:'Avantages du compte vérifié',
-      kycBenefit1:'Limite de retrait journalier illimitée',kycBenefit2:'Accès complet à toutes les paires de trading',kycBenefit3:"Trading de dérivés avec jusqu'à 125x de levier",kycBenefit4:'Support client VIP prioritaire',kycDateLabel:'Date de vérification',
+      kycBenefit1:'Limite de retrait journalier illimitée',kycBenefit2:'Accès complet à toutes les paires de trading',kycBenefit3:"Trading de dérivés avec jusqu'à 125x de levier",kycBenefit4:'Support client VIP prioritaire',kycDateLabel:'Date de vérification',kycGlobalSubtitle:'Système de vérification mondial unifié',kycCountryHint1:"Choisissez le pays d'émission de votre document",kycCountryHint2:'Les pays internationaux apparaissent en premier, puis les pays arabes',kycDocDLTitle:'Permis de conduire',kycDocDLSub:'Permis de conduire gouvernemental valide',kycDocSelfieTitle:"Vérification d'identité par selfie",kycDocSelfieSub:'Nouvelle méthode de vérification — sécurité renforcée',kycSelfieInstructions:'&#x1F4CC; Prenez une photo claire avec la caméra frontale<br>&#x2705; Assurez-vous que votre visage est entièrement visible<br>&#x1F4A1; Choisissez un endroit bien éclairé',kycReviewHint:'Vérifiez que toutes les données sont correctes',kycReviewSummaryHeader:'&#x1F4CB; Résumé de la demande de vérification',kycReviewSecurityNotes:'&#x1F512; Vos données sont protégées par chiffrement SSL 256 bits<br>&#x23F1;&#xFE0F; Durée de révision: 4-10 minutes<br>&#x2705; Toutes les fonctionnalités seront débloquées après vérification',
       helpScreenTitle:"Centre d'aide",helpSearchPlaceholder:'Rechercher des questions...',helpDirectTitle:'Support en direct',helpDirectSub:'Disponible 24h / 7j',helpContactBtn:'Nous contacter',
       loginPassScreenTitle:'Modifier le mot de passe',loginPassInfo:'🔒 Le mot de passe doit comporter au moins 8 caractères avec des chiffres et des lettres.',loginPassCurrentLabel:'Mot de passe actuel',loginPassNewLabel:'Nouveau mot de passe',loginPassConfLabel:'Confirmer le mot de passe',loginPassStrLabel:'Force du mot de passe',loginPassSaveBtn:'Enregistrer le mot de passe',
       payPassScreenTitle:'Mot de passe de paiement (PIN)',pinTitleSet:'Entrer le nouveau PIN',pinSubSet:'6 chiffres — utilisé pour les transferts et retraits',pinTitleOld:'Entrer le PIN actuel',pinSubOld:'Pour vérifier votre identité avant de changer le PIN',pinTitleConfirm:'Ré-entrer le PIN pour confirmer',pinSubConfirm:'Confirmer le nouveau PIN',
@@ -15206,7 +15725,7 @@ body.light-mode .nav-item.active::before {
       derrTitle:'Une erreur est survenue',derrSub:'Ce service est actuellement indisponible',
       assetRefreshToast:'🔄 Données actualisées',assetSwitchToast:'🔁 Type de compte changé',
       toast:'🌐 Langue changée en Français',loginPassOldEmpty:'⚠️ Entrez le mot de passe actuel',loginPassTooShort:'⚠️ Le mot de passe doit comporter au moins 8 caractères',loginPassMismatch:'⚠️ Les mots de passe ne correspondent pas',loginPassSuccess:'✅ Mot de passe modifié avec succès',pcPassStrLabels:['','Faible','Moyen','Bon','Très fort'],pinCorrectToast:'✅ Correct — entrez le nouveau PIN',pinWrongToast:'⚠️ PIN incorrect, réessayez',pinReenterToast:'🔁 Ré-entrez le PIN pour confirmer',pinSavedToast:'✅ PIN enregistré avec succès',pinMismatchToast:'⚠️ Les PIN ne correspondent pas',notifNoneToast:'🔔 Aucune nouvelle notification',notifOnToast:'🔔 Notifications activées',notifOffToast:'🔕 Notifications désactivées',darkModeLabel:'Mode sombre',darkModeToast:'🌙 Mode sombre activé',lightModeLabel:'Mode clair',lightModeToast:'☀️ Mode clair activé',logoutToast:'👋 Déconnexion réussie',kycLabelCountryIssue:"Pays d'émission",kycLabelDocType:'Type de document',dateLocale:'fr-FR',wfTitle:'Portefeuille Futures',wfBalanceLabel:'Solde total du portefeuille',wfUnrealizedLabel:'PnL non réalisé total :',wfAvailMarginLabel:'Marge disponible',wfPosMrgLabel:'Marge de position',wfOrdMrgLabel:'Marge de commande',wfMrgRatioLabel:'Ratio de marge',wfMaxLevLabel:'Levier max',wfTodayPerfLabel:'Performance du jour',wfTodayProfitLabel:'Profit du jour',wfTradesCountLabel:'Transactions',wfTradesUnit:'trades',wfWinRateLabel:'Taux de réussite',wfWinRateUnit:'des trades',wfOpenPosLabel:'Positions ouvertes',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Achat (Long)',wfEntryPriceLabel:"Prix d'entrée",wfCurPriceLabel:'Prix actuel',wfPnlLabel:'PnL',wfNoPosLabel:'Aucune autre position ouverte',wfTotalProfitLabel:'Profit total (tout le temps)',wfTotalTradesLabel:'Total des trades exécutés',wfTotalTradesVal:'43 trades',wfLiqLabel:'Prix de liquidation estimé',
-      wpTitle:'Portefeuille Perpétuel',wpBalanceLabel:'Solde total du portefeuille',wpUnrealizedLabel:'PnL non réalisé :',wpAvailMarginLabel:'Marge disponible',wpPosMrgLabel:'Marge de position',wpTotalPosLabel:'Valeur totale des positions',wpMrgRatioLabel:'Ratio de marge',wpMaxLevLabel:'Levier max',wpFundingRateTitle:'Taux de financement actuel',wpEvery8h:'Toutes les 8h',wpOpenPosLabel:'Positions perpétuelles ouvertes',wpNoPosMsg:'Aucune position perpétuelle ouverte',wpNoPosHint:'Ouvrez une position depuis l\'onglet Perpétuel',wpStatsLabel:'Statistiques du portefeuille',wpTotalFundingLabel:'Total des frais de financement',wpTotalProfitLabel:'Profit total',wpTradesLabel:'Nombre de trades',wpAvgLevLabel:'Levier moyen',wpRiskTitle:'Avertissement de risque',wpRiskText:'Le trading de contrats perpétuels comporte des risques élevés en raison du levier. Gérez le risque avec soin et définissez des ordres stop-loss.'},
+      wpTitle:'Portefeuille Perpétuel',wpBalanceLabel:'Solde total du portefeuille',wpUnrealizedLabel:'PnL non réalisé :',wpAvailMarginLabel:'Marge disponible',wpPosMrgLabel:'Marge de position',wpTotalPosLabel:'Valeur totale des positions',wpMrgRatioLabel:'Ratio de marge',wpMaxLevLabel:'Levier max',wpFundingRateTitle:'Taux de financement actuel',wpEvery8h:'Toutes les 8h',wpOpenPosLabel:'Positions perpétuelles ouvertes',wpNoPosMsg:'Aucune position perpétuelle ouverte',wpNoPosHint:'Ouvrez une position depuis l\'onglet Perpétuel',wpStatsLabel:'Statistiques du portefeuille',wpTotalFundingLabel:'Total des frais de financement',wpTotalProfitLabel:'Profit total',wpTradesLabel:'Nombre de trades',wpAvgLevLabel:'Levier moyen',wpRiskTitle:'Avertissement de risque',wpRiskText:'Le trading de contrats perpétuels comporte des risques élevés en raison du levier. Gérez le risque avec soin et définissez des ordres stop-loss.',kycBtnSubtitleApproved:'Identité vérifiée — limite de retrait illimitée',kycBtnSubtitleProcessing:'Vos documents sont en cours d\'examen...',kycBtnSubtitleNone:'Vérifiez votre identité pour accéder à toutes les fonctionnalités',kycBtnBadgeApproved:'Vérifié ✓',kycBtnBadgeProcessing:'En cours',kycBtnBadgeNone:'Non vérifié',kycBtnProgressApproved:'Vérification terminée',kycBtnProgressProcessing:'Examen en cours',kycBtnProgressNone:'Prêt à commencer'},
     sg:{htmlLang:'en-SG',dir:'ltr',badge:'SG',
       navHome:'Home',navMarkets:'Markets',navDerivatives:'Derivatives',navPerpetual:'Perpetual',navAssets:'Assets',
       qaWithdraw:'Withdraw',qaDeposit:'Top Up',qaExchange:'Swap Lah',qaSync:'Sync',
@@ -15278,7 +15797,7 @@ body.light-mode .nav-item.active::before {
       derrTitle:'Something went wrong lah',derrSub:'This service is temporarily unavailable',
       assetRefreshToast:'🔄 Data refreshed lah',assetSwitchToast:'🔁 Account type switched',
       toast:'🌐 Language changed to Singapore English',loginPassOldEmpty:'⚠️ Enter current password lah',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords no match lah',loginPassSuccess:'✅ Password changed successfully lah',pcPassStrLabels:['','Weak','OK Only','Good','Very Strong Lah'],pinCorrectToast:'✅ Correct lah — enter new PIN now',pinWrongToast:'⚠️ Wrong PIN lah, try again',pinReenterToast:'🔁 Re-enter PIN to confirm lah',pinSavedToast:'✅ PIN saved lah!',pinMismatchToast:'⚠️ PINs no match lah',notifNoneToast:'🔔 No new notifications lah',notifOnToast:'🔔 Notifications on lah',notifOffToast:'🔕 Notifications off lah',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode on lah',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode on lah',logoutToast:'👋 Logged out lah!',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-SG',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance lah",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions lah',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'43 trades',wfLiqLabel:'Est. Liquidation Price',
-      wpTitle:'Perpetual Wallet Lah',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate Lah',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions lah',wpNoPosHint:'Open a position from the Perpetual tab lah',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning Lah',wpRiskText:'Trading perpetual contracts is very risky one because of leverage. Please manage risk carefully and set stop-loss orders lah.'}
+      wpTitle:'Perpetual Wallet Lah',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate Lah',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions lah',wpNoPosHint:'Open a position from the Perpetual tab lah',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning Lah',wpRiskText:'Trading perpetual contracts is very risky one because of leverage. Please manage risk carefully and set stop-loss orders lah.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit lah!',kycBtnSubtitleProcessing:'Your documents being reviewed lah...',kycBtnSubtitleNone:'Verify your identity to unlock all features lah',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Not Verified',kycBtnProgressApproved:'Verification done lah',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start lah'}
   }; window._T=T;
   function st(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
   function si(id,html){var e=document.getElementById(id);if(e)e.innerHTML=html;}
@@ -15438,6 +15957,11 @@ body.light-mode .nav-item.active::before {
     st('kycProcStep1Title',t.kycProcStep1Title);st('kycProcStep1Status',t.kycProcStep1Status);st('kycProcStep2Title',t.kycProcStep2Title);st('kycProcStep2Status',t.kycProcStep2Status);st('kycProcStep3Title',t.kycProcStep3Title);st('kycProcStep3Status',t.kycProcStep3Status);
     st('kycApprovedTitle',t.kycApprovedTitle);st('kycApprovedSub',t.kycApprovedSub);st('kycOfficialDocTitle',t.kycOfficialDocTitle);st('kycVerifiedBadge',t.kycVerifiedBadge);
     st('kycBenefitsTitle',t.kycBenefitsTitle);st('kycBenefit1',t.kycBenefit1);st('kycBenefit2',t.kycBenefit2);st('kycBenefit3',t.kycBenefit3);st('kycBenefit4',t.kycBenefit4);st('kycDateLabel',t.kycDateLabel);
+    st('kycGlobalSubtitle',t.kycGlobalSubtitle);st('kycCountryHint1',t.kycCountryHint1);st('kycCountryHint2',t.kycCountryHint2);
+    st('kycDocDLTitle',t.kycDocDLTitle);st('kycDocDLSub',t.kycDocDLSub);
+    st('kycDocSelfieTitle',t.kycDocSelfieTitle);st('kycDocSelfieSub',t.kycDocSelfieSub);
+    si('kycSelfieInstructions',t.kycSelfieInstructions);
+    st('kycReviewHint',t.kycReviewHint);si('kycReviewSummaryHeader',t.kycReviewSummaryHeader);si('kycReviewSecurityNotes',t.kycReviewSecurityNotes);
     var _kycSc=document.getElementById('pcKYCScreen');if(_kycSc){_kycSc.dir=t.dir;_kycSc.style.direction=t.dir;}
     var _pcSc=document.getElementById('personalCenterScreen');if(_pcSc){_pcSc.dir=t.dir;_pcSc.style.direction=t.dir;}
     if(typeof kycUpdateMainBtn==='function') kycUpdateMainBtn();
@@ -16416,4 +16940,172 @@ body.light-mode #tabSync .dih-subtitle {
     };
 })();
 </script>
+
+<script id="svg-rings-js">
+(function(){
+'use strict';
+
+// ── تعريف الحلقات لكل زر ─────────────────────────────────────────────
+// r: نصف القطر | w: عرض الخط | dash: طول الشريط | gap: الفراغ
+// dur: مدة الدورة (ثانية) | dir: اتجاه | opacity: شفافية
+var RINGS = [
+  { r:30, w:2.2,  dash:44,  gap:146, dur:1.4,  dir:1,  opacity:1    },
+  { r:38, w:1.4,  dash:28,  gap:210, dur:2.2,  dir:-1, opacity:.75  },
+  { r:46, w:1.0,  dash:16,  gap:273, dur:3.4,  dir:1,  opacity:.50  }
+];
+
+// SVG Neon filter definition
+var FILTER_ID = 'redNeonFilter';
+var FILTER_SVG = [
+  '<defs>',
+  '<filter id="'+FILTER_ID+'" x="-60%" y="-60%" width="220%" height="220%">',
+  '  <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="blur1"/>',
+  '  <feGaussianBlur in="SourceGraphic" stdDeviation="5.5" result="blur2"/>',
+  '  <feGaussianBlur in="SourceGraphic" stdDeviation="11"  result="blur3"/>',
+  '  <feMerge>',
+  '    <feMergeNode in="blur3"/>',
+  '    <feMergeNode in="blur2"/>',
+  '    <feMergeNode in="blur1"/>',
+  '    <feMergeNode in="SourceGraphic"/>',
+  '  </feMerge>',
+  '</filter>',
+  '</defs>'
+].join('');
+
+// الألوان
+var C_HEAD  = '#ffffff';   // رأس الشريط (أبيض ساخن)
+var C_MID   = '#ff2020';   // منتصف (أحمر فاقع)
+var C_TAIL  = '#660000';   // ذيل (أحمر داكن)
+
+function ns(tag){
+  return document.createElementNS('http://www.w3.org/2000/svg', tag);
+}
+
+function buildSVG(size){
+  var svg = ns('svg');
+  var s   = size + 'px';
+  svg.setAttribute('width',  s);
+  svg.setAttribute('height', s);
+  svg.setAttribute('viewBox', '0 0 '+size+' '+size);
+  svg.setAttribute('class',  'pro-svg-orbit');
+  svg.innerHTML = FILTER_SVG;
+  return svg;
+}
+
+// يبني حلقة واحدة داخل SVG
+function addRing(svg, cx, cy, ring, idx){
+  var circ   = 2 * Math.PI * ring.r;
+  var dashArr = ring.dash + ' ' + ring.gap;
+
+  // ── gradient stroke: رأس أبيض → أحمر → داكن ──────────────────
+  var gradId = 'rg'+idx+'_'+Math.random().toString(36).slice(2,6);
+  var defs   = svg.querySelector('defs') || svg.insertBefore(ns('defs'), svg.firstChild);
+  var lg     = ns('linearGradient');
+  lg.id = gradId;
+  lg.setAttribute('gradientUnits','userSpaceOnUse');
+  // ضبط إحداثيات الـ gradient على القوس (تقريب أفقي)
+  lg.setAttribute('x1', cx - ring.r); lg.setAttribute('y1', cy);
+  lg.setAttribute('x2', cx + ring.r); lg.setAttribute('y2', cy);
+  var stops = [
+    {off:'0%',   color:C_HEAD, op:'1'},
+    {off:'18%',  color:C_MID,  op:'1'},
+    {off:'55%',  color:C_MID,  op:'.7'},
+    {off:'85%',  color:C_TAIL, op:'.3'},
+    {off:'100%', color:C_TAIL, op:'0'}
+  ];
+  stops.forEach(function(s){
+    var stop = ns('stop');
+    stop.setAttribute('offset', s.off);
+    stop.setAttribute('stop-color', s.color);
+    stop.setAttribute('stop-opacity', s.op);
+    lg.appendChild(stop);
+  });
+  defs.appendChild(lg);
+
+  // ── الدائرة الرئيسية ─────────────────────────────────────────
+  var c = ns('circle');
+  c.setAttribute('cx', cx);
+  c.setAttribute('cy', cy);
+  c.setAttribute('r',  ring.r);
+  c.setAttribute('fill', 'none');
+  c.setAttribute('stroke', 'url(#'+gradId+')');
+  c.setAttribute('stroke-width', ring.w);
+  c.setAttribute('stroke-dasharray', dashArr);
+  c.setAttribute('stroke-dashoffset', '0');
+  c.setAttribute('stroke-linecap', 'round');
+  c.setAttribute('filter', 'url(#'+FILTER_ID+')');
+  c.style.opacity = ring.opacity;
+  c.style.transformOrigin = cx+'px '+cy+'px';
+  c.style.willChange = 'transform';
+  svg.appendChild(c);
+
+  // ── نقطة الرأس المتوهجة (تدور باستقلالية) ───────────────────
+  var dot = ns('circle');
+  dot.setAttribute('cx', cx + ring.r);
+  dot.setAttribute('cy', cy);
+  dot.setAttribute('r',  ring.w * 1.6);
+  dot.setAttribute('fill', C_HEAD);
+  dot.setAttribute('filter', 'url(#'+FILTER_ID+')');
+  dot.style.opacity = ring.opacity;
+  dot.style.transformOrigin = cx+'px '+cy+'px';
+  dot.style.willChange = 'transform';
+  svg.appendChild(dot);
+
+  // ── تشغيل الأنيميشن بـ Web Animations API ────────────────────
+  var deg = ring.dir === 1 ? '360deg' : '-360deg';
+  var opts = { duration: ring.dur * 1000, iterations: Infinity, easing: 'linear' };
+
+  c.animate([
+    { transform: 'rotate(0deg)'  },
+    { transform: 'rotate('+deg+')' }
+  ], opts);
+
+  dot.animate([
+    { transform: 'rotate(0deg)'  },
+    { transform: 'rotate('+deg+')' }
+  ], opts);
+}
+
+// ── بناء وحقن SVG لزر واحد ───────────────────────────────────────────
+function injectRings(btn){
+  var wrap = btn.parentElement;
+  if(!wrap) return;
+
+  // احذف أي SVG سابق
+  var old = wrap.querySelector('.pro-svg-orbit');
+  if(old) old.remove();
+
+  var SIZE = 100;  // حجم SVG (px) — أكبر من الزر لإعطاء فراغ للحلقات
+  var CX   = SIZE / 2;
+  var CY   = SIZE / 2;
+
+  var svg = buildSVG(SIZE);
+  RINGS.forEach(function(ring, i){ addRing(svg, CX, CY, ring, i); });
+
+  // أدخل SVG بعد الزر مباشرة داخل الـ wrap
+  wrap.style.overflow = 'visible';
+  wrap.style.position = 'relative';
+  wrap.insertBefore(svg, wrap.firstChild);
+}
+
+// ── تشغيل على كلا الزرين ──────────────────────────────────────────────
+function init(){
+  document.querySelectorAll('.hh-settings-btn, .hh-globe-btn').forEach(injectRings);
+}
+
+// تأكد من التشغيل بعد اكتمال الـ DOM
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
+
+// إعادة الحقن عند تغيير الـ tab (يُحدّث الحالة البصرية)
+document.addEventListener('visibilitychange', function(){
+  if(!document.hidden) init();
+});
+
+})();
+</script>
+
 </body></html>

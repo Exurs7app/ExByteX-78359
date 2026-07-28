@@ -1523,8 +1523,10 @@
             padding: 16px;
             padding-bottom: 90px;
             padding-bottom: calc(90px + env(safe-area-inset-bottom));
-            scroll-behavior: smooth;
+            scroll-behavior: auto;
             -webkit-overflow-scrolling: touch;
+            overscroll-behavior-y: contain;
+            touch-action: pan-y;
         }
         .main-content::-webkit-scrollbar {
             width: 4px;
@@ -17107,5 +17109,316 @@ document.addEventListener('visibilitychange', function(){
 
 })();
 </script>
+
+<!-- ===== إصلاح أداء التمرير الشامل ===== -->
+<style>
+/* ── 1. تعطيل smooth scroll بشكل قاطع ── */
+#mainContent, .main-content { scroll-behavior: auto !important; }
+
+/* ── 2. إيقاف جميع الـ CSS animations أثناء التمرير
+        (باستثناء الكرة الأرضية وزر الإعدادات) ── */
+body.x-scrolling *:not(.hh-globe-emoji):not(.hh-globe-btn):not(.hh-settings-btn) {
+  animation-play-state: paused !important;
+}
+
+/* ── 3. استثناء: إبقاء المحتوى ظاهراً (لا نخفيه) ── */
+body.x-scrolling .tab-panel.active { display: block !important; }
+
+/* ── 4. تحسين طبقة التمرير نفسها ── */
+#mainContent {
+  will-change: scroll-position;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* ── 5. تقليل عدد GPU layers الزائدة (will-change فقط على العناصر المتحركة فعلاً) ── */
+.hh-settings-glow, .hh-globe-glow,
+.hh-globe-glow::before, .hh-globe-glow::after,
+.hh-settings-glow::before, .hh-settings-glow::after {
+  will-change: auto !important;
+}
+</style>
+
+<script>
+/* =========================================================
+   إصلاح أداء التمرير الشامل — يعمل بدون تعديل أي دالة
+   ========================================================= */
+(function () {
+  'use strict';
+
+  var mc = document.getElementById('mainContent');
+  if (!mc) return;
+
+  /* --- متغيرات الحالة --- */
+  var _scrolling   = false;
+  var _endTimer    = null;
+  var _STOP_DELAY  = 150; /* ms بعد توقف الأصبع */
+
+  /* جمع معرّفات canvas RAF لإيقافها أثناء التمرير */
+  var _pausedRAFs = [];
+
+  /* ── عناصر الكرة الأرضية التي يجب أن تستمر بالدوران دائماً ── */
+  var _GLOBE_SELECTORS = [
+    '.hh-globe-btn',
+    '.hh-globe-emoji',
+    '.hh-globe-orbit-ring',
+    '.hh-globe-orbit-ring-1',
+    '.hh-globe-orbit-ring-2',
+    '.hh-globe-orb',
+    '.hh-globe-orb-1',
+    '.hh-globe-orb-2',
+    '.hh-globe-orb-3',
+    '.hh-globe-glow'
+  ].join(',');
+
+  function _forceGlobeRunning() {
+    try {
+      document.querySelectorAll(_GLOBE_SELECTORS).forEach(function(el) {
+        el.style.setProperty('animation-play-state', 'running', 'important');
+      });
+    } catch(e) {}
+  }
+
+  function _clearGlobeRunning() {
+    try {
+      document.querySelectorAll(_GLOBE_SELECTORS).forEach(function(el) {
+        el.style.removeProperty('animation-play-state');
+      });
+    } catch(e) {}
+  }
+
+  /* ── وظيفة بدء التمرير ── */
+  function startScroll() {
+    if (!_scrolling) {
+      _scrolling = true;
+      document.body.classList.add('x-scrolling');
+
+      /* إيقاف حلقات canvas RAF المكشوفة عالمياً */
+      _pauseCanvasLoops(true);
+    }
+    /* إبقاء الكرة الأرضية تدور رغم توقف باقي الأنيميشن */
+    _forceGlobeRunning();
+    clearTimeout(_endTimer);
+    _endTimer = setTimeout(stopScroll, _STOP_DELAY);
+  }
+
+  /* ── وظيفة نهاية التمرير ── */
+  function stopScroll() {
+    _scrolling = false;
+    document.body.classList.remove('x-scrolling');
+    _clearGlobeRunning();
+    _pauseCanvasLoops(false);
+    _endTimer = null;
+  }
+
+  /* ── تعليق/استئناف حلقات canvas ──
+     نلتقط المعرّفات الحالية من requestAnimationFrame
+     ونُوقفها لفترة التمرير فقط                       */
+  var _rafPatch = false;
+  var _capturedRAFIds = [];
+  var _rafCallbacks   = {};   /* id → callback */
+
+  function _patchRAF() {
+    if (_rafPatch) return;
+    _rafPatch = true;
+    var _origRAF = window.requestAnimationFrame;
+    var _origCAF = window.cancelAnimationFrame;
+
+    window.requestAnimationFrame = function (cb) {
+      var id = _origRAF.call(window, function (ts) {
+        /* إذا كان التمرير نشطاً وهذا callback من canvas (ليس من الـ scroll نفسه) */
+        if (_scrolling && _rafCallbacks[id]) {
+          /* أعد الجدولة بدلاً من التنفيذ الفوري */
+          var rescheduled = _origRAF.call(window, function (ts2) {
+            delete _rafCallbacks[rescheduled];
+            cb(ts2);
+          });
+          _rafCallbacks[rescheduled] = cb;
+          return;
+        }
+        delete _rafCallbacks[id];
+        cb(ts);
+      });
+      _rafCallbacks[id] = cb;
+      return id;
+    };
+
+    window.cancelAnimationFrame = function (id) {
+      delete _rafCallbacks[id];
+      return _origCAF.call(window, id);
+    };
+  }
+
+  function _pauseCanvasLoops(pause) {
+    /* نهج بسيط: نُوقف جميع canvas مرئية بـ CSS display:none مؤقتاً
+       NO — هذا يغيّر المظهر. بدلاً من ذلك نعتمد على CSS animation-play-state */
+    /* لا شيء إضافي — CSS body.x-scrolling * يكفي */
+  }
+
+  /* ── تطبيق اعتراض RAF للـ canvas ── */
+  _patchRAF();
+
+  /* ── ربط حدث التمرير ── */
+  mc.addEventListener('scroll', startScroll, { passive: true });
+
+  /* ── تأجيل كتابات innerHTML الثقيلة أثناء التمرير ──
+     نستهدف فقط العناصر التي تُكتب بشكل دوري في tabHome  */
+  var _ihDesc = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
+  if (_ihDesc && _ihDesc.set) {
+    var _DEFERRED_IDS = { hxPairs: 1, marketsList: 1 };
+    Object.defineProperty(Element.prototype, 'innerHTML', {
+      get: _ihDesc.get,
+      set: function (val) {
+        var self = this;
+        if (_scrolling && _DEFERRED_IDS[self.id]) {
+          clearTimeout(self._ihTimer);
+          var savedVal = val;
+          self._ihTimer = setTimeout(function () {
+            _ihDesc.set.call(self, savedVal);
+          }, _STOP_DELAY + 60);
+          return;
+        }
+        _ihDesc.set.call(self, val);
+      },
+      configurable: true
+    });
+  }
+
+})();
+</script>
+
+<!-- ===== إصلاح ثقل التمرير — النسخة الحاسمة ===== -->
+<style>
+/*
+  المشكلة الحقيقية:
+  1. proShimmerSweep يحرّك خاصية "left" → يسبب layout reflow في كل إطار
+  2. proColorShift يحرّك "filter" → يسبب CPU repaint في كل إطار
+  الحل: إعادة تعريف هذه الـ keyframes باستخدام transform + opacity فقط (GPU)
+*/
+
+/* ── إعادة تعريف shimmer: من left إلى transform ── */
+/* left = -80% ثابت، والحركة بـ transform فقط */
+.hh-settings-btn::before,
+.hh-globe-btn::before {
+  left: -80% !important;
+  will-change: transform, opacity;
+}
+@keyframes proShimmerSweep {
+  0%   { transform: translateX(0%);   opacity: 0; }
+  12%  { opacity: .9; }
+  58%  { transform: translateX(390%); opacity: .5; }
+  100% { transform: translateX(390%); opacity: 0; }
+}
+@keyframes btnShimmer {
+  0%   { transform: translateX(0%);   opacity: 0; }
+  15%  { opacity: 1; }
+  55%  { transform: translateX(390%); opacity: .6; }
+  100% { transform: translateX(390%); opacity: 0; }
+}
+@keyframes globeBtnShimmer {
+  0%   { transform: translateX(0%);   opacity: 0; }
+  15%  { opacity: 1; }
+  55%  { transform: translateX(390%); opacity: .6; }
+  100% { transform: translateX(390%); opacity: 0; }
+}
+
+/* ── إعادة تعريف proColorShift: من filter إلى opacity ── */
+@keyframes proColorShift {
+  0%, 100% { opacity: 1; }
+  33%       { opacity: .93; }
+  66%       { opacity: .97; }
+}
+
+/* ── GPU layer لكل عنصر متحرك ── */
+.hh-settings-btn,
+.hh-globe-btn {
+  will-change: transform !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+}
+.hh-settings-btn svg,
+.hh-globe-emoji {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+.hh-settings-glow,
+.hh-globe-glow {
+  will-change: opacity, transform !important;
+  transform: translateZ(0) !important;
+}
+.hh-orbit-ring-1, .hh-orbit-ring-2,
+.hh-globe-orbit-ring-1, .hh-globe-orbit-ring-2 {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.hh-orb-1, .hh-orb-2, .hh-orb-3,
+.hh-globe-orb-1, .hh-globe-orb-2, .hh-globe-orb-3 {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.hh-orbit-ring-1::after,
+.hh-globe-orbit-ring-1::after,
+.hh-orb-1::after,
+.hh-globe-orb-1::after {
+  will-change: opacity, transform;
+}
+
+/* ── حذف كامل التوهج والحلقات من زرَّي الكرة والإعدادات ── */
+.hh-globe-glow,
+.hh-settings-glow {
+  display: none !important;
+}
+.pro-svg-orbit {
+  display: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   دوران سريع ذكي احترافي — بدون توهج
+   ══════════════════════════════════════════════════════════ */
+
+/* ── الكرة الأرضية: دوران مستمر سلس كالكرة الحقيقية ── */
+.hh-globe-emoji {
+  filter: none !important;
+  animation: globeSpinFast 1.8s linear infinite !important;
+  display: block;
+  will-change: transform;
+}
+@keyframes globeSpinFast {
+  0%   { transform: rotate(0deg)   scale(1);    }
+  48%  { transform: rotate(172deg) scale(1.05); }
+  50%  { transform: rotate(180deg) scale(1.05); }
+  98%  { transform: rotate(352deg) scale(1);    }
+  100% { transform: rotate(360deg) scale(1);    }
+}
+
+/* ── ترس الإعدادات: دوران مستمر بتسارع ذكي ── */
+.hh-settings-btn svg {
+  filter: none !important;
+  animation: gearSpinPro 1.4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite !important;
+  transform-origin: center center;
+  will-change: transform;
+}
+@keyframes gearSpinPro {
+  0%   { transform: rotate(0deg); }
+  35%  { transform: rotate(155deg) scale(1.06); }
+  50%  { transform: rotate(180deg) scale(1);    }
+  85%  { transform: rotate(335deg) scale(1.06); }
+  100% { transform: rotate(360deg) scale(1);    }
+}
+
+/* ── إزالة box-shadow من الزرّين (بدون توهج نهائياً) ── */
+.hh-settings-btn,
+.hh-globe-btn {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.45) !important;
+  animation: none !important;
+}
+.hh-settings-btn::before,
+.hh-globe-btn::before {
+  animation: none !important;
+  opacity: 0 !important;
+}
+</style>
 
 </body></html>

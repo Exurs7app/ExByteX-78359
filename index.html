@@ -180,6 +180,18 @@
           body.light-mode .hx-nav { background: #ccd8e4 !important; border-top: 1px solid #7a96b0 !important; }
           body.light-mode .deriv-price-labels { background: rgba(248,250,252,0.94) !important; }
           body.light-mode .announce-bar { background: rgba(13,158,112,0.08) !important; border-color: rgba(13,158,112,0.25) !important; }
+          /* ---- عناصر العقود المشتقة الجديدة (light) ---- */
+          body.light-mode .deriv-indicator-bar { background: #e8eff8 !important; border-bottom-color: #c8d8e8 !important; }
+          body.light-mode .deriv-ind-btn { background: rgba(255,255,255,0.85) !important; border-color: #b0c4d8 !important; color: #64748b !important; }
+          body.light-mode .deriv-ind-btn.active { background: rgba(16,185,129,0.1) !important; color: #059669 !important; border-color: rgba(16,185,129,0.4) !important; }
+          body.light-mode .deriv-ind-price-live { color: #0f172a !important; }
+          body.light-mode .deriv-24h-row { background: #e8eff8 !important; border-bottom-color: #c8d8e8 !important; }
+          body.light-mode .deriv-24h-lbl { color: #94a3b8 !important; }
+          body.light-mode .deriv-24h-val { color: #334155 !important; }
+          body.light-mode .deriv-trend-bar-wrap { background: #f0f4f8 !important; }
+          body.light-mode .deriv-rsi-area { background: #f0f4f8 !important; border-top-color: #c8d8e8 !important; }
+          body.light-mode .deriv-rsi-header { color: #94a3b8 !important; }
+          body.light-mode .deriv-ma-sep { color: rgba(148,163,184,0.5) !important; }
             /* ---- toast (light) ---- */
         body.light-mode .toast:not(.success):not(.error):not(.install-toast) {
             background: #1e293b;
@@ -564,6 +576,406 @@
         #walletFuturesScreen,
         #walletPerpetualScreen {
             padding-bottom: calc(50px + env(safe-area-inset-bottom)) !important;
+        }
+
+        /* ضغط أحجام شاشة محفظة العقود الدائمة */
+        #walletPerpetualScreen > div:first-child {
+            padding: 10px 14px !important;
+        }
+        #walletPerpetualScreen > div:first-child svg {
+            width: 20px !important; height: 20px !important;
+        }
+        #walletPerpetualScreen #wpTitle {
+            font-size: 14px !important;
+        }
+        /* بطاقة الرصيد */
+        #walletPerpetualScreen > div:nth-child(2) {
+            margin: 10px 12px !important;
+            padding: 14px 14px !important;
+            border-radius: 12px !important;
+        }
+        #walletPerpetualScreen > div:nth-child(2) > div:nth-child(3) {
+            font-size: 22px !important;
+            margin-bottom: 2px !important;
+        }
+        #walletPerpetualScreen > div:nth-child(2) > div:nth-child(3) span {
+            font-size: 12px !important;
+        }
+        #walletPerpetualScreen #wpBalanceLabel {
+            font-size: 11px !important;
+            margin-bottom: 3px !important;
+        }
+        #walletPerpetualScreen #wpUnrealizedLabel {
+            font-size: 10px !important;
+        }
+        /* إحصائيات الهامش */
+        #walletPerpetualScreen > div:nth-child(3) {
+            margin: 0 12px 8px !important;
+            border-radius: 10px !important;
+        }
+        #walletPerpetualScreen > div:nth-child(3) div[style*="padding:12px 16px"] {
+            padding: 8px 12px !important;
+        }
+        #walletPerpetualScreen #wpAvailMarginLabel,
+        #walletPerpetualScreen #wpPosMrgLabel,
+        #walletPerpetualScreen #wpTotalPosLabel,
+        #walletPerpetualScreen #wpMrgRatioLabel,
+        #walletPerpetualScreen #wpMaxLevLabel {
+            font-size: 10px !important;
+            margin-bottom: 1px !important;
+        }
+        /* تصغير القيم العامة */
+        #walletPerpetualScreen div[style*="font-size:16px;font-weight:700"] {
+            font-size: 13px !important;
+        }
+        #walletPerpetualScreen div[style*="font-size:14px;font-weight:700"] {
+            font-size: 12px !important;
+        }
+        /* باقي الأقسام */
+        #walletPerpetualScreen > div:nth-child(4),
+        #walletPerpetualScreen > div:nth-child(5),
+        #walletPerpetualScreen > div:nth-child(6),
+        #walletPerpetualScreen > div:nth-child(7) {
+            margin-left: 12px !important;
+            margin-right: 12px !important;
+        }
+
+        /* === تصغير شامل إضافي — محفظة العقود الدائمة === */
+        /* بطاقة الرصيد: تقليل الـ padding والأحجام */
+        #walletPerpetualScreen > div:nth-child(2) {
+            padding: 10px 12px !important;
+            margin: 6px 12px !important;
+        }
+        /* رقم الرصيد الكبير */
+        #walletPerpetualScreen div[style*="font-size:28px;font-weight:800"] {
+            font-size: 16px !important;
+            margin-bottom: 2px !important;
+        }
+        #walletPerpetualScreen div[style*="font-size:28px;font-weight:800"] span {
+            font-size: 10px !important;
+        }
+        /* سطر PnL */
+        #walletPerpetualScreen div[style*="gap:8px;margin-top:8px"] {
+            margin-top: 4px !important;
+            gap: 5px !important;
+        }
+        #walletPerpetualScreen div[style*="gap:8px;margin-top:8px"] span[style*="font-size:13px"] {
+            font-size: 11px !important;
+        }
+        /* إحصائيات الهامش */
+        #walletPerpetualScreen > div:nth-child(3) {
+            margin: 0 12px 6px !important;
+        }
+        /* معدل التمويل — القسم كاملاً */
+        #walletPerpetualScreen > div:nth-child(4) {
+            padding: 8px 12px !important;
+            margin-bottom: 6px !important;
+            border-radius: 10px !important;
+        }
+        #walletPerpetualScreen #wpFundingRateTitle {
+            font-size: 11px !important;
+            margin-bottom: 6px !important;
+        }
+        #walletPerpetualScreen div[style*="font-size:15px;font-weight:800;color:#a78bfa"] {
+            font-size: 11px !important;
+        }
+        #walletPerpetualScreen div[style*="padding:10px 12px;text-align:center"] {
+            padding: 5px 6px !important;
+            border-radius: 6px !important;
+        }
+        #walletPerpetualScreen div[style*="font-size:11px;color:var(--text-secondary"] {
+            font-size: 9px !important;
+            margin-bottom: 2px !important;
+        }
+        #walletPerpetualScreen div[id^="wpEvery8h"] {
+            font-size: 8px !important;
+            margin-top: 1px !important;
+        }
+        /* المراكز المفتوحة */
+        #walletPerpetualScreen > div:nth-child(5) {
+            margin-bottom: 6px !important;
+        }
+        #walletPerpetualScreen #wpOpenPosLabel {
+            font-size: 11px !important;
+            margin-bottom: 6px !important;
+        }
+        #walletPerpetualScreen > div:nth-child(5) > div:last-child {
+            padding: 18px 12px !important;
+            border-radius: 10px !important;
+        }
+        #walletPerpetualScreen #wpNoPosMsg { font-size: 11px !important; }
+        #walletPerpetualScreen #wpNoPosHint { font-size: 10px !important; }
+        /* إحصائيات المحفظة */
+        #walletPerpetualScreen > div:nth-child(6) {
+            padding: 8px 12px !important;
+            margin-bottom: 6px !important;
+            border-radius: 10px !important;
+        }
+        #walletPerpetualScreen #wpStatsLabel {
+            font-size: 11px !important;
+            margin-bottom: 6px !important;
+        }
+        #walletPerpetualScreen > div:nth-child(6) > div:last-child {
+            gap: 5px !important;
+        }
+        #walletPerpetualScreen div[style*="rgba(124,58,237,0.08)"] {
+            padding: 5px 8px !important;
+            border-radius: 7px !important;
+        }
+        /* تحذير المخاطر */
+        #walletPerpetualScreen > div:nth-child(7) {
+            padding: 8px 10px !important;
+            margin-bottom: 16px !important;
+            border-radius: 10px !important;
+            gap: 7px !important;
+        }
+        #walletPerpetualScreen > div:nth-child(7) > svg {
+            width: 15px !important; height: 15px !important;
+        }
+        #walletPerpetualScreen #wpRiskTitle {
+            font-size: 10px !important;
+            margin-bottom: 2px !important;
+        }
+        #walletPerpetualScreen #wpRiskText {
+            font-size: 9px !important;
+            line-height: 1.4 !important;
+        }
+
+        /* === تصغير شامل — محفظة العقود الآجلة === */
+        /* الهيدر */
+        #walletFuturesScreen > div:first-child {
+            padding: 10px 14px !important;
+        }
+        #walletFuturesScreen > div:first-child svg {
+            width: 20px !important; height: 20px !important;
+        }
+        #walletFuturesScreen #wfTitle {
+            font-size: 14px !important;
+        }
+        /* بطاقة الرصيد */
+        #walletFuturesScreen > div:nth-child(2) {
+            margin: 6px 12px !important;
+            padding: 10px 12px 14px !important;
+            border-radius: 12px !important;
+        }
+        #walletFuturesScreen #wfBalanceLabel {
+            font-size: 11px !important;
+            margin-bottom: 4px !important;
+        }
+        #walletFuturesScreen div[style*="font-size:28px;font-weight:800"] {
+            font-size: 16px !important;
+            margin-bottom: 2px !important;
+        }
+        #walletFuturesScreen div[style*="font-size:28px;font-weight:800"] span {
+            font-size: 10px !important;
+        }
+        #walletFuturesScreen div[style*="gap:8px;margin-top:10px"] {
+            margin-top: 4px !important;
+            gap: 5px !important;
+        }
+        #walletFuturesScreen #wfUnrealizedLabel {
+            font-size: 10px !important;
+        }
+        #walletFuturesScreen div[style*="gap:8px;margin-top:10px"] span[style*="font-size:13px"] {
+            font-size: 11px !important;
+        }
+        /* إحصائيات الهامش */
+        #walletFuturesScreen > div:nth-child(3) {
+            margin: 0 12px 6px !important;
+            border-radius: 10px !important;
+        }
+        #walletFuturesScreen > div:nth-child(3) div[style*="padding:12px 16px"] {
+            padding: 7px 10px !important;
+        }
+        #walletFuturesScreen #wfAvailMarginLabel,
+        #walletFuturesScreen #wfPosMrgLabel,
+        #walletFuturesScreen #wfOrdMrgLabel,
+        #walletFuturesScreen #wfMrgRatioLabel,
+        #walletFuturesScreen #wfMaxLevLabel {
+            font-size: 10px !important;
+            margin-bottom: 1px !important;
+        }
+        #walletFuturesScreen div[style*="font-size:16px;font-weight:700"] {
+            font-size: 13px !important;
+        }
+        #walletFuturesScreen div[style*="font-size:14px;font-weight:700"] {
+            font-size: 12px !important;
+        }
+        /* بطاقة أداء اليوم */
+        #walletFuturesScreen > div:nth-child(4) {
+            margin: 0 12px 6px !important;
+            padding: 8px 12px !important;
+            border-radius: 10px !important;
+        }
+        #walletFuturesScreen #wfTodayPerfLabel {
+            font-size: 11px !important;
+            margin-bottom: 6px !important;
+        }
+        #walletFuturesScreen > div:nth-child(4) > div:last-child {
+            gap: 5px !important;
+        }
+        #walletFuturesScreen div[style*="padding:10px 12px;text-align:center"] {
+            padding: 5px 6px !important;
+            border-radius: 7px !important;
+        }
+        #walletFuturesScreen div[style*="font-size:16px;font-weight:800"] {
+            font-size: 12px !important;
+        }
+        #walletFuturesScreen #wfTodayProfitLabel,
+        #walletFuturesScreen #wfTradesCountLabel,
+        #walletFuturesScreen #wfWinRateLabel {
+            font-size: 9px !important;
+            margin-bottom: 2px !important;
+        }
+        #walletFuturesScreen #wfTradesUnit,
+        #walletFuturesScreen > div:nth-child(4) div[style*="font-size:10px"] {
+            font-size: 8px !important;
+            margin-top: 1px !important;
+        }
+        /* المراكز المفتوحة */
+        #walletFuturesScreen > div:nth-child(5) {
+            margin: 0 12px 6px !important;
+        }
+        #walletFuturesScreen #wfOpenPosLabel {
+            font-size: 11px !important;
+            margin-bottom: 6px !important;
+        }
+        #walletFuturesScreen > div:nth-child(5) > div {
+            padding: 18px 12px !important;
+            border-radius: 10px !important;
+        }
+        #walletFuturesScreen #wfNoPosLabel {
+            font-size: 11px !important;
+        }
+        /* إحصائيات إضافية */
+        #walletFuturesScreen > div:nth-child(6) {
+            margin: 0 12px 16px !important;
+            border-radius: 10px !important;
+        }
+        #walletFuturesScreen > div:nth-child(6) div[style*="padding:12px 16px"] {
+            padding: 7px 10px !important;
+        }
+        #walletFuturesScreen #wfTotalProfitLabel,
+        #walletFuturesScreen #wfTotalTradesLabel,
+        #walletFuturesScreen #wfLiqLabel {
+            font-size: 11px !important;
+        }
+        #walletFuturesScreen > div:nth-child(6) span[style*="font-size:13px;font-weight:700"],
+        #walletFuturesScreen > div:nth-child(6) span[style*="font-size:13px"] {
+            font-size: 11px !important;
+        }
+        #walletFuturesScreen #wfTotalTradesVal {
+            font-size: 11px !important;
+        }
+
+        /* === تصغير شامل — محفظة العملة === */
+        /* الهيدر */
+        #walletCurrencyScreen > div:first-child {
+            padding: 10px 14px !important;
+        }
+        #walletCurrencyScreen > div:first-child svg {
+            width: 20px !important; height: 20px !important;
+        }
+        #walletCurrencyScreen #wcTitle {
+            font-size: 14px !important;
+        }
+        /* بطاقة الرصيد */
+        #walletCurrencyScreen > div:nth-child(2) {
+            margin: 6px 12px !important;
+            padding: 10px 12px 12px !important;
+            border-radius: 12px !important;
+        }
+        #walletCurrencyScreen #wcBalanceLabel {
+            font-size: 11px !important;
+            margin-bottom: 3px !important;
+        }
+        #walletCurrencyScreen div[style*="font-size:28px;font-weight:800"] {
+            font-size: 16px !important;
+            margin-bottom: 2px !important;
+        }
+        #walletCurrencyScreen div[style*="font-size:28px;font-weight:800"] span {
+            font-size: 10px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(2) > div[style*="font-size:12px;color:rgba(255,255,255,0.75)"] {
+            font-size: 10px !important;
+        }
+        /* أزرار الإيداع والسحب والتحويل */
+        #walletCurrencyScreen > div:nth-child(3) {
+            padding: 2px 12px 10px !important;
+            gap: 6px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(3) button {
+            padding: 8px 4px !important;
+            border-radius: 10px !important;
+            gap: 4px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(3) button svg {
+            width: 18px !important; height: 18px !important;
+        }
+        #walletCurrencyScreen #wcDepositLabel,
+        #walletCurrencyScreen #wcWithdrawLabel,
+        #walletCurrencyScreen #wcTransferLabel {
+            font-size: 10px !important;
+        }
+        /* ملخص الأرصدة */
+        #walletCurrencyScreen > div:nth-child(4) {
+            margin: 0 12px 8px !important;
+            border-radius: 10px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(4) div[style*="padding:12px 16px"],
+        #walletCurrencyScreen > div:nth-child(4) > div[style*="padding:12px 16px"] {
+            padding: 7px 12px !important;
+        }
+        #walletCurrencyScreen #wcAvailBalLabel,
+        #walletCurrencyScreen #wcPendingOrdLabel,
+        #walletCurrencyScreen #wcTotalAssetsLabel {
+            font-size: 11px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(4) span[style*="font-size:14px;font-weight:700"] {
+            font-size: 12px !important;
+        }
+        /* قائمة الأصول */
+        #walletCurrencyScreen > div:nth-child(5) {
+            margin: 0 12px 8px !important;
+        }
+        #walletCurrencyScreen #wcAvailAssetsLabel {
+            font-size: 12px !important;
+            margin-bottom: 7px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(5) > div[style*="padding:14px 16px"] {
+            padding: 8px 12px !important;
+            border-radius: 10px !important;
+            margin-bottom: 5px !important;
+            gap: 8px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(5) div[style*="width:40px;height:40px"] {
+            width: 32px !important;
+            height: 32px !important;
+            font-size: 12px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(5) span[style*="font-size:14px;font-weight:700"] {
+            font-size: 12px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(5) span[style*="font-size:12px;color:var(--text-secondary"] {
+            font-size: 10px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(5) div[style*="margin-top:3px"] {
+            margin-top: 1px !important;
+        }
+        /* سجل المعاملات */
+        #walletCurrencyScreen > div:nth-child(6) {
+            margin: 0 12px 16px !important;
+        }
+        #walletCurrencyScreen #wcRecentTxLabel {
+            font-size: 12px !important;
+            margin-bottom: 7px !important;
+        }
+        #walletCurrencyScreen > div:nth-child(6) > div[style*="padding:40px 20px"] {
+            padding: 20px 12px !important;
+            border-radius: 10px !important;
+        }
+        #walletCurrencyScreen #wcNoTxMsg {
+            font-size: 11px !important;
         }
 
         /* 2. هيدر شريط العنوان — حدود غير مرئية في الوضع الفاتح */
@@ -3779,7 +4191,104 @@
         .deriv-ma-item.ma5 span { color: #f59e0b; }
         .deriv-ma-item.ma10 span { color: #60a5fa; }
         .deriv-ma-item.ma20 span { color: #a78bfa; }
-        .deriv-ma-item.voi { color: #8b9bb4; }
+        .deriv-ma-item.ema7 span { color: #34d399; }
+        .deriv-ma-item.ema25 span { color: #fb923c; }
+        .deriv-ma-item.rsi-lbl span { color: #e2e8f0; }
+        .deriv-ma-item.macd-lbl span { color: #93c5fd; }
+        .deriv-ma-sep { color: rgba(139,155,180,0.4); padding: 0 2px; }
+        .deriv-rsi-val { font-weight: 800 !important; }
+        /* RSI sub-chart */
+        .deriv-rsi-area {
+            height: 60px;
+            background: #060d1a;
+            border-top: 1px solid rgba(30,58,95,0.4);
+            position: relative;
+        }
+        .deriv-rsi-header {
+            position: absolute;
+            top: 3px; left: 6px;
+            font-size: 9px; color: #64748b; font-weight: 600;
+            z-index: 2; pointer-events: none;
+        }
+        .deriv-rsi-live {
+            font-weight: 800;
+            font-size: 10px;
+        }
+        #derivRSICanvas { width: 100%; height: 60px; display: block; }
+        /* Indicator bar */
+        .deriv-indicator-bar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 14px 4px;
+            background: #080f1d;
+            border-bottom: 1px solid rgba(30,58,95,0.3);
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+        .deriv-indicator-bar::-webkit-scrollbar { display: none; }
+        .deriv-ind-btn {
+            padding: 3px 9px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            border: 1px solid rgba(60,100,150,0.4);
+            background: rgba(15,30,51,0.8);
+            color: #64748b;
+            font-family: inherit;
+            transition: all 0.15s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .deriv-ind-btn.active {
+            background: rgba(16,185,129,0.15);
+            color: #10b981;
+            border-color: rgba(16,185,129,0.45);
+        }
+        .deriv-ind-btn:active { opacity: 0.75; transform: scale(0.95); }
+        .deriv-ind-sep { width: 1px; height: 16px; background: rgba(60,100,150,0.3); margin: 0 4px; flex-shrink: 0; }
+        .deriv-ind-price-live {
+            font-size: 13px; font-weight: 800; color: #fff; margin-left: 2px; flex-shrink: 0;
+        }
+        .deriv-ind-price-chg {
+            font-size: 11px; font-weight: 700; color: #10b981; flex-shrink: 0;
+        }
+        /* 24H stats row */
+        .deriv-24h-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 14px 4px;
+            background: #080f1d;
+            border-bottom: 1px solid rgba(30,58,95,0.3);
+        }
+        .deriv-24h-item {
+            display: flex; flex-direction: column; align-items: center; gap: 1px;
+        }
+        .deriv-24h-lbl { font-size: 9px; color: #475569; font-weight: 500; }
+        .deriv-24h-val { font-size: 11px; font-weight: 700; color: #94a3b8; }
+        .deriv-24h-val.hi { color: #10b981; }
+        .deriv-24h-val.lo { color: #ef4444; }
+        /* Trend bar */
+        .deriv-trend-bar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 14px 4px;
+            background: #080f1d;
+        }
+        .deriv-trend-label {
+            font-size: 10px; color: #10b981; font-weight: 700; white-space: nowrap; flex-shrink: 0;
+        }
+        .deriv-trend-down-lbl { color: #ef4444; }
+        .deriv-trend-track {
+            flex: 1; height: 5px; background: rgba(239,68,68,0.35);
+            border-radius: 3px; overflow: hidden;
+        }
+        .deriv-trend-fill {
+            height: 100%; background: linear-gradient(90deg, #10b981, #34d399);
+            border-radius: 3px; transition: width 0.6s ease;
+        }
 
         .deriv-time-axis {
             display: flex;
@@ -3851,15 +4360,15 @@
         /* أزرار التداول */
         .deriv-trade-btns {
             display: flex;
-            gap: 8px;
-            padding: 6px 12px 8px;
+            gap: 5px;
+            padding: 4px 10px 3px;
             background: #0a1628;
         }
         .deriv-btn-up, .deriv-btn-down {
             flex: 1;
             border: none;
-            border-radius: 10px;
-            padding: 8px 10px;
+            border-radius: 7px;
+            padding: 5px 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -3880,18 +4389,18 @@
             background: #ef4444;
         }
         .deriv-btn-label {
-            font-size: 13px;
+            font-size: 11px;
             font-weight: 800;
             color: #fff;
         }
         .deriv-btn-pct {
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 700;
             color: rgba(255,255,255,0.9);
         }
         .deriv-btn-icon {
-            width: 15px;
-            height: 15px;
+            width: 12px;
+            height: 12px;
             flex-shrink: 0;
         }
 
@@ -4204,18 +4713,27 @@
             position: absolute;
             top: 4px;
             left: 4px;
-            background: rgba(10,22,40,0.92);
-            border: 1px solid rgba(30,58,95,0.8);
-            border-radius: 6px;
-            padding: 4px 8px;
+            background: rgba(8,15,29,0.96);
+            border: 1px solid rgba(16,185,129,0.25);
+            border-radius: 7px;
+            padding: 5px 10px;
             font-size: 10px;
             color: #8b9bb4;
             pointer-events: none;
             display: none;
             z-index: 5;
             white-space: nowrap;
+            gap: 7px;
+            align-items: center;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.5);
         }
-        .deriv-ohlc-tooltip span { font-weight: 700; color: #fff; }
+        .ohlc-item { display: inline-flex; align-items: center; gap: 3px; }
+        .ohlc-lbl { font-size: 9px; color: #475569; font-weight: 600; text-transform: uppercase; }
+        .ohlc-val { font-weight: 700; color: #fff; font-size: 10px; }
+        .ohlc-val.ohlc-hi { color: #10b981; }
+        .ohlc-val.ohlc-lo { color: #ef4444; }
+        .ohlc-sep { color: rgba(71,85,105,0.5); padding: 0 2px; }
         .deriv-zoom-btns {
             position: absolute;
             bottom: 6px;
@@ -7580,8 +8098,16 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                 <!-- تبويب الأسواق -->
                 <div class="tab-panel" id="tabMarkets" style="padding:0;background:var(--bg);">
 
+                    <!-- هيدر مع سهم رجوع -->
+                    <div style="display:flex;align-items:center;padding:10px 14px 8px;background:var(--bg-secondary);border-bottom:1px solid var(--border);flex-shrink:0;position:sticky;top:0;z-index:6;">
+                        <button onclick="switchTab('tabHome', document.querySelector('[data-tab=\'tabHome\']'))" style="background:rgba(255,255,255,0.08);border:none;cursor:pointer;color:var(--text,#e2e8f0);padding:7px;display:flex;align-items:center;justify-content:center;border-radius:10px;line-height:1;width:34px;height:34px;flex-shrink:0;transition:background 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.14)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><polyline points="15 18 9 12 15 6"/></svg>
+                        </button>
+                        <span id="navMarketsTitle" style="font-size:16px;font-weight:800;color:var(--text);margin-right:10px;">الأسواق</span>
+                    </div>
+
                     <!-- تبويبات فلترة الأسواق -->
-                    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--bg-secondary);position:sticky;top:0;z-index:5;">
+                    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);background:var(--bg-secondary);position:sticky;top:54px;z-index:5;">
                         <div class="mkt-ftab active" data-mkt="usdt" onclick="mktSwitchTab(this,'usdt')" style="flex:1;text-align:center;padding:12px 6px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;border-bottom:2px solid var(--positive);position:relative;">USDT</div>
                         <div class="mkt-ftab" data-mkt="btc" onclick="mktSwitchTab(this,'btc')" style="flex:1;text-align:center;padding:12px 6px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;">BTC</div>
                         <div class="mkt-ftab" data-mkt="eth" onclick="mktSwitchTab(this,'eth')" style="flex:1;text-align:center;padding:12px 6px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;">ETH</div>
@@ -7904,9 +8430,45 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                     <!-- أزرار الفترة الزمنية -->
                     <div class="deriv-intervals" id="derivIntervals">
                         <button class="deriv-interval-btn active" data-sec="60" onclick="derivSelectInterval(this,60)">60s</button>
-                        <button class="deriv-interval-btn" data-sec="120" onclick="derivSelectInterval(this,120)">120s</button>
-                        <button class="deriv-interval-btn" data-sec="300" onclick="derivSelectInterval(this,300)">5min</button>
-                        <button class="deriv-interval-btn" data-sec="600" onclick="derivSelectInterval(this,600)">10min</button>
+                        <button class="deriv-interval-btn" data-sec="120" onclick="derivSelectInterval(this,120)">2m</button>
+                        <button class="deriv-interval-btn" data-sec="300" onclick="derivSelectInterval(this,300)">5m</button>
+                        <button class="deriv-interval-btn" data-sec="900" onclick="derivSelectInterval(this,900)">15m</button>
+                        <button class="deriv-interval-btn" data-sec="1800" onclick="derivSelectInterval(this,1800)">30m</button>
+                        <button class="deriv-interval-btn" data-sec="3600" onclick="derivSelectInterval(this,3600)">1H</button>
+                        <button class="deriv-interval-btn" data-sec="14400" onclick="derivSelectInterval(this,14400)">4H</button>
+                        <button class="deriv-interval-btn" data-sec="86400" onclick="derivSelectInterval(this,86400)">1D</button>
+                    </div>
+
+                    <!-- شريط المؤشرات الفنية -->
+                    <div class="deriv-indicator-bar" id="derivIndicatorBar">
+                        <button class="deriv-ind-btn active" id="indEMA" onclick="derivToggleIndicator('EMA',this)">EMA</button>
+                        <button class="deriv-ind-btn" id="indBB" onclick="derivToggleIndicator('BB',this)">BB</button>
+                        <button class="deriv-ind-btn" id="indRSI" onclick="derivToggleIndicator('RSI',this)">RSI</button>
+                        <button class="deriv-ind-btn" id="indMACD" onclick="derivToggleIndicator('MACD',this)">MACD</button>
+                        <button class="deriv-ind-btn" id="indVOL" onclick="derivToggleIndicator('VOL',this)" style="color:#8b9bb4;">VOL</button>
+                        <div class="deriv-ind-sep"></div>
+                        <span class="deriv-ind-price-live" id="derivLivePrice">64,000.00</span>
+                        <span class="deriv-ind-price-chg" id="derivLivePriceChg">+2.58%</span>
+                    </div>
+
+                    <!-- صف إحصائيات 24 ساعة -->
+                    <div class="deriv-24h-row">
+                        <div class="deriv-24h-item">
+                            <span class="deriv-24h-lbl">24H أعلى</span>
+                            <span class="deriv-24h-val hi" id="deriv24hHigh">65,480.00</span>
+                        </div>
+                        <div class="deriv-24h-item">
+                            <span class="deriv-24h-lbl">24H أدنى</span>
+                            <span class="deriv-24h-val lo" id="deriv24hLow">62,100.00</span>
+                        </div>
+                        <div class="deriv-24h-item">
+                            <span class="deriv-24h-lbl">حجم 24H</span>
+                            <span class="deriv-24h-val" id="deriv24hVol">1.24B</span>
+                        </div>
+                        <div class="deriv-24h-item">
+                            <span class="deriv-24h-lbl">معدل التمويل</span>
+                            <span class="deriv-24h-val" id="deriv24hFunding" style="color:#10b981;">+0.0100%</span>
+                        </div>
                     </div>
 
                     <!-- صف المعلومات: الدورة الزمنية / العد التنازلي / وقت انتهاء الطلب -->
@@ -7925,6 +8487,15 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                         </div>
                     </div>
 
+                    <!-- شريط قوة الاتجاه -->
+                    <div class="deriv-trend-bar-wrap">
+                        <div class="deriv-trend-label">يعلو <span id="derivTrendUpPct">62.6%</span></div>
+                        <div class="deriv-trend-track">
+                            <div class="deriv-trend-fill" id="derivTrendFill" style="width:62.6%;"></div>
+                        </div>
+                        <div class="deriv-trend-label deriv-trend-down-lbl">انخفاض <span id="derivTrendDownPct">37.4%</span></div>
+                    </div>
+
                     <!-- منطقة الرسم البياني -->
                     <div class="deriv-chart-area">
                         <div class="deriv-chart-wrap" id="derivChartWrap">
@@ -7938,7 +8509,13 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                             <div class="deriv-current-line" id="derivCurrentLine" style="top:50%;"></div>
                             <!-- OHLC Tooltip -->
                             <div class="deriv-ohlc-tooltip" id="derivOHLC">
-                                O: <span id="ohlcO">-</span> &nbsp; H: <span id="ohlcH">-</span> &nbsp; L: <span id="ohlcL">-</span> &nbsp; C: <span id="ohlcC">-</span>
+                                <span class="ohlc-item"><span class="ohlc-lbl">O</span> <span id="ohlcO" class="ohlc-val">-</span></span>
+                                <span class="ohlc-item"><span class="ohlc-lbl">H</span> <span id="ohlcH" class="ohlc-val ohlc-hi">-</span></span>
+                                <span class="ohlc-item"><span class="ohlc-lbl">L</span> <span id="ohlcL" class="ohlc-val ohlc-lo">-</span></span>
+                                <span class="ohlc-item"><span class="ohlc-lbl">C</span> <span id="ohlcC" class="ohlc-val">-</span></span>
+                                <span class="ohlc-sep">|</span>
+                                <span class="ohlc-item"><span class="ohlc-lbl">VOL</span> <span id="ohlcVol" class="ohlc-val">-</span></span>
+                                <span class="ohlc-item"><span class="ohlc-lbl">Δ</span> <span id="ohlcDelta" class="ohlc-val">-</span></span>
                             </div>
                             <!-- Crosshair -->
                             <div class="deriv-crosshair" id="derivCrosshair">
@@ -7958,18 +8535,28 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                             </div>
                         </div>
 
-                        <!-- مؤشرات MA -->
+                        <!-- مؤشرات MA / EMA -->
                         <div class="deriv-ma-bar">
-                            <span class="deriv-ma-item vol-label">VOL(5,10,20)</span>
+                            <span class="deriv-ma-item vol-label">MA</span>
                             <span class="deriv-ma-item ma5">MA5: <span id="derivMA5">43.32</span></span>
                             <span class="deriv-ma-item ma10">MA10: <span id="derivMA10">44.84</span></span>
-                            <span class="deriv-ma-item ma20">MA20: <span id="derivMA20">56.36</span>...</span>
-                            <span class="deriv-ma-item voi">VOI</span>
+                            <span class="deriv-ma-item ma20">MA20: <span id="derivMA20">56.36</span></span>
+                            <span class="deriv-ma-item ema7">EMA7: <span id="derivEMA7">—</span></span>
+                            <span class="deriv-ma-item ema25">EMA25: <span id="derivEMA25">—</span></span>
+                            <span class="deriv-ma-sep">|</span>
+                            <span class="deriv-ma-item rsi-lbl">RSI: <span id="derivRSILabel" class="deriv-rsi-val">—</span></span>
+                            <span class="deriv-ma-item macd-lbl">MACD: <span id="derivMACDLabel">—</span></span>
                         </div>
 
                         <!-- الحجم -->
                         <div class="deriv-vol-area">
                             <canvas id="derivVolCanvas"></canvas>
+                        </div>
+
+                        <!-- مؤشر RSI -->
+                        <div class="deriv-rsi-area" id="derivRSIArea" style="display:none;">
+                            <div class="deriv-rsi-header">RSI (14) &nbsp;<span id="derivRSILive" class="deriv-rsi-live">—</span></div>
+                            <canvas id="derivRSICanvas"></canvas>
                         </div>
 
                         <!-- محور الوقت -->
@@ -8097,6 +8684,11 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                         </button>
                     </div>
 
+                    <!-- أزرار شراء / بيع لفتح الـ Bottom Sheet -->
+                    <div style="display:flex;gap:5px;padding:0 10px 4px;background:#0a1628;">
+                        <button onclick="bsOpenSheet('buy')" style="flex:1;padding:6px 0;border:none;border-radius:7px;background:#10b981;color:#fff;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:0.2px;">شراء</button>
+                        <button onclick="bsOpenSheet('sell')" style="flex:1;padding:6px 0;border:none;border-radius:7px;background:#ef4444;color:#fff;font-size:12px;font-weight:800;font-family:inherit;cursor:pointer;letter-spacing:0.2px;">بيع</button>
+                    </div>
                     </div><!-- /deriv-sticky-bottom -->
                 </div>
 
@@ -8122,6 +8714,71 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                     <!-- قائمة العملات -->
                     <div id="coinPickerList" style="overflow-y:auto;max-height:calc(75vh - 130px);padding:0 14px 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch;"></div>
                 </div>
+
+            <!-- ===== Bottom Sheet: شراء / بيع ===== -->
+            <div id="bsOverlay" onclick="bsCloseSheet()" style="display:none;position:fixed;inset:0;z-index:90002;background:rgba(0,0,0,0.6);"></div>
+            <div id="bsSheet" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:90003;background:#0d1c33;border-radius:20px 20px 0 0;max-height:85vh;overflow-y:auto;direction:rtl;transition:transform 0.32s cubic-bezier(0.32,0.72,0,1);transform:translateY(100%);scrollbar-width:none;padding-bottom:calc(env(safe-area-inset-bottom)+16px);">
+                <!-- مقبض -->
+                <div onclick="bsCloseSheet()" style="display:flex;justify-content:center;padding:10px 0 2px;cursor:pointer;">
+                    <div style="width:38px;height:4px;border-radius:2px;background:rgba(139,155,180,0.35);"></div>
+                </div>
+                <!-- هيدر -->
+                <div style="display:flex;align-items:center;justify-content:space-between;padding:4px 16px 10px;">
+                    <span id="bsSheetTitle" style="font-size:17px;font-weight:900;color:#fff;">شراء BTC</span>
+                    <div onclick="bsCloseSheet()" style="width:28px;height:28px;border-radius:50%;background:rgba(30,58,95,0.7);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:15px;color:#8b9bb4;">✕</div>
+                </div>
+                <!-- تبويبَا شراء/بيع -->
+                <div style="display:flex;margin:0 14px 12px;border-radius:10px;overflow:hidden;border:1px solid rgba(30,58,95,0.6);">
+                    <button id="bsSheetTabBuy" onclick="bsSwitchMode('buy')" style="flex:1;padding:9px 0;border:none;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;background:linear-gradient(135deg,#10b981,#059669);color:#fff;">شراء</button>
+                    <button id="bsSheetTabSell" onclick="bsSwitchMode('sell')" style="flex:1;padding:9px 0;border:none;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;background:rgba(15,30,55,0.8);color:#64748b;">بيع</button>
+                </div>
+                <!-- نوع الأمر -->
+                <div style="display:flex;gap:5px;padding:0 14px 10px;">
+                    <button id="bsot_market" onclick="bsSetType('market')" style="padding:5px 13px;border-radius:7px;border:1px solid rgba(16,185,129,0.45);background:rgba(16,185,129,0.12);color:#10b981;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;">سوق</button>
+                    <button id="bsot_limit"  onclick="bsSetType('limit')"  style="padding:5px 13px;border-radius:7px;border:1px solid rgba(60,100,150,0.4);background:rgba(15,30,55,0.6);color:#64748b;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;">محدد</button>
+                    <button id="bsot_stop"   onclick="bsSetType('stop')"   style="padding:5px 13px;border-radius:7px;border:1px solid rgba(60,100,150,0.4);background:rgba(15,30,55,0.6);color:#64748b;font-size:11.5px;font-weight:700;cursor:pointer;font-family:inherit;">إيقاف</button>
+                </div>
+                <!-- حقل السعر -->
+                <div id="bsPriceRow" style="display:none;margin:0 14px 10px;">
+                    <div style="font-size:10.5px;color:#64748b;font-weight:600;margin-bottom:5px;">السعر</div>
+                    <div style="display:flex;align-items:center;background:rgba(15,30,55,0.8);border:1.5px solid rgba(60,100,150,0.5);border-radius:9px;overflow:hidden;">
+                        <button onclick="bsStepField('price',-1)" style="width:36px;height:38px;background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;">−</button>
+                        <input id="bsPriceInp" type="number" value="64000" style="flex:1;background:none;border:none;outline:none;color:#e2e8f0;font-size:15px;font-weight:700;text-align:center;font-family:inherit;padding:6px 0;" />
+                        <span style="font-size:11px;color:#475569;font-weight:700;padding:0 10px;">USDT</span>
+                        <button onclick="bsStepField('price',1)" style="width:36px;height:38px;background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;">+</button>
+                    </div>
+                </div>
+                <!-- حقل الكمية -->
+                <div style="margin:0 14px 10px;">
+                    <div style="font-size:10.5px;color:#64748b;font-weight:600;margin-bottom:5px;">الكمية</div>
+                    <div style="display:flex;align-items:center;background:rgba(15,30,55,0.8);border:1.5px solid rgba(60,100,150,0.5);border-radius:9px;overflow:hidden;">
+                        <button onclick="bsStepField('amount',-1)" style="width:36px;height:38px;background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;">−</button>
+                        <input id="bsAmtInp" type="number" value="0.001" step="0.001" oninput="bsUpdateTotal()" style="flex:1;background:none;border:none;outline:none;color:#e2e8f0;font-size:15px;font-weight:700;text-align:center;font-family:inherit;padding:6px 0;" />
+                        <span id="bsAmtCur" style="font-size:11px;color:#475569;font-weight:700;padding:0 10px;">BTC</span>
+                        <button onclick="bsStepField('amount',1)" style="width:36px;height:38px;background:none;border:none;color:#64748b;font-size:20px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;">+</button>
+                    </div>
+                </div>
+                <!-- نسب مئوية -->
+                <div id="bsPctRow" style="display:flex;gap:5px;padding:0 14px 12px;">
+                    <button onclick="bsSetPct(this,25)"  style="flex:1;padding:5px 0;border-radius:6px;border:1px solid rgba(60,100,150,0.4);background:rgba(15,30,55,0.5);color:#64748b;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">25%</button>
+                    <button onclick="bsSetPct(this,50)"  style="flex:1;padding:5px 0;border-radius:6px;border:1px solid rgba(60,100,150,0.4);background:rgba(15,30,55,0.5);color:#64748b;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">50%</button>
+                    <button onclick="bsSetPct(this,75)"  style="flex:1;padding:5px 0;border-radius:6px;border:1px solid rgba(60,100,150,0.4);background:rgba(15,30,55,0.5);color:#64748b;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">75%</button>
+                    <button onclick="bsSetPct(this,100)" style="flex:1;padding:5px 0;border-radius:6px;border:1px solid rgba(60,100,150,0.4);background:rgba(15,30,55,0.5);color:#64748b;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">100%</button>
+                </div>
+                <!-- رصيد وإجمالي -->
+                <div style="display:flex;justify-content:space-between;padding:0 14px 5px;">
+                    <span style="font-size:11px;color:#64748b;">الرصيد المتاح</span>
+                    <span style="font-size:11px;color:#94a3b8;font-weight:700;">10,000.00 USDT</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;padding:0 14px 14px;">
+                    <span style="font-size:11px;color:#64748b;">الإجمالي التقريبي</span>
+                    <span id="bsTotal" style="font-size:11px;color:#94a3b8;font-weight:700;">≈ 64.00 USDT</span>
+                </div>
+                <!-- زر الإرسال -->
+                <div style="padding:0 14px;">
+                    <button id="bsSubmitBtn" onclick="bsSubmit()" style="width:100%;padding:13px 0;border:none;border-radius:10px;font-size:15px;font-weight:800;color:#fff;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 18px rgba(16,185,129,0.38);transition:opacity 0.15s;" onmousedown="this.style.opacity='0.82'" onmouseup="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">شراء BTC</button>
+                </div>
+            </div>
 
             <!-- ===== شريط يعلو / انخفاض الثابت (يظهر فقط في تبويب العقود المشتقة) ===== -->
             <div id="derivTradeBar">
@@ -9999,6 +10656,67 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
         var derivMultIdx = 0;
         var derivChartType = 'candle'; // 'candle' or 'line'
 
+        // ==================== متغيرات المؤشرات الفنية ====================
+        var derivIndicators = { EMA: true, BB: false, RSI: false, MACD: false, VOL: true };
+
+        // ==================== حساب EMA ====================
+        function calcEMA(data, period) {
+            if (data.length < period) return [];
+            var k = 2 / (period + 1);
+            var ema = [data[0]];
+            for (var i = 1; i < data.length; i++) {
+                ema.push(data[i] * k + ema[i - 1] * (1 - k));
+            }
+            return ema;
+        }
+
+        // ==================== حساب Bollinger Bands ====================
+        function calcBB(prices, period, mult) {
+            period = period || 20; mult = mult || 2;
+            var upper = [], lower = [], mid = [];
+            for (var i = 0; i < prices.length; i++) {
+                if (i < period - 1) { upper.push(null); lower.push(null); mid.push(null); continue; }
+                var sl = prices.slice(i - period + 1, i + 1);
+                var avg = sl.reduce(function(a,b){ return a+b; }, 0) / period;
+                var sd = Math.sqrt(sl.reduce(function(a,b){ return a + Math.pow(b - avg, 2); }, 0) / period);
+                upper.push(avg + mult * sd);
+                lower.push(avg - mult * sd);
+                mid.push(avg);
+            }
+            return { upper: upper, lower: lower, mid: mid };
+        }
+
+        // ==================== حساب RSI ====================
+        function calcRSI(prices, period) {
+            period = period || 14;
+            if (prices.length < period + 1) return [];
+            var gains = [], losses = [];
+            for (var i = 1; i < prices.length; i++) {
+                var d = prices[i] - prices[i - 1];
+                gains.push(d > 0 ? d : 0);
+                losses.push(d < 0 ? -d : 0);
+            }
+            var rsi = new Array(period).fill(null);
+            var avgGain = gains.slice(0, period).reduce(function(a,b){return a+b;},0) / period;
+            var avgLoss = losses.slice(0, period).reduce(function(a,b){return a+b;},0) / period;
+            for (var j = period; j < gains.length; j++) {
+                avgGain = (avgGain * (period - 1) + gains[j]) / period;
+                avgLoss = (avgLoss * (period - 1) + losses[j]) / period;
+                var rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
+                rsi.push(100 - (100 / (1 + rs)));
+            }
+            return rsi;
+        }
+
+        // ==================== حساب MACD ====================
+        function calcMACD(prices) {
+            var ema12 = calcEMA(prices, 12);
+            var ema26 = calcEMA(prices, 26);
+            var macd = ema12.map(function(v, i) { return v - ema26[i]; });
+            var signal = calcEMA(macd.slice(26), 9);
+            return { macd: macd, signal: signal };
+        }
+
         // ==================== متغيرات التحريك والتكبير ====================
         var chartZoom = 1.0;           // 0.3 = بعيد جداً, 3 = قريب جداً
         var chartOffset = 0;           // عدد الشموع من اليمين للتمرير
@@ -10343,6 +11061,100 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                 });
             }
 
+            // ===== رسم EMA7 و EMA25 =====
+            if (derivIndicators.EMA) {
+                var allClose = candles.map(function(c){ return c.c; });
+                var ema7all = calcEMA(allClose, 7);
+                var ema25all = calcEMA(allClose, 25);
+                var ema7slice = ema7all.slice(startIdx, endIdx);
+                var ema25slice = ema25all.slice(startIdx, endIdx);
+
+                function drawEMALine(vals, color) {
+                    ctx.save();
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1.2;
+                    ctx.lineJoin = 'round';
+                    ctx.lineCap = 'round';
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    var started = false;
+                    vals.forEach(function(v, i) {
+                        if (v == null) return;
+                        var x = 5 + i * candleW + candleW / 2;
+                        var y = H - ((v - minP) / range) * H;
+                        if (!started) { ctx.moveTo(x, y); started = true; } else { ctx.lineTo(x, y); }
+                    });
+                    ctx.stroke();
+                    ctx.restore();
+                }
+                drawEMALine(ema7slice, 'rgba(52,211,153,0.85)');
+                drawEMALine(ema25slice, 'rgba(251,146,60,0.85)');
+
+                // تحديث EMA values في الشريط
+                var lastEMA7 = ema7all[ema7all.length - 1];
+                var lastEMA25 = ema25all[ema25all.length - 1];
+                var el7 = document.getElementById('derivEMA7');
+                var el25 = document.getElementById('derivEMA25');
+                if (el7 && lastEMA7) el7.textContent = lastEMA7.toFixed(2);
+                if (el25 && lastEMA25) el25.textContent = lastEMA25.toFixed(2);
+            }
+
+            // ===== رسم Bollinger Bands =====
+            if (derivIndicators.BB) {
+                var bbClose = candles.map(function(c){ return c.c; });
+                var bbAll = calcBB(bbClose, 20, 2);
+                var bbUpper = bbAll.upper.slice(startIdx, endIdx);
+                var bbLower = bbAll.lower.slice(startIdx, endIdx);
+                var bbMid = bbAll.mid.slice(startIdx, endIdx);
+
+                function drawBBLine(vals, color, dash) {
+                    ctx.save();
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1;
+                    if (dash) ctx.setLineDash(dash);
+                    ctx.beginPath();
+                    var st = false;
+                    vals.forEach(function(v, i) {
+                        if (v == null) return;
+                        var x = 5 + i * candleW + candleW / 2;
+                        var y = H - ((v - minP) / range) * H;
+                        if (!st) { ctx.moveTo(x, y); st = true; } else { ctx.lineTo(x, y); }
+                    });
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                    ctx.restore();
+                }
+
+                // رسم منطقة BB
+                ctx.save();
+                ctx.beginPath();
+                var validUpper = [];
+                bbUpper.forEach(function(v, i) {
+                    if (v == null) return;
+                    var x = 5 + i * candleW + candleW / 2;
+                    var y = H - ((v - minP) / range) * H;
+                    validUpper.push([x, y]);
+                });
+                var validLower = bbLower.map(function(v, i) {
+                    if (v == null) return null;
+                    var x = 5 + i * candleW + candleW / 2;
+                    var y = H - ((v - minP) / range) * H;
+                    return [x, y];
+                }).filter(function(v){ return v; });
+                if (validUpper.length && validLower.length) {
+                    ctx.beginPath();
+                    validUpper.forEach(function(pt, i) { i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]); });
+                    validLower.slice().reverse().forEach(function(pt) { ctx.lineTo(pt[0], pt[1]); });
+                    ctx.closePath();
+                    ctx.fillStyle = 'rgba(99,102,241,0.07)';
+                    ctx.fill();
+                }
+                ctx.restore();
+                drawBBLine(bbUpper, 'rgba(99,102,241,0.6)', [3, 3]);
+                drawBBLine(bbLower, 'rgba(99,102,241,0.6)', [3, 3]);
+                drawBBLine(bbMid, 'rgba(148,163,184,0.4)', []);
+            }
+
             // === خط السعر الحالي (متحرك) ===
             var currentY = H - ((derivCurrentPrice - minP) / range) * H;
             currentY = Math.max(2, Math.min(H - 2, currentY));
@@ -10434,13 +11246,25 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                 if (crosshairV) crosshairV.style.left = relX + 'px';
                 var candle = getCandleAt(relX);
                 if (candle && ohlcEl) {
-                    ohlcEl.style.display = 'block';
+                    ohlcEl.style.display = 'flex';
                     document.getElementById('ohlcO').textContent = candle.o.toFixed(2);
                     document.getElementById('ohlcH').textContent = candle.h.toFixed(2);
                     document.getElementById('ohlcL').textContent = candle.l.toFixed(2);
                     document.getElementById('ohlcC').textContent = candle.c.toFixed(2);
                     var ohlcC = document.getElementById('ohlcC');
-                    if (ohlcC) ohlcC.style.color = candle.c >= candle.o ? '#10b981' : '#ef4444';
+                    var isUp = candle.c >= candle.o;
+                    if (ohlcC) ohlcC.style.color = isUp ? '#10b981' : '#ef4444';
+                    // حجم الشمعة ونسبة التغيير
+                    var ohlcVol = document.getElementById('ohlcVol');
+                    var ohlcDelta = document.getElementById('ohlcDelta');
+                    if (ohlcVol) ohlcVol.textContent = (candle.vol * 1000).toFixed(0) + 'K';
+                    if (ohlcDelta) {
+                        var pct = ((candle.c - candle.o) / candle.o * 100);
+                        ohlcDelta.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+                        ohlcDelta.style.color = pct >= 0 ? '#10b981' : '#ef4444';
+                    }
+                    // لون خلفية OHLC بناءً على اتجاه الشمعة
+                    ohlcEl.style.borderColor = isUp ? 'rgba(16,185,129,0.4)' : 'rgba(239,68,68,0.4)';
                 }
                 lastChartData = drawChart(relX, relY);
             }
@@ -10576,28 +11400,175 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
             var ctx = canvas.getContext('2d');
             ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
-            var slice = candles.slice(-30);
+            var visCount = Math.max(5, Math.min(candles.length, Math.round(30 / chartZoom)));
+            var startIdx = Math.max(0, candles.length - visCount - Math.round(chartOffset));
+            var endIdx = Math.max(startIdx + 5, candles.length - Math.round(chartOffset));
+            startIdx = Math.max(0, Math.min(startIdx, candles.length - 5));
+            endIdx = Math.max(startIdx + 5, Math.min(endIdx, candles.length));
+            var slice = candles.slice(startIdx, endIdx);
+
             var maxVol = Math.max.apply(null, slice.map(function(c){ return c.vol; }));
-            var barW = W / slice.length;
+            var barW = W / Math.max(slice.length, 1);
+
+            // خلفية خفيفة
+            var bgGrad = ctx.createLinearGradient(0, 0, 0, H);
+            bgGrad.addColorStop(0, 'rgba(10,22,40,0)');
+            bgGrad.addColorStop(1, 'rgba(6,9,18,0.6)');
+            ctx.fillStyle = bgGrad;
+            ctx.fillRect(0, 0, W, H);
 
             slice.forEach(function(c, i) {
                 var x = i * barW;
-                var barH = (c.vol / maxVol) * (H - 4);
-                ctx.fillStyle = c.c >= c.o ? 'rgba(16,185,129,0.5)' : 'rgba(239,68,68,0.5)';
+                var barH = Math.max(2, (c.vol / maxVol) * (H - 6));
+                var isUp = c.c >= c.o;
+                // تدرج الحجم
+                var grad = ctx.createLinearGradient(0, H - barH, 0, H);
+                grad.addColorStop(0, isUp ? 'rgba(16,185,129,0.7)' : 'rgba(239,68,68,0.7)');
+                grad.addColorStop(1, isUp ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)');
+                ctx.fillStyle = grad;
                 ctx.fillRect(x + 1, H - barH, barW - 2, barH);
             });
 
             // تحديث MA values
-            var ma5 = slice.slice(-5).reduce(function(a,c){ return a + c.c; }, 0) / 5;
-            var ma10 = slice.slice(-10).reduce(function(a,c){ return a + c.c; }, 0) / 10;
-            var ma20 = slice.slice(-20).reduce(function(a,c){ return a + c.c; }, 0) / 20;
+            var ma5 = slice.slice(-5).reduce(function(a,c){ return a + c.c; }, 0) / Math.min(5, slice.length);
+            var ma10 = slice.slice(-10).reduce(function(a,c){ return a + c.c; }, 0) / Math.min(10, slice.length);
+            var ma20 = slice.slice(-20).reduce(function(a,c){ return a + c.c; }, 0) / Math.min(20, slice.length);
             var el5 = document.getElementById('derivMA5');
             var el10 = document.getElementById('derivMA10');
             var el20 = document.getElementById('derivMA20');
-            if (el5) el5.textContent = (ma5 / 1500).toFixed(2);
-            if (el10) el10.textContent = (ma10 / 1450).toFixed(2);
-            if (el20) el20.textContent = (ma20 / 1100).toFixed(2);
+            if (el5) el5.textContent = ma5.toFixed(2);
+            if (el10) el10.textContent = ma10.toFixed(2);
+            if (el20) el20.textContent = ma20.toFixed(2);
+
+            // تحديث MACD
+            var allClose = candles.map(function(c){ return c.c; });
+            if (allClose.length >= 26) {
+                var macdData = calcMACD(allClose);
+                var lastMacd = macdData.macd[macdData.macd.length - 1];
+                var el = document.getElementById('derivMACDLabel');
+                if (el) {
+                    var macdVal = lastMacd ? lastMacd.toFixed(2) : '—';
+                    el.textContent = macdVal;
+                    el.style.color = lastMacd >= 0 ? '#10b981' : '#ef4444';
+                }
+            }
+
+            // رسم RSI إذا كان مفعّلاً
+            if (derivIndicators.RSI) {
+                drawRSIChart();
+            }
         }
+
+        // ==================== رسم مؤشر RSI ====================
+        function drawRSIChart() {
+            var rsiArea = document.getElementById('derivRSIArea');
+            var canvas = document.getElementById('derivRSICanvas');
+            if (!rsiArea || !canvas) return;
+            rsiArea.style.display = '';
+            var container = rsiArea;
+            var W = container.offsetWidth;
+            var H = 60;
+            canvas.width = W * window.devicePixelRatio;
+            canvas.height = H * window.devicePixelRatio;
+            canvas.style.width = W + 'px';
+            canvas.style.height = H + 'px';
+            var ctx = canvas.getContext('2d');
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+            var allClose = candles.map(function(c){ return c.c; });
+            var rsiVals = calcRSI(allClose, 14);
+
+            var visCount = Math.max(5, Math.min(candles.length, Math.round(30 / chartZoom)));
+            var startIdx = Math.max(0, candles.length - visCount - Math.round(chartOffset));
+            var endIdx = Math.max(startIdx + 5, candles.length - Math.round(chartOffset));
+            startIdx = Math.max(0, Math.min(startIdx, candles.length - 5));
+            endIdx = Math.max(startIdx + 5, Math.min(endIdx, candles.length));
+            var rsiSlice = rsiVals.slice(startIdx, endIdx);
+
+            // خلفية
+            ctx.fillStyle = '#060d1a';
+            ctx.fillRect(0, 0, W, H);
+
+            // خطوط المستويات 30 / 50 / 70
+            [[70,'rgba(239,68,68,0.3)'], [50,'rgba(148,163,184,0.2)'], [30,'rgba(16,185,129,0.3)']].forEach(function(pair) {
+                var y = H - (pair[0] / 100) * H;
+                ctx.save();
+                ctx.strokeStyle = pair[1];
+                ctx.lineWidth = 0.8;
+                ctx.setLineDash([3, 3]);
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.restore();
+                // علامة
+                ctx.fillStyle = pair[1].replace('0.3','0.6').replace('0.2','0.5');
+                ctx.font = '8px sans-serif';
+                ctx.fillText(pair[0], 2, y - 2);
+            });
+
+            var barW = W / Math.max(rsiSlice.length, 1);
+            // رسم المنطقة الملوّنة
+            ctx.save();
+            ctx.beginPath();
+            var pts = [];
+            rsiSlice.forEach(function(v, i) {
+                if (v == null) return;
+                pts.push([5 + i * barW + barW / 2, H - (v / 100) * H]);
+            });
+            if (pts.length > 1) {
+                pts.forEach(function(pt, i) { i === 0 ? ctx.moveTo(pt[0], pt[1]) : ctx.lineTo(pt[0], pt[1]); });
+                ctx.lineTo(pts[pts.length-1][0], H);
+                ctx.lineTo(pts[0][0], H);
+                ctx.closePath();
+                var grad = ctx.createLinearGradient(0, 0, 0, H);
+                grad.addColorStop(0, 'rgba(99,102,241,0.25)');
+                grad.addColorStop(1, 'rgba(99,102,241,0.03)');
+                ctx.fillStyle = grad;
+                ctx.fill();
+            }
+            ctx.restore();
+
+            // رسم الخط
+            ctx.save();
+            ctx.strokeStyle = '#818cf8';
+            ctx.lineWidth = 1.5;
+            ctx.lineJoin = 'round';
+            ctx.beginPath();
+            var started = false;
+            rsiSlice.forEach(function(v, i) {
+                if (v == null) return;
+                var x = 5 + i * barW + barW / 2;
+                var y = H - (v / 100) * H;
+                if (!started) { ctx.moveTo(x, y); started = true; } else { ctx.lineTo(x, y); }
+            });
+            ctx.stroke();
+            ctx.restore();
+
+            // تحديث قيمة RSI الأخيرة
+            var lastRSI = rsiVals[rsiVals.length - 1];
+            var rsiEl = document.getElementById('derivRSILabel');
+            var rsiLiveEl = document.getElementById('derivRSILive');
+            if (lastRSI != null) {
+                var rsiColor = lastRSI >= 70 ? '#ef4444' : lastRSI <= 30 ? '#10b981' : '#818cf8';
+                if (rsiEl) { rsiEl.textContent = lastRSI.toFixed(1); rsiEl.style.color = rsiColor; }
+                if (rsiLiveEl) { rsiLiveEl.textContent = lastRSI.toFixed(1); rsiLiveEl.style.color = rsiColor; }
+            }
+        }
+
+        // ==================== تبديل المؤشرات ====================
+        window.derivToggleIndicator = function(name, btn) {
+            derivIndicators[name] = !derivIndicators[name];
+            if (btn) btn.classList.toggle('active', derivIndicators[name]);
+            if (name === 'RSI') {
+                var area = document.getElementById('derivRSIArea');
+                if (area) area.style.display = derivIndicators.RSI ? '' : 'none';
+                if (!derivIndicators.RSI) {
+                    var el = document.getElementById('derivRSILabel');
+                    if (el) el.textContent = '—';
+                }
+            }
+            drawChart();
+            drawVolChart();
+        };
 
         // ==================== العد التنازلي ====================
         function startCountdown() {
@@ -10646,8 +11617,44 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
             var downPct = 100 - upPct;
             var upEl = document.getElementById('derivUpPct');
             var downEl = document.getElementById('derivDownPct');
+            var dtbUpPct = document.getElementById('dtbUpPct');
+            var dtbDownPct = document.getElementById('dtbDownPct');
             if (upEl) upEl.textContent = upPct.toFixed(2) + '%';
             if (downEl) downEl.textContent = downPct.toFixed(2) + '%';
+            if (dtbUpPct) dtbUpPct.textContent = upPct.toFixed(2) + '%';
+            if (dtbDownPct) dtbDownPct.textContent = downPct.toFixed(2) + '%';
+            // تحديث شريط قوة الاتجاه
+            var trendFill = document.getElementById('derivTrendFill');
+            var trendUpPct = document.getElementById('derivTrendUpPct');
+            var trendDownPct = document.getElementById('derivTrendDownPct');
+            if (trendFill) trendFill.style.width = upPct.toFixed(1) + '%';
+            if (trendUpPct) trendUpPct.textContent = upPct.toFixed(1) + '%';
+            if (trendDownPct) trendDownPct.textContent = downPct.toFixed(1) + '%';
+            // تحديث السعر الحي في شريط المؤشرات
+            var livePrice = document.getElementById('derivLivePrice');
+            var livePriceChg = document.getElementById('derivLivePriceChg');
+            if (livePrice) livePrice.textContent = derivCurrentPrice.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+            if (livePriceChg) {
+                livePriceChg.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
+                livePriceChg.style.color = pct >= 0 ? '#10b981' : '#ef4444';
+            }
+            // تحديث 24H High/Low ديناميكياً
+            var highEl = document.getElementById('deriv24hHigh');
+            var lowEl = document.getElementById('deriv24hLow');
+            if (highEl && candles.length) {
+                var h24 = Math.max.apply(null, candles.map(function(c){ return c.h; }));
+                highEl.textContent = h24.toFixed(2);
+            }
+            if (lowEl && candles.length) {
+                var l24 = Math.min.apply(null, candles.map(function(c){ return c.l; }));
+                lowEl.textContent = l24.toFixed(2);
+            }
+            // تحديث حجم 24H
+            var volEl = document.getElementById('deriv24hVol');
+            if (volEl && candles.length) {
+                var totalVol = candles.reduce(function(a,c){ return a + c.vol; }, 0);
+                volEl.textContent = (totalVol / 1000).toFixed(2) + 'K';
+            }
             // إعادة رسم
             drawChart();
             drawVolChart();
@@ -12027,7 +13034,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
   <div style="margin:0 16px 12px;border-radius:14px;background:var(--bg-secondary,#0f1e33);border:1px solid var(--border,#1e3a5f);overflow:hidden;">
     <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);">
       <div id="wfAvailMarginLabel" style="font-size:13px;color:var(--text-secondary,#8b9bb4);margin-bottom:2px;">الهامش المتاح</div>
-      <div style="font-size:16px;font-weight:700;color:var(--text,#fff);">3,905.01 USDT</div>
+      <div style="font-size:16px;font-weight:700;color:var(--text,#fff);">0.000 USDT</div>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;">
       <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);border-left:1px solid rgba(255,255,255,0.06);">
@@ -12090,7 +13097,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
     </div>
     <div style="padding:12px 16px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;">
       <span id="wfTotalTradesLabel" style="font-size:13px;color:var(--text-secondary,#8b9bb4);">إجمالي الصفقات المنفذة</span>
-      <span id="wfTotalTradesVal" style="font-size:13px;font-weight:700;color:var(--text,#fff);">43 صفقة</span>
+      <span id="wfTotalTradesVal" style="font-size:13px;font-weight:700;color:var(--text,#fff);">0.000</span>
     </div>
     <div style="padding:12px 16px;display:flex;justify-content:space-between;">
       <span id="wfLiqLabel" style="font-size:13px;color:var(--text-secondary,#8b9bb4);">سعر التصفية المقدر</span>
@@ -12669,17 +13676,17 @@ function hhCopyUID(){
     <!-- بطاقة معلومات سريعة -->
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
       <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.25);border-radius:12px;padding:12px 8px;text-align:center;">
-        <div style="font-size:18px;margin-bottom:4px;">⚡</div>
+        <div style="font-size:14px;margin-bottom:3px;">⚡</div>
         <div id="itBadge1Title" style="font-size:11px;font-weight:700;color:#10b981;">فوري</div>
         <div id="itBadge1Sub" style="font-size:10px;color:var(--text-secondary,#8b9bb4);margin-top:2px;">لا انتظار</div>
       </div>
       <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:12px;padding:12px 8px;text-align:center;">
-        <div style="font-size:18px;margin-bottom:4px;">🎯</div>
+        <div style="font-size:14px;margin-bottom:3px;">🎯</div>
         <div id="itBadge2Title" style="font-size:11px;font-weight:700;color:#f59e0b;">صفري</div>
         <div id="itBadge2Sub" style="font-size:10px;color:var(--text-secondary,#8b9bb4);margin-top:2px;">بدون رسوم</div>
       </div>
       <div style="background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.25);border-radius:12px;padding:12px 8px;text-align:center;">
-        <div style="font-size:18px;margin-bottom:4px;">🔒</div>
+        <div style="font-size:14px;margin-bottom:3px;">🔒</div>
         <div id="itBadge3Title" style="font-size:11px;font-weight:700;color:#818cf8;">آمن</div>
         <div style="font-size:10px;color:var(--text-secondary,#8b9bb4);margin-top:2px;">24/7</div>
       </div>
@@ -12689,7 +13696,7 @@ function hhCopyUID(){
     <div style="background:linear-gradient(135deg,rgba(245,158,11,0.12),rgba(245,158,11,0.04));border:1.5px solid rgba(245,158,11,0.3);border-radius:14px;padding:14px 16px;margin-bottom:18px;">
       <div id="itMyUIDLabel" style="font-size:11px;color:var(--text-secondary,#8b9bb4);margin-bottom:6px;font-weight:600;">🪪 UID الخاص بك</div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <span id="itMyUID" style="font-size:20px;font-weight:800;color:#f59e0b;letter-spacing:2px;font-family:monospace;">──────────</span>
+        <span id="itMyUID" style="font-size:16px;font-weight:800;color:#f59e0b;letter-spacing:1px;font-family:monospace;">──────────</span>
         <button onclick="itCopyMyUID()" id="itCopyMyUIDBtn" style="background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:8px;padding:7px 14px;color:#f59e0b;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all 0.2s;">نسخ UID</button>
       </div>
       <div id="itMyUIDDesc" style="font-size:10px;color:var(--text-secondary,#8b9bb4);margin-top:6px;">أرسل هذا الرقم للمستلم ليتمكن من تحويل الأموال إليك</div>
@@ -12738,7 +13745,7 @@ function hhCopyUID(){
       <div style="position:relative;">
         <input id="itAmount" type="number" min="0" step="any" placeholder="0.00"
           oninput="itCalcFee()"
-          style="width:100%;box-sizing:border-box;background:rgba(15,30,51,0.85);border:1.5px solid rgba(60,100,150,0.4);border-radius:12px;padding:14px 60px 14px 16px;color:var(--text,#fff);font-size:18px;font-weight:700;outline:none;-webkit-appearance:none;transition:border 0.2s;">
+          style="width:100%;box-sizing:border-box;background:rgba(15,30,51,0.85);border:1.5px solid rgba(60,100,150,0.4);border-radius:12px;padding:14px 60px 14px 16px;color:var(--text,#fff);font-size:16px;font-weight:700;outline:none;-webkit-appearance:none;transition:border 0.2s;">
         <button id="itSetAllBtn" onclick="itSetAll()" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.4);border-radius:6px;padding:4px 10px;color:#f59e0b;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;">الكل</button>
       </div>
       <!-- ملخص الرسوم -->
@@ -12793,7 +13800,7 @@ function hhCopyUID(){
 
     <!-- زر التحويل -->
     <button id="itSubmitBtn" onclick="itPrepareConfirm()"
-      style="width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:opacity 0.2s;box-shadow:0 4px 20px rgba(245,158,11,0.3);"
+      style="width:100%;padding:13px;border-radius:12px;border:none;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:0.3px;transition:opacity 0.2s;box-shadow:0 4px 20px rgba(245,158,11,0.3);"
       onmousedown="this.style.opacity='0.85'" onmouseup="this.style.opacity='1'">
       <span id="itSubmitBtnText">تحويل الآن</span>
     </button>
@@ -12936,16 +13943,47 @@ function hhCopyUID(){
   window.itCopyMyUID = function(){
     var uid = localStorage.getItem('hh_uid') || window._hhUID || '';
     if(!uid) return;
-    try {
-      navigator.clipboard.writeText(uid).then(function(){
-        var btn = document.getElementById('itCopyMyUIDBtn');
-        if(btn){ btn.textContent='✓ تم النسخ'; btn.style.background='rgba(16,185,129,0.2)'; btn.style.borderColor='rgba(16,185,129,0.5)'; btn.style.color='#10b981'; }
-        setTimeout(function(){ var b=document.getElementById('itCopyMyUIDBtn'); if(b){b.textContent='نسخ UID';b.style.background='';b.style.borderColor='';b.style.color='';} }, 2000);
-      });
-    } catch(e){
-      var ta = document.createElement('textarea');
-      ta.value = uid; ta.style.position='fixed'; ta.style.opacity='0';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    function _doFeedback(){
+      var btn = document.getElementById('itCopyMyUIDBtn');
+      if(btn){ btn.textContent='✓ تم النسخ'; btn.style.background='rgba(16,185,129,0.2)'; btn.style.borderColor='rgba(16,185,129,0.5)'; btn.style.color='#10b981'; }
+      setTimeout(function(){ var b=document.getElementById('itCopyMyUIDBtn'); if(b){b.textContent='نسخ UID';b.style.background='rgba(245,158,11,0.15)';b.style.borderColor='rgba(245,158,11,0.4)';b.style.color='#f59e0b';} }, 2500);
+      /* إشعار واضح */
+      var existing = document.getElementById('_itUIDToast');
+      if(existing) existing.remove();
+      var toast = document.createElement('div');
+      toast.id = '_itUIDToast';
+      toast.innerHTML = '<span style="font-size:18px;">✅</span><div><div style="font-weight:700;font-size:13px;">تم نسخ الـ UID</div><div style="font-size:11px;opacity:0.85;margin-top:2px;font-family:monospace;letter-spacing:1px;">' + uid + '</div></div>';
+      toast.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:999999;background:linear-gradient(135deg,#065f46,#047857);border:1px solid rgba(16,185,129,0.5);color:#fff;padding:12px 20px;border-radius:14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 32px rgba(0,0,0,0.4);min-width:220px;max-width:320px;animation:_itSlideUp 0.3s ease;';
+      if(!document.getElementById('_itToastAnim')){
+        var s=document.createElement('style');s.id='_itToastAnim';
+        s.textContent='@keyframes _itSlideUp{from{opacity:0;transform:translateX(-50%) translateY(20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}';
+        document.head.appendChild(s);
+      }
+      document.body.appendChild(toast);
+      setTimeout(function(){ if(toast.parentNode){ toast.style.transition='opacity 0.4s'; toast.style.opacity='0'; setTimeout(function(){toast.remove();},400); } }, 2800);
+    }
+    function _fallbackCopy(){
+      var ta=document.createElement('textarea');
+      ta.value=uid;
+      ta.readOnly=true;
+      ta.contentEditable='true';
+      ta.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;';
+      document.body.appendChild(ta);
+      var sel=document.getSelection();
+      var range=document.createRange();
+      range.selectNodeContents(ta);
+      sel.removeAllRanges();
+      sel.addRange(range);
+      ta.setSelectionRange(0,9999);
+      try{ document.execCommand('copy'); }catch(e2){}
+      sel.removeAllRanges();
+      document.body.removeChild(ta);
+      _doFeedback();
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(uid).then(function(){ _doFeedback(); }).catch(function(){ _fallbackCopy(); });
+    } else {
+      _fallbackCopy();
     }
   };
 
@@ -13802,15 +14840,6 @@ function hhCopyUID(){
     <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;">تواصل معنا</div>
     <div style="font-size:11px;color:#8b9bb4;margin-bottom:18px;">اختر طريقة التواصل المفضلة لديك</div>
     <div style="display:flex;flex-direction:column;gap:10px;">
-      <!-- زر إرسال رابط التنزيل -->
-      <button onclick="(function(){var url=window.location.href.split('?')[0];var msg='\u0631\u0627\u0628\u0637 \u062a\u0646\u0632\u064a\u0644 \u0627\u0644\u062a\u0637\u0628\u064a\u0642: '+url;if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){var b=event.target.closest('button');var orig=b.innerHTML;b.innerHTML='<span style=\"font-size:13px;font-weight:800;\">\u2705 \u062a\u0645 \u0646\u0633\u062e \u0627\u0644\u0631\u0627\u0628\u0637!</span>';setTimeout(function(){b.innerHTML=orig;},2000);});}else{var ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('\u062a\u0645 \u0646\u0633\u062e \u0627\u0644\u0631\u0627\u0628\u0637: '+url);}})();event.stopPropagation();" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;width:100%;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-        <div style="text-align:right;flex:1;">
-          <div style="font-size:13px;font-weight:800;">إرسال رابط التنزيل</div>
-          <div style="font-size:11px;opacity:0.85;">انسخ الرابط وشاركه في المحادثة</div>
-        </div>
-      </button>
-      <!-- واتساب -->
       <a href="javascript:void(0)" onclick="openWhatsApp()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;">
         <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         <div style="text-align:right;flex:1;">
@@ -15515,7 +16544,7 @@ body.light-mode .nav-item.active::before {
       wdNoPinToast:'🔒 يجب إنشاء كلمة مرور الدفع أولاً لتتمكن من السحب',wdEnterAddressToast:'⚠️ الرجاء إدخال عنوان الإرسال',wdEnterAmountToast:'⚠️ الرجاء إدخال الكمية',wdEnterPasswordToast:'⚠️ الرجاء إدخال كلمة مرور التعامل',wdWrongPasswordToast:'❌ كلمة مرور الدفع غير صحيحة',wdSuccessToast:'✅ تم إرسال طلب السحب بنجاح',wdPasteManuallyToast:'📋 الرجاء اللصق يدوياً',wdScanQRToast:'📷 مسح QR غير متاح في هذا المتصفح',
       derrTitle:'حدث خطأ ما',derrSub:'هذه الخدمة غير متاحة حالياً',
       assetRefreshToast:'🔄 تم تحديث البيانات',assetSwitchToast:'🔁 تبديل نوع الحساب',
-      toast:'🌐 تم تغيير اللغة إلى العربية',loginPassOldEmpty:'⚠️ أدخل كلمة المرور الحالية',loginPassTooShort:'⚠️ كلمة المرور يجب أن تكون 8 أحرف على الأقل',loginPassMismatch:'⚠️ كلمتا المرور غير متطابقتين',loginPassSuccess:'✅ تم تغيير كلمة المرور بنجاح',pcPassStrLabels:['','ضعيفة','متوسطة','جيدة','قوية جداً'],pinCorrectToast:'✅ صحيح — أدخل رمز PIN الجديد الآن',pinWrongToast:'⚠️ رمز PIN غير صحيح، حاول مجدداً',pinReenterToast:'🔁 أعد إدخال الرمز للتأكيد',pinSavedToast:'✅ تم حفظ رمز PIN بنجاح',pinMismatchToast:'⚠️ الرمزان غير متطابقان، حاول مجدداً',notifNoneToast:'🔔 لا توجد إشعارات جديدة',notifOnToast:'🔔 تم تفعيل الإشعارات',notifOffToast:'🔕 تم إيقاف الإشعارات',darkModeLabel:'الوضع الداكن',darkModeToast:'🌙 تم تفعيل الوضع الداكن',lightModeLabel:'الوضع الفاتح',lightModeToast:'☀️ تم تفعيل الوضع الفاتح',logoutToast:'👋 تم تسجيل الخروج بنجاح',kycLabelCountryIssue:'بلد الإصدار',kycLabelDocType:'نوع الوثيقة',dateLocale:'ar-SA',wfTitle:'محفظة العقود الآجلة',wfBalanceLabel:'إجمالي رصيد المحفظة',wfUnrealizedLabel:'إجمالي الأرباح والخسائر غير المحققة:',wfAvailMarginLabel:'الهامش المتاح',wfPosMrgLabel:'هامش المراكز',wfOrdMrgLabel:'هامش الطلبات',wfMrgRatioLabel:'نسبة الهامش',wfMaxLevLabel:'الرافعة المالية القصوى',wfTodayPerfLabel:'أداء اليوم',wfTodayProfitLabel:'ربح اليوم',wfTradesCountLabel:'عدد الصفقات',wfTradesUnit:'صفقة',wfWinRateLabel:'نسبة الفوز',wfWinRateUnit:'من الصفقات',wfOpenPosLabel:'المراكز المفتوحة',wfContractTypeLabel:'عقود آجلة · 20×',wfBuyLongLabel:'شراء (Long)',wfEntryPriceLabel:'سعر الدخول',wfCurPriceLabel:'السعر الحالي',wfPnlLabel:'الأرباح/الخسائر',wfNoPosLabel:'لا توجد مراكز أخرى مفتوحة',wfTotalProfitLabel:'الأرباح الإجمالية (كل الوقت)',wfTotalTradesLabel:'إجمالي الصفقات المنفذة',wfTotalTradesVal:'43 صفقة',wfLiqLabel:'سعر التصفية المقدر',
+      toast:'🌐 تم تغيير اللغة إلى العربية',loginPassOldEmpty:'⚠️ أدخل كلمة المرور الحالية',loginPassTooShort:'⚠️ كلمة المرور يجب أن تكون 8 أحرف على الأقل',loginPassMismatch:'⚠️ كلمتا المرور غير متطابقتين',loginPassSuccess:'✅ تم تغيير كلمة المرور بنجاح',pcPassStrLabels:['','ضعيفة','متوسطة','جيدة','قوية جداً'],pinCorrectToast:'✅ صحيح — أدخل رمز PIN الجديد الآن',pinWrongToast:'⚠️ رمز PIN غير صحيح، حاول مجدداً',pinReenterToast:'🔁 أعد إدخال الرمز للتأكيد',pinSavedToast:'✅ تم حفظ رمز PIN بنجاح',pinMismatchToast:'⚠️ الرمزان غير متطابقان، حاول مجدداً',notifNoneToast:'🔔 لا توجد إشعارات جديدة',notifOnToast:'🔔 تم تفعيل الإشعارات',notifOffToast:'🔕 تم إيقاف الإشعارات',darkModeLabel:'الوضع الداكن',darkModeToast:'🌙 تم تفعيل الوضع الداكن',lightModeLabel:'الوضع الفاتح',lightModeToast:'☀️ تم تفعيل الوضع الفاتح',logoutToast:'👋 تم تسجيل الخروج بنجاح',kycLabelCountryIssue:'بلد الإصدار',kycLabelDocType:'نوع الوثيقة',dateLocale:'ar-SA',wfTitle:'محفظة العقود الآجلة',wfBalanceLabel:'إجمالي رصيد المحفظة',wfUnrealizedLabel:'إجمالي الأرباح والخسائر غير المحققة:',wfAvailMarginLabel:'الهامش المتاح',wfPosMrgLabel:'هامش المراكز',wfOrdMrgLabel:'هامش الطلبات',wfMrgRatioLabel:'نسبة الهامش',wfMaxLevLabel:'الرافعة المالية القصوى',wfTodayPerfLabel:'أداء اليوم',wfTodayProfitLabel:'ربح اليوم',wfTradesCountLabel:'عدد الصفقات',wfTradesUnit:'صفقة',wfWinRateLabel:'نسبة الفوز',wfWinRateUnit:'من الصفقات',wfOpenPosLabel:'المراكز المفتوحة',wfContractTypeLabel:'عقود آجلة · 20×',wfBuyLongLabel:'شراء (Long)',wfEntryPriceLabel:'سعر الدخول',wfCurPriceLabel:'السعر الحالي',wfPnlLabel:'الأرباح/الخسائر',wfNoPosLabel:'لا توجد مراكز أخرى مفتوحة',wfTotalProfitLabel:'الأرباح الإجمالية (كل الوقت)',wfTotalTradesLabel:'إجمالي الصفقات المنفذة',wfTotalTradesVal:'0.000',wfLiqLabel:'سعر التصفية المقدر',
       wpTitle:'محفظة العقود الدائمة',wpBalanceLabel:'إجمالي رصيد المحفظة',wpUnrealizedLabel:'الأرباح والخسائر غير المحققة:',wpAvailMarginLabel:'الهامش المتاح',wpPosMrgLabel:'هامش المراكز',wpTotalPosLabel:'إجمالي قيمة المراكز',wpMrgRatioLabel:'نسبة الهامش',wpMaxLevLabel:'الرافعة القصوى',wpFundingRateTitle:'معدل التمويل الحالي',wpEvery8h:'كل 8 ساعات',wpOpenPosLabel:'المراكز الدائمة المفتوحة',wpNoPosMsg:'لا توجد مراكز دائمة مفتوحة',wpNoPosHint:'افتح مركزاً من تبويب العقود الدائمة',wpStatsLabel:'إحصائيات المحفظة',wpTotalFundingLabel:'إجمالي التمويل المدفوع',wpTotalProfitLabel:'إجمالي الأرباح',wpTradesLabel:'عدد الصفقات',wpAvgLevLabel:'متوسط الرافعة',wpRiskTitle:'تنبيه المخاطر',wpRiskText:'تداول العقود الدائمة ينطوي على مخاطر عالية بسبب الرافعة المالية. يرجى إدارة المخاطر بعناية وضبط أوامر وقف الخسارة.'},
     en:{htmlLang:'en',dir:'ltr',badge:'EN',
       navHome:'Home',navMarkets:'Markets',navDerivatives:'Derivatives',navPerpetual:'Perpetual',navAssets:'Assets',
@@ -15587,7 +16616,7 @@ body.light-mode .nav-item.active::before {
       wdNoPinToast:'🔒 Please set a payment password first to withdraw',wdEnterAddressToast:'⚠️ Please enter the recipient address',wdEnterAmountToast:'⚠️ Please enter the amount',wdEnterPasswordToast:'⚠️ Please enter the transaction password',wdWrongPasswordToast:'❌ Incorrect payment password',wdSuccessToast:'✅ Withdrawal request sent successfully',wdPasteManuallyToast:'📋 Please paste manually',wdScanQRToast:'📷 QR scan not available in this browser',
       derrTitle:'Something went wrong',derrSub:'This service is currently unavailable',
       assetRefreshToast:'🔄 Data refreshed',assetSwitchToast:'🔁 Account type switched',
-      toast:'🌐 Language changed to English',loginPassOldEmpty:'⚠️ Enter current password',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords do not match',loginPassSuccess:'✅ Password changed successfully',pcPassStrLabels:['','Weak','Medium','Good','Very Strong'],pinCorrectToast:'✅ Correct — enter new PIN now',pinWrongToast:'⚠️ Incorrect PIN, try again',pinReenterToast:'🔁 Re-enter PIN to confirm',pinSavedToast:'✅ PIN saved successfully',pinMismatchToast:'⚠️ PINs do not match, try again',notifNoneToast:'🔔 No new notifications',notifOnToast:'🔔 Notifications enabled',notifOffToast:'🔕 Notifications disabled',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode enabled',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode enabled',logoutToast:'👋 Logged out successfully',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-GB',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'43 trades',wfLiqLabel:'Est. Liquidation Price',
+      toast:'🌐 Language changed to English',loginPassOldEmpty:'⚠️ Enter current password',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords do not match',loginPassSuccess:'✅ Password changed successfully',pcPassStrLabels:['','Weak','Medium','Good','Very Strong'],pinCorrectToast:'✅ Correct — enter new PIN now',pinWrongToast:'⚠️ Incorrect PIN, try again',pinReenterToast:'🔁 Re-enter PIN to confirm',pinSavedToast:'✅ PIN saved successfully',pinMismatchToast:'⚠️ PINs do not match, try again',notifNoneToast:'🔔 No new notifications',notifOnToast:'🔔 Notifications enabled',notifOffToast:'🔕 Notifications disabled',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode enabled',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode enabled',logoutToast:'👋 Logged out successfully',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-GB',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'0.000',wfLiqLabel:'Est. Liquidation Price',
       wpTitle:'Perpetual Wallet',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions',wpNoPosHint:'Open a position from the Perpetual tab',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning',wpRiskText:'Trading perpetual contracts involves high risk due to leverage. Please manage risk carefully and set stop-loss orders.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit',kycBtnSubtitleProcessing:'Your documents are being reviewed...',kycBtnSubtitleNone:'Verify your identity to unlock all features',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Unverified',kycBtnProgressApproved:'Verification complete',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start'},
     de:{htmlLang:'de',dir:'ltr',badge:'DE',
       navHome:'Startseite',navMarkets:'Märkte',navDerivatives:'Derivate',navPerpetual:'Perpetual',navAssets:'Vermögen',
@@ -15731,7 +16760,7 @@ body.light-mode .nav-item.active::before {
       wdNoPinToast:"🔒 Veuillez d'abord définir un mot de passe de paiement",wdEnterAddressToast:"⚠️ Veuillez entrer l'adresse du destinataire",wdEnterAmountToast:'⚠️ Veuillez entrer le montant',wdEnterPasswordToast:'⚠️ Veuillez entrer le mot de passe de transaction',wdWrongPasswordToast:'❌ Mot de passe de paiement incorrect',wdSuccessToast:'✅ Demande de retrait envoyée avec succès',wdPasteManuallyToast:'📋 Veuillez coller manuellement',wdScanQRToast:'📷 Scan QR non disponible dans ce navigateur',
       derrTitle:'Une erreur est survenue',derrSub:'Ce service est actuellement indisponible',
       assetRefreshToast:'🔄 Données actualisées',assetSwitchToast:'🔁 Type de compte changé',
-      toast:'🌐 Langue changée en Français',loginPassOldEmpty:'⚠️ Entrez le mot de passe actuel',loginPassTooShort:'⚠️ Le mot de passe doit comporter au moins 8 caractères',loginPassMismatch:'⚠️ Les mots de passe ne correspondent pas',loginPassSuccess:'✅ Mot de passe modifié avec succès',pcPassStrLabels:['','Faible','Moyen','Bon','Très fort'],pinCorrectToast:'✅ Correct — entrez le nouveau PIN',pinWrongToast:'⚠️ PIN incorrect, réessayez',pinReenterToast:'🔁 Ré-entrez le PIN pour confirmer',pinSavedToast:'✅ PIN enregistré avec succès',pinMismatchToast:'⚠️ Les PIN ne correspondent pas',notifNoneToast:'🔔 Aucune nouvelle notification',notifOnToast:'🔔 Notifications activées',notifOffToast:'🔕 Notifications désactivées',darkModeLabel:'Mode sombre',darkModeToast:'🌙 Mode sombre activé',lightModeLabel:'Mode clair',lightModeToast:'☀️ Mode clair activé',logoutToast:'👋 Déconnexion réussie',kycLabelCountryIssue:"Pays d'émission",kycLabelDocType:'Type de document',dateLocale:'fr-FR',wfTitle:'Portefeuille Futures',wfBalanceLabel:'Solde total du portefeuille',wfUnrealizedLabel:'PnL non réalisé total :',wfAvailMarginLabel:'Marge disponible',wfPosMrgLabel:'Marge de position',wfOrdMrgLabel:'Marge de commande',wfMrgRatioLabel:'Ratio de marge',wfMaxLevLabel:'Levier max',wfTodayPerfLabel:'Performance du jour',wfTodayProfitLabel:'Profit du jour',wfTradesCountLabel:'Transactions',wfTradesUnit:'trades',wfWinRateLabel:'Taux de réussite',wfWinRateUnit:'des trades',wfOpenPosLabel:'Positions ouvertes',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Achat (Long)',wfEntryPriceLabel:"Prix d'entrée",wfCurPriceLabel:'Prix actuel',wfPnlLabel:'PnL',wfNoPosLabel:'Aucune autre position ouverte',wfTotalProfitLabel:'Profit total (tout le temps)',wfTotalTradesLabel:'Total des trades exécutés',wfTotalTradesVal:'43 trades',wfLiqLabel:'Prix de liquidation estimé',
+      toast:'🌐 Langue changée en Français',loginPassOldEmpty:'⚠️ Entrez le mot de passe actuel',loginPassTooShort:'⚠️ Le mot de passe doit comporter au moins 8 caractères',loginPassMismatch:'⚠️ Les mots de passe ne correspondent pas',loginPassSuccess:'✅ Mot de passe modifié avec succès',pcPassStrLabels:['','Faible','Moyen','Bon','Très fort'],pinCorrectToast:'✅ Correct — entrez le nouveau PIN',pinWrongToast:'⚠️ PIN incorrect, réessayez',pinReenterToast:'🔁 Ré-entrez le PIN pour confirmer',pinSavedToast:'✅ PIN enregistré avec succès',pinMismatchToast:'⚠️ Les PIN ne correspondent pas',notifNoneToast:'🔔 Aucune nouvelle notification',notifOnToast:'🔔 Notifications activées',notifOffToast:'🔕 Notifications désactivées',darkModeLabel:'Mode sombre',darkModeToast:'🌙 Mode sombre activé',lightModeLabel:'Mode clair',lightModeToast:'☀️ Mode clair activé',logoutToast:'👋 Déconnexion réussie',kycLabelCountryIssue:"Pays d'émission",kycLabelDocType:'Type de document',dateLocale:'fr-FR',wfTitle:'Portefeuille Futures',wfBalanceLabel:'Solde total du portefeuille',wfUnrealizedLabel:'PnL non réalisé total :',wfAvailMarginLabel:'Marge disponible',wfPosMrgLabel:'Marge de position',wfOrdMrgLabel:'Marge de commande',wfMrgRatioLabel:'Ratio de marge',wfMaxLevLabel:'Levier max',wfTodayPerfLabel:'Performance du jour',wfTodayProfitLabel:'Profit du jour',wfTradesCountLabel:'Transactions',wfTradesUnit:'trades',wfWinRateLabel:'Taux de réussite',wfWinRateUnit:'des trades',wfOpenPosLabel:'Positions ouvertes',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Achat (Long)',wfEntryPriceLabel:"Prix d'entrée",wfCurPriceLabel:'Prix actuel',wfPnlLabel:'PnL',wfNoPosLabel:'Aucune autre position ouverte',wfTotalProfitLabel:'Profit total (tout le temps)',wfTotalTradesLabel:'Total des trades exécutés',wfTotalTradesVal:'0.000',wfLiqLabel:'Prix de liquidation estimé',
       wpTitle:'Portefeuille Perpétuel',wpBalanceLabel:'Solde total du portefeuille',wpUnrealizedLabel:'PnL non réalisé :',wpAvailMarginLabel:'Marge disponible',wpPosMrgLabel:'Marge de position',wpTotalPosLabel:'Valeur totale des positions',wpMrgRatioLabel:'Ratio de marge',wpMaxLevLabel:'Levier max',wpFundingRateTitle:'Taux de financement actuel',wpEvery8h:'Toutes les 8h',wpOpenPosLabel:'Positions perpétuelles ouvertes',wpNoPosMsg:'Aucune position perpétuelle ouverte',wpNoPosHint:'Ouvrez une position depuis l\'onglet Perpétuel',wpStatsLabel:'Statistiques du portefeuille',wpTotalFundingLabel:'Total des frais de financement',wpTotalProfitLabel:'Profit total',wpTradesLabel:'Nombre de trades',wpAvgLevLabel:'Levier moyen',wpRiskTitle:'Avertissement de risque',wpRiskText:'Le trading de contrats perpétuels comporte des risques élevés en raison du levier. Gérez le risque avec soin et définissez des ordres stop-loss.',kycBtnSubtitleApproved:'Identité vérifiée — limite de retrait illimitée',kycBtnSubtitleProcessing:'Vos documents sont en cours d\'examen...',kycBtnSubtitleNone:'Vérifiez votre identité pour accéder à toutes les fonctionnalités',kycBtnBadgeApproved:'Vérifié ✓',kycBtnBadgeProcessing:'En cours',kycBtnBadgeNone:'Non vérifié',kycBtnProgressApproved:'Vérification terminée',kycBtnProgressProcessing:'Examen en cours',kycBtnProgressNone:'Prêt à commencer'},
     sg:{htmlLang:'en-SG',dir:'ltr',badge:'SG',
       navHome:'Home',navMarkets:'Markets',navDerivatives:'Derivatives',navPerpetual:'Perpetual',navAssets:'Assets',
@@ -15803,7 +16832,7 @@ body.light-mode .nav-item.active::before {
       wdNoPinToast:'🔒 Must set payment password first lah',wdEnterAddressToast:'⚠️ Please enter recipient address lah',wdEnterAmountToast:'⚠️ Please enter amount lah',wdEnterPasswordToast:'⚠️ Please enter transaction password lah',wdWrongPasswordToast:'❌ Wrong payment password lah',wdSuccessToast:'✅ Withdrawal request sent lah!',wdPasteManuallyToast:'📋 Please paste manually lah',wdScanQRToast:'📷 QR scan not available in this browser',
       derrTitle:'Something went wrong lah',derrSub:'This service is temporarily unavailable',
       assetRefreshToast:'🔄 Data refreshed lah',assetSwitchToast:'🔁 Account type switched',
-      toast:'🌐 Language changed to Singapore English',loginPassOldEmpty:'⚠️ Enter current password lah',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords no match lah',loginPassSuccess:'✅ Password changed successfully lah',pcPassStrLabels:['','Weak','OK Only','Good','Very Strong Lah'],pinCorrectToast:'✅ Correct lah — enter new PIN now',pinWrongToast:'⚠️ Wrong PIN lah, try again',pinReenterToast:'🔁 Re-enter PIN to confirm lah',pinSavedToast:'✅ PIN saved lah!',pinMismatchToast:'⚠️ PINs no match lah',notifNoneToast:'🔔 No new notifications lah',notifOnToast:'🔔 Notifications on lah',notifOffToast:'🔕 Notifications off lah',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode on lah',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode on lah',logoutToast:'👋 Logged out lah!',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-SG',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance lah",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions lah',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'43 trades',wfLiqLabel:'Est. Liquidation Price',
+      toast:'🌐 Language changed to Singapore English',loginPassOldEmpty:'⚠️ Enter current password lah',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords no match lah',loginPassSuccess:'✅ Password changed successfully lah',pcPassStrLabels:['','Weak','OK Only','Good','Very Strong Lah'],pinCorrectToast:'✅ Correct lah — enter new PIN now',pinWrongToast:'⚠️ Wrong PIN lah, try again',pinReenterToast:'🔁 Re-enter PIN to confirm lah',pinSavedToast:'✅ PIN saved lah!',pinMismatchToast:'⚠️ PINs no match lah',notifNoneToast:'🔔 No new notifications lah',notifOnToast:'🔔 Notifications on lah',notifOffToast:'🔕 Notifications off lah',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode on lah',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode on lah',logoutToast:'👋 Logged out lah!',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-SG',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance lah",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions lah',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'0.000',wfLiqLabel:'Est. Liquidation Price',
       wpTitle:'Perpetual Wallet Lah',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate Lah',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions lah',wpNoPosHint:'Open a position from the Perpetual tab lah',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning Lah',wpRiskText:'Trading perpetual contracts is very risky one because of leverage. Please manage risk carefully and set stop-loss orders lah.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit lah!',kycBtnSubtitleProcessing:'Your documents being reviewed lah...',kycBtnSubtitleNone:'Verify your identity to unlock all features lah',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Not Verified',kycBtnProgressApproved:'Verification done lah',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start lah'}
   }; window._T=T;
   function st(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
@@ -17424,6 +18453,188 @@ body.x-scrolling .tab-panel.active { display: block !important; }
   animation: none !important;
   opacity: 0 !important;
 }
+
+        /* === light mode: sticky-bottom + bs-sheet === */
+        body.light-mode .deriv-sticky-bottom { background: var(--bg-secondary) !important; border-top: 1px solid var(--border) !important; }
+        body.light-mode .deriv-trade-btns { background: var(--bg-secondary) !important; }
+        body.light-mode #bsSheet { background: var(--bg-secondary) !important; }
+        body.light-mode #bsPriceInp, body.light-mode #bsAmtInp { color: var(--text) !important; }
+        /* dark-mode: shrink dark overrides padding */
+        body:not(.light-mode) .deriv-trade-btns { padding: 4px 10px 3px !important; }
 </style>
+
+
+<script>
+/* ===== Bottom Sheet شراء / بيع ===== */
+(function () {
+    var _mode    = 'buy';
+    var _type    = 'market';
+    var _pair    = 'BTC';
+    var _balance = 10000;
+    var _open    = false;
+
+    function livePrice() {
+        var el = document.getElementById('derivLivePrice');
+        return el ? parseFloat(el.textContent.replace(/,/g, '')) || 64000 : 64000;
+    }
+    function syncPair() {
+        var el = document.getElementById('derivPairName');
+        if (el) _pair = el.textContent.replace(/\s/g, '').split('/')[0] || 'BTC';
+    }
+
+    /* ---------- فتح ---------- */
+    window.bsOpenSheet = function (mode) {
+        if (_open) return;
+        _open = true;
+        syncPair();
+        var overlay = document.getElementById('bsOverlay');
+        var sheet   = document.getElementById('bsSheet');
+        if (!sheet) return;
+        overlay.style.display = 'block';
+        sheet.style.display   = 'block';
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                sheet.style.transform = 'translateY(0)';
+            });
+        });
+        bsSwitchMode(mode);
+        bsUpdateTotal();
+    };
+
+    /* ---------- إغلاق ---------- */
+    window.bsCloseSheet = function () {
+        if (!_open) return;
+        _open = false;
+        var sheet   = document.getElementById('bsSheet');
+        var overlay = document.getElementById('bsOverlay');
+        if (!sheet) return;
+        sheet.style.transform = 'translateY(100%)';
+        setTimeout(function () {
+            sheet.style.display   = 'none';
+            overlay.style.display = 'none';
+        }, 350);
+    };
+
+    /* ---------- تبديل شراء/بيع ---------- */
+    window.bsSwitchMode = function (mode) {
+        _mode = mode;
+        syncPair();
+        var btnB = document.getElementById('bsSheetTabBuy');
+        var btnS = document.getElementById('bsSheetTabSell');
+        var title  = document.getElementById('bsSheetTitle');
+        var submit = document.getElementById('bsSubmitBtn');
+        if (!btnB) return;
+
+        var GRN = 'linear-gradient(135deg,#10b981,#059669)';
+        var RED = 'linear-gradient(135deg,#ef4444,#dc2626)';
+        var OFF = 'rgba(15,30,55,0.8)';
+
+        if (mode === 'buy') {
+            btnB.style.background = GRN; btnB.style.color = '#fff';
+            btnS.style.background = OFF; btnS.style.color = '#64748b';
+            if (title)  title.textContent  = 'شراء ' + _pair;
+            if (submit) { submit.textContent = 'شراء ' + _pair; submit.style.background = GRN; submit.style.boxShadow = '0 4px 18px rgba(16,185,129,0.38)'; }
+        } else {
+            btnS.style.background = RED; btnS.style.color = '#fff';
+            btnB.style.background = OFF; btnB.style.color = '#64748b';
+            if (title)  title.textContent  = 'بيع ' + _pair;
+            if (submit) { submit.textContent = 'بيع ' + _pair; submit.style.background = RED; submit.style.boxShadow = '0 4px 18px rgba(239,68,68,0.35)'; }
+        }
+        bsUpdateTotal();
+    };
+
+    /* ---------- نوع الأمر ---------- */
+    window.bsSetType = function (type) {
+        _type = type;
+        ['market','limit','stop'].forEach(function (t) {
+            var el = document.getElementById('bsot_' + t);
+            if (!el) return;
+            var isActive = (t === type);
+            el.style.background  = isActive ? 'rgba(16,185,129,0.12)' : 'rgba(15,30,55,0.6)';
+            el.style.color       = isActive ? '#10b981' : '#64748b';
+            el.style.borderColor = isActive ? 'rgba(16,185,129,0.45)' : 'rgba(60,100,150,0.4)';
+        });
+        var row = document.getElementById('bsPriceRow');
+        if (row) row.style.display = (type === 'market') ? 'none' : 'block';
+        bsUpdateTotal();
+    };
+
+    /* ---------- +/- ---------- */
+    window.bsStepField = function (field, dir) {
+        if (field === 'price') {
+            var inp = document.getElementById('bsPriceInp');
+            if (!inp) return;
+            var v = parseFloat(inp.value) || 0;
+            inp.value = Math.max(0, v + dir * (v > 1000 ? 10 : 1)).toFixed(2);
+        } else {
+            var inp2 = document.getElementById('bsAmtInp');
+            if (!inp2) return;
+            var v2 = parseFloat(inp2.value) || 0;
+            inp2.value = Math.max(0, v2 + dir * (v2 >= 1 ? 0.1 : 0.001)).toFixed(3);
+        }
+        bsUpdateTotal();
+    };
+
+    /* ---------- نسبة مئوية ---------- */
+    window.bsSetPct = function (btn, pct) {
+        btn.parentElement.querySelectorAll('button').forEach(function (b) {
+            b.style.background  = 'rgba(15,30,55,0.5)';
+            b.style.color       = '#64748b';
+            b.style.borderColor = 'rgba(60,100,150,0.4)';
+        });
+        btn.style.background  = 'rgba(16,185,129,0.18)';
+        btn.style.color       = '#10b981';
+        btn.style.borderColor = 'rgba(16,185,129,0.45)';
+
+        var maxAmt = _balance / livePrice();
+        var inp = document.getElementById('bsAmtInp');
+        if (inp) inp.value = (maxAmt * pct / 100).toFixed(3);
+        bsUpdateTotal();
+    };
+
+    /* ---------- إجمالي ---------- */
+    window.bsUpdateTotal = function () {
+        var inp   = document.getElementById('bsAmtInp');
+        var total = document.getElementById('bsTotal');
+        var cur   = document.getElementById('bsAmtCur');
+        if (!inp || !total) return;
+        var amt   = parseFloat(inp.value) || 0;
+        var price = (_type !== 'market')
+            ? (parseFloat((document.getElementById('bsPriceInp') || {}).value) || livePrice())
+            : livePrice();
+        total.textContent = '≈ ' + (amt * price).toLocaleString('en', {maximumFractionDigits: 2}) + ' USDT';
+        if (cur) cur.textContent = _pair;
+    };
+
+    /* ---------- إرسال الأمر ---------- */
+    window.bsSubmit = function () {
+        var inp = document.getElementById('bsAmtInp');
+        var amt = parseFloat((inp || {}).value) || 0;
+        if (amt <= 0) { if (typeof showToast === 'function') showToast('⚠️ أدخل كمية صحيحة'); return; }
+        syncPair();
+        var action = _mode === 'buy' ? 'شراء' : 'بيع';
+        var label  = {market: 'سوق', limit: 'محدد', stop: 'إيقاف'}[_type];
+        if (typeof showToast === 'function')
+            showToast('✅ ' + action + ' ' + amt.toFixed(3) + ' ' + _pair + ' (' + label + ')');
+        // حفظ في التاريخ
+        try {
+            var hist  = document.getElementById('derivPanelHistory');
+            var empty = document.getElementById('derivHistoryEmpty');
+            if (hist && empty) {
+                empty.style.display = 'none';
+                var row = document.createElement('div');
+                row.style.cssText = 'display:flex;justify-content:space-between;align-items:center;padding:9px 4px;border-bottom:1px solid rgba(30,58,95,0.3);font-size:12px;';
+                row.innerHTML = '<span style="color:' + (_mode === 'buy' ? '#10b981' : '#ef4444') + ';font-weight:700;">' + action + ' ' + amt.toFixed(3) + ' ' + _pair + '</span>'
+                    + '<span style="color:#64748b;">' + label + '</span>'
+                    + '<span style="color:#64748b;">' + new Date().toLocaleTimeString('ar') + '</span>';
+                hist.insertBefore(row, hist.firstChild);
+            }
+        } catch (e) {}
+        bsCloseSheet();
+    };
+
+    setInterval(syncPair, 2000);
+})();
+</script>
 
 </body></html>

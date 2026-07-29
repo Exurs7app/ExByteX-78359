@@ -9603,7 +9603,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
           var _syncTraders = [
               {
                   initials: 'CK',
-                  name: 'Alpha Trader Pro',
+                  name: 'Quantum Elite Pro',
                   badge: 'TOP',
                   badgeColor: '#f59e0b',
                   avatarGrad: 'linear-gradient(145deg,#f59e0b,#f97316)',
@@ -9614,7 +9614,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
               },
               {
                   initials: 'WX',
-                  name: 'Whale Tracking Bot',
+                  name: 'Neptune Analytics Pro',
                   badge: 'PRO',
                   badgeColor: '#8b5cf6',
                   avatarGrad: 'linear-gradient(145deg,#8b5cf6,#6d28d9)',
@@ -9625,7 +9625,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
               },
               {
                   initials: 'MX',
-                  name: 'Max Profit AI',
+                  name: 'Apex Capital AI',
                   badge: 'VIP',
                   badgeColor: '#ec4899',
                   avatarGrad: 'linear-gradient(145deg,#ec4899,#be185d)',
@@ -9641,25 +9641,24 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
               var s = document.createElement('style');
               s.id = 'syncCardStyles';
               s.textContent =
-                  '@keyframes syncPulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.6)}50%{box-shadow:0 0 0 5px rgba(16,185,129,0)}}'+
-                  '@keyframes syncGlow{0%,100%{opacity:1}50%{opacity:0.7}}'+
-                  '.sync-card:hover{transform:translateY(-1px);transition:transform 0.2s ease;}'+
-                  '.sync-card{background:linear-gradient(160deg,#0c1a30,#0a1525);}'+
+                  '@keyframes syncPulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,0.5)}50%{box-shadow:0 0 0 4px rgba(16,185,129,0)}}'+
+                  '@keyframes syncRowIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}'+
+                  '.sync-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);animation:syncRowIn 0.28s ease;}'+
+                  '.sync-card:active{background:rgba(255,255,255,0.06);}'+
                   '.sync-card-name{color:#e2e8f0;}'+
-                  '.sync-dot{border:2px solid #0c1a30!important;}'+
-                  '.sync-rate-box{background:rgba(8,36,24,0.85)!important;}'+
-                  '.sync-rate-label{color:#a7f3d0!important;}'+
+                  '.sync-dot{border:1.5px solid #0c1a30!important;}'+
+                  '.sync-rate-box{background:transparent!important;}'+
+                  '.sync-rate-label{color:#6ee7b7!important;}'+
                   '.sync-prog-track{background:rgba(255,255,255,0.07)!important;}'+
-                  '.sync-prog-pct{color:#94a3b8!important;}'+
+                  '.sync-prog-pct{color:#64748b!important;}'+
                   '.sync-modal-box{background:rgba(255,255,255,0.04)!important;border:1px solid rgba(255,255,255,0.08)!important;}'+
                   '.sync-modal-divider{background:rgba(255,255,255,0.07)!important;}'+
                   '.sync-modal-tname{color:#e2e8f0!important;}'+
-                  'body.light-mode .sync-card{background:linear-gradient(160deg,#eef4fb,#dde9f5)!important;}'+
-                  'body.light-mode .sync-card-name{color:#1e293b!important;}'+
-                  'body.light-mode .sync-dot{border-color:#dde9f5!important;}'+
-                  'body.light-mode .sync-rate-box{background:rgba(16,185,129,0.08)!important;}'+
+                  'body.light-mode .sync-card{background:#fff!important;border-color:rgba(0,0,0,0.07)!important;}'+
+                  'body.light-mode .sync-card-name{color:#0f172a!important;}'+
+                  'body.light-mode .sync-dot{border-color:#f1f5f9!important;}'+
                   'body.light-mode .sync-rate-label{color:#047857!important;}'+
-                  'body.light-mode .sync-prog-track{background:rgba(0,0,0,0.08)!important;}'+
+                  'body.light-mode .sync-prog-track{background:rgba(0,0,0,0.07)!important;}'+
                   'body.light-mode .sync-prog-pct{color:#475569!important;}'+
                   'body.light-mode .sync-modal-box{background:rgba(0,0,0,0.04)!important;border:1px solid rgba(0,0,0,0.1)!important;}'+
                   'body.light-mode .sync-modal-divider{background:rgba(0,0,0,0.08)!important;}'+
@@ -9668,40 +9667,42 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
           }
 
           function _buildSyncCard(t) {
-              var glow = t.glowColor || 'rgba(99,102,241,0.25)';
+              var glow = t.glowColor || 'rgba(99,102,241,0.2)';
               var card = document.createElement('div');
               card.className = 'sync-card';
               card.style.cssText =
-                  'border-radius:14px;overflow:hidden;'+
-                  'margin-bottom:9px;box-shadow:0 0 22px '+glow+',0 2px 12px rgba(0,0,0,0.5);'+
-                  'animation:fadeInUp 0.32s ease;transition:transform 0.2s,box-shadow 0.3s;';
+                  'border-radius:12px;overflow:hidden;margin-bottom:7px;'+
+                  'transition:transform 0.18s,opacity 0.18s;';
               card.innerHTML =
-                  '<div style="height:3px;background:'+t.borderGrad+';box-shadow:0 0 10px '+glow+';"></div>'+
-                  '<div style="padding:10px 11px 10px;">'+
-                      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;">'+
-                          '<span class="sync-card-name" style="font-size:13px;font-weight:800;letter-spacing:0.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:68%;">'+t.name+'</span>'+
-                          '<span style="padding:2px 8px;border-radius:20px;background:'+t.badgeColor+';color:#fff;font-size:10px;font-weight:800;letter-spacing:0.6px;flex-shrink:0;box-shadow:0 0 10px '+t.badgeColor+'99;">'+t.badge+'</span>'+
+                  /* شريط لون علوي رفيع */
+                  '<div style="height:2px;background:'+t.borderGrad+';opacity:0.9;"></div>'+
+                  '<div style="padding:9px 11px;display:flex;align-items:center;gap:10px;">'+
+                      /* الأفاتار الصغير */
+                      '<div style="position:relative;flex-shrink:0;">'+
+                          '<div style="width:36px;height:36px;border-radius:9px;background:'+t.avatarGrad+';display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;letter-spacing:0.3px;">'+t.initials+'</div>'+
+                          '<div class="sync-dot" style="position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#10b981;animation:syncPulse 2s ease-in-out infinite;"></div>'+
                       '</div>'+
-                      '<div style="display:flex;align-items:center;gap:8px;">'+
-                          '<div style="position:relative;flex-shrink:0;">'+
-                              '<div style="width:46px;height:46px;border-radius:11px;background:'+t.avatarGrad+';display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;color:#fff;letter-spacing:0.5px;box-shadow:0 0 14px '+glow+';">'+t.initials+'</div>'+
-                              '<div class="sync-dot" style="position:absolute;bottom:1px;right:1px;width:9px;height:9px;border-radius:50%;background:#10b981;animation:syncPulse 2s ease-in-out infinite;"></div>'+
+                      /* الاسم والشارة */
+                      '<div style="flex:1;min-width:0;">'+
+                          '<div style="display:flex;align-items:center;gap:5px;margin-bottom:3px;">'+
+                              '<span class="sync-card-name" style="font-size:12px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+t.name+'</span>'+
+                              '<span style="padding:1px 6px;border-radius:20px;background:'+t.badgeColor+';color:#fff;font-size:9px;font-weight:800;flex-shrink:0;">'+t.badge+'</span>'+
                           '</div>'+
-                          '<div class="sync-rate-box" style="flex:1;border-radius:10px;padding:6px 10px;border:1px solid rgba(16,185,129,0.22);min-width:0;">'+
-                              '<div style="display:flex;align-items:center;gap:5px;margin-bottom:1px;">'+
-                                  '<svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="12" height="12"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>'+
-                                  '<span class="sync-rate-label" style="font-size:10px;font-weight:600;">معدل العائد:</span>'+
+                          /* شريط التقدم مع النسبة */
+                          '<div style="display:flex;align-items:center;gap:5px;">'+
+                              '<div class="sync-prog-track" style="flex:1;height:3px;border-radius:99px;overflow:hidden;">'+
+                                  '<div style="width:'+t.progress+'%;height:100%;border-radius:99px;background:'+t.borderGrad+';transition:width 1.2s cubic-bezier(0.4,0,0.2,1);"></div>'+
                               '</div>'+
-                              '<div style="font-size:18px;font-weight:900;color:#10b981;text-shadow:0 0 12px rgba(16,185,129,0.6);line-height:1.2;">'+t.returnRate+'</div>'+
+                              '<span class="sync-prog-pct" style="font-size:9px;font-weight:700;flex-shrink:0;">'+t.progress+'%</span>'+
                           '</div>'+
-                          '<button onclick="window._doSyncNow(this)" style="flex-shrink:0;padding:7px 9px;border-radius:10px;border:none;background:linear-gradient(135deg,#5b5ef4,#7c3aed);color:#fff;font-size:11px;font-weight:800;cursor:pointer;font-family:inherit;line-height:1.45;min-width:56px;box-shadow:0 0 14px rgba(99,102,241,0.5),0 2px 8px rgba(0,0,0,0.3);">مزامنة<br>الآن</button>'+
                       '</div>'+
-                      '<div style="margin-top:9px;display:flex;align-items:center;gap:7px;">'+
-                          '<div class="sync-prog-track" style="flex:1;height:4px;border-radius:99px;overflow:hidden;">'+
-                              '<div style="width:'+t.progress+'%;height:100%;border-radius:99px;background:'+t.borderGrad+';box-shadow:0 0 6px '+glow+';transition:width 1.2s cubic-bezier(0.4,0,0.2,1);"></div>'+
-                          '</div>'+
-                          '<span class="sync-prog-pct" style="font-size:11px;font-weight:700;flex-shrink:0;min-width:26px;text-align:right;">'+t.progress+'%</span>'+
+                      /* معدل العائد */
+                      '<div style="text-align:center;flex-shrink:0;min-width:44px;">'+
+                          '<div style="font-size:13px;font-weight:900;color:#10b981;line-height:1;">'+t.returnRate+'</div>'+
+                          '<div class="sync-rate-label" style="font-size:9px;font-weight:600;margin-top:1px;">عائد</div>'+
                       '</div>'+
+                      /* زر المزامنة */
+                      '<button onclick="window._doSyncNow(this)" data-trader-name="'+t.name+'" data-return-rate="'+t.returnRate+'" style="flex-shrink:0;padding:6px 10px;border-radius:8px;border:none;background:linear-gradient(135deg,#5b5ef4,#7c3aed);color:#fff;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 2px 8px rgba(99,102,241,0.4);">مزامنة</button>'+
                   '</div>';
               return card;
           }
@@ -9759,15 +9760,11 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
           window._syncSubBalance = window._syncSubBalance || 0;
 
           window._doSyncNow = function(btn) {
-              // استخراج بيانات المتداول من البطاقة
-              var card = btn.closest ? btn.closest('.sync-card') : null;
-              if (!card) { var p = btn.parentElement; for(var i=0;i<5&&p;i++){ if(p.className&&p.className.indexOf('sync-card')>=0){card=p;break;} p=p.parentElement; } }
-              var nameEl = card ? card.querySelector('span[style*="font-size:13px"]') : null;
-              var traderName = nameEl ? nameEl.textContent.trim() : 'المتداول';
-              var rateEl = card ? card.querySelector('[style*="font-size:18px"][style*="font-weight:900"]') : null;
-              var returnRate = rateEl ? rateEl.textContent.trim() : '';
+              // استخراج بيانات المتداول من data attributes
+              var traderName = btn.getAttribute('data-trader-name') || 'المتداول';
+              var returnRate = btn.getAttribute('data-return-rate') || '';
 
-              var subPrice = traderName.indexOf('Max') !== -1 ? 175 : traderName.indexOf('Alpha') !== -1 ? 85 : traderName.indexOf('Wh') !== -1 ? 65 : 50;
+              var subPrice = traderName.indexOf('Apex') !== -1 ? 175 : traderName.indexOf('Quantum') !== -1 ? 85 : traderName.indexOf('Neptune') !== -1 ? 65 : 50;
               var bal = window._syncSubBalance;
               var hasBal = bal >= subPrice;
 
@@ -9853,7 +9850,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                       '<div style="overflow-y:auto;flex:1;padding:22px 16px 40px;-webkit-overflow-scrolling:touch;">'+
                           '<div style="margin-bottom:16px;">'+
                               '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">اسم المتداول / البوت</label>'+
-                              '<input id="syncAddName" type="text" placeholder="مثال: Alpha Trader Pro" style="width:100%;padding:14px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-size:15px;font-family:inherit;outline:none;box-sizing:border-box;" />'+
+                              '<input id="syncAddName" type="text" placeholder="مثال: Quantum Elite Pro" style="width:100%;padding:14px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-size:15px;font-family:inherit;outline:none;box-sizing:border-box;" />'+
                           '</div>'+
                           '<div style="margin-bottom:16px;">'+
                               '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">الرمز المختصر (حرفان)</label>'+
@@ -13805,6 +13802,14 @@ function hhCopyUID(){
     <div style="font-size:15px;font-weight:800;color:#fff;margin-bottom:4px;">تواصل معنا</div>
     <div style="font-size:11px;color:#8b9bb4;margin-bottom:18px;">اختر طريقة التواصل المفضلة لديك</div>
     <div style="display:flex;flex-direction:column;gap:10px;">
+      <!-- زر إرسال رابط التنزيل -->
+      <button onclick="(function(){var url=window.location.href.split('?')[0];var msg='\u0631\u0627\u0628\u0637 \u062a\u0646\u0632\u064a\u0644 \u0627\u0644\u062a\u0637\u0628\u064a\u0642: '+url;if(navigator.clipboard){navigator.clipboard.writeText(url).then(function(){var b=event.target.closest('button');var orig=b.innerHTML;b.innerHTML='<span style=\"font-size:13px;font-weight:800;\">\u2705 \u062a\u0645 \u0646\u0633\u062e \u0627\u0644\u0631\u0627\u0628\u0637!</span>';setTimeout(function(){b.innerHTML=orig;},2000);});}else{var ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('\u062a\u0645 \u0646\u0633\u062e \u0627\u0644\u0631\u0627\u0628\u0637: '+url);}})();event.stopPropagation();" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;background:linear-gradient(135deg,#7c3aed,#5b21b6);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;border:none;font-family:inherit;width:100%;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        <div style="text-align:right;flex:1;">
+          <div style="font-size:13px;font-weight:800;">إرسال رابط التنزيل</div>
+          <div style="font-size:11px;opacity:0.85;">انسخ الرابط وشاركه في المحادثة</div>
+        </div>
+      </button>
       <!-- واتساب -->
       <a href="javascript:void(0)" onclick="openWhatsApp()" style="display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:12px;background:linear-gradient(135deg,#25d366,#128c7e);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;">
         <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>

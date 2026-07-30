@@ -8138,11 +8138,15 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                 <div class="tab-panel" id="tabSync" style="padding:0;">
 
                     <!-- زر الرجوع -->
-                    <div style="display:flex;align-items:center;padding:10px 14px 8px;background:var(--bg-secondary);border-bottom:1px solid var(--border);flex-shrink:0;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;background:var(--bg-secondary);border-bottom:1px solid var(--border);flex-shrink:0;">
                         <button onclick="switchTab('tabHome', document.querySelector('[data-tab=\'tabHome\']'))" style="background:rgba(255,255,255,0.08);border:none;cursor:pointer;color:var(--text,#e2e8f0);padding:7px;display:flex;align-items:center;justify-content:center;border-radius:10px;line-height:1;width:34px;height:34px;flex-shrink:0;transition:background 0.15s;" onmouseenter="this.style.background='rgba(255,255,255,0.14)'" onmouseleave="this.style.background='rgba(255,255,255,0.08)'">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><polyline points="15 18 9 12 15 6"/></svg>
                         </button>
-                        <span style="font-size:16px;font-weight:800;color:var(--text);margin-right:10px;">مزامنة</span>
+                        <span id="syncTabTitle" style="font-size:16px;font-weight:800;color:var(--text);margin-right:10px;">مزامنة</span>
+                        <button onclick="openSyncHistory()" style="background:none;border:none;cursor:pointer;color:var(--text-secondary,#8b9ab8);padding:4px 6px;display:flex;align-items:center;gap:5px;line-height:1;transition:color 0.2s;" onmouseenter="this.style.color='#10b981'" onmouseleave="this.style.color='var(--text-secondary,#8b9ab8)'">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            
+                        </button>
                     </div>
 
                     <!-- Hero Banner — نشر المستخدمين (v3 dynamic) -->
@@ -8153,8 +8157,8 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
 
                         <!-- Text -->
                         <div class="dih-text-wrap" style="position:absolute;bottom:0;left:0;right:0;text-align:center;padding:0 16px 14px;z-index:2;">
-                            <div class="dih-title" style="color:#ffffff;font-size:16px;font-weight:900;line-height:1.4;direction:rtl;text-shadow:0 0 30px rgba(0,180,255,0.9),0 0 12px rgba(0,220,255,0.6),0 2px 6px rgba(0,0,0,0.7);margin-bottom:4px;">نشر المستخدمين الأصدقاء للتزامن معهم</div>
-                            <div class="dih-subtitle" style="color:rgba(170,220,255,1);font-size:12px;direction:rtl;font-weight:500;text-shadow:0 0 12px rgba(0,160,255,0.5);">الحصول على عمولة دعوة عالية</div>
+                            <div id="dihSyncHeroTitle" class="dih-title" style="color:#ffffff;font-size:16px;font-weight:900;line-height:1.4;direction:rtl;text-shadow:0 0 30px rgba(0,180,255,0.9),0 0 12px rgba(0,220,255,0.6),0 2px 6px rgba(0,0,0,0.7);margin-bottom:4px;">نشر المستخدمين الأصدقاء للتزامن معهم</div>
+                            <div id="dihSyncHeroSub" class="dih-subtitle" style="color:rgba(170,220,255,1);font-size:12px;direction:rtl;font-weight:500;text-shadow:0 0 12px rgba(0,160,255,0.5);">الحصول على عمولة دعوة عالية</div>
                         </div>
                     </div>
 
@@ -8165,13 +8169,33 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                             <input id="syncSupportCodeInput" type="text" placeholder="يرجى إدخال كود الطلب" style="flex:1;background:none;border:none;outline:none;color:var(--text,#e2e8f0);font-size:16px;font-weight:600;padding:14px 16px;direction:rtl;font-family:inherit;" />
                         </div>
                         <!-- زر التزامن بالصفقة -->
-                        <button onclick="syncSupportConfirm()" style="width:100%;padding:13px 10px;background:linear-gradient(135deg,#2585ff 0%,#0050cc 100%);border:none;border-radius:9px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;direction:rtl;box-shadow:0 4px 20px rgba(20,100,255,0.42);transition:opacity 0.18s;" onmousedown="this.style.opacity='0.82'" onmouseup="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">التزامن بالصفقة</button>
+                        <button id="syncConfirmBtn" onclick="syncSupportConfirm()" style="width:100%;padding:13px 10px;background:linear-gradient(135deg,#2585ff 0%,#0050cc 100%);border:none;border-radius:9px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;direction:rtl;box-shadow:0 4px 20px rgba(20,100,255,0.42);transition:opacity 0.18s;" onmousedown="this.style.opacity='0.82'" onmouseup="this.style.opacity='1'" onmouseleave="this.style.opacity='1'">التزامن بالصفقة</button>
                     </div>
 
                     <!-- قائمة المتداولين للمزامنة -->
                     <div style="padding:4px 12px 24px;">
-                        <div style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:12px;direction:rtl;padding-top:8px;">المتداولون المتاحون</div>
+                        <div id="syncAvailableTradersTitle" style="font-size:14px;font-weight:800;color:var(--text);margin-bottom:12px;direction:rtl;padding-top:8px;">المتداولون المتاحون</div>
                         <div id="syncTabTraderList"></div>
+                    </div>
+
+                    <!-- شاشة سجل المزامنة -->
+                    <div id="syncHistoryScreen" style="display:none;position:fixed;inset:0;z-index:100000;background:var(--bg,#0a1628);overflow-y:auto;-webkit-overflow-scrolling:touch;">
+                        <!-- هيدر السجل -->
+                        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:var(--bg,#0a1628);z-index:5;">
+                            <button onclick="closeSyncHistory()" style="background:none;border:none;cursor:pointer;color:var(--text,#e2e8f0);padding:4px;display:flex;align-items:center;line-height:1;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><polyline points="15 18 9 12 15 6"/></svg>
+                            </button>
+                            <span id="syncHistoryTitle" style="font-size:17px;font-weight:700;color:var(--text,#e2e8f0);">سجل المزامنة</span>
+                            <div style="width:32px;"></div>
+                        </div>
+                        <!-- محتوى السجل: فارغ -->
+                        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px;">
+                            <div style="width:72px;height:72px;border-radius:50%;background:rgba(139,155,180,0.1);display:flex;align-items:center;justify-content:center;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="rgba(139,155,180,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                            </div>
+                            <div id="syncHistoryEmpty" style="font-size:15px;font-weight:700;color:var(--text-secondary,#8b9ab8);">لا توجد معاملات</div>
+                            <div id="syncHistoryEmptySub" style="font-size:12px;color:rgba(139,155,180,0.6);text-align:center;max-width:200px;">لم يتم تسجيل أي عمليات مزامنة بعد</div>
+                        </div>
                     </div>
 
                 </div>
@@ -8454,19 +8478,19 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                     <!-- صف إحصائيات 24 ساعة -->
                     <div class="deriv-24h-row">
                         <div class="deriv-24h-item">
-                            <span class="deriv-24h-lbl">24H أعلى</span>
+                            <span class="deriv-24h-lbl" id="deriv24hHighLbl">24H أعلى</span>
                             <span class="deriv-24h-val hi" id="deriv24hHigh">65,480.00</span>
                         </div>
                         <div class="deriv-24h-item">
-                            <span class="deriv-24h-lbl">24H أدنى</span>
+                            <span class="deriv-24h-lbl" id="deriv24hLowLbl">24H أدنى</span>
                             <span class="deriv-24h-val lo" id="deriv24hLow">62,100.00</span>
                         </div>
                         <div class="deriv-24h-item">
-                            <span class="deriv-24h-lbl">حجم 24H</span>
+                            <span class="deriv-24h-lbl" id="deriv24hVolLbl">حجم 24H</span>
                             <span class="deriv-24h-val" id="deriv24hVol">1.24B</span>
                         </div>
                         <div class="deriv-24h-item">
-                            <span class="deriv-24h-lbl">معدل التمويل</span>
+                            <span class="deriv-24h-lbl" id="deriv24hFundingLbl">معدل التمويل</span>
                             <span class="deriv-24h-val" id="deriv24hFunding" style="color:#10b981;">+0.0100%</span>
                         </div>
                     </div>
@@ -10326,6 +10350,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
           }
 
           function _buildSyncCard(t) {
+              var _ct=window._T&&window._lang&&window._T[window._lang]?window._T[window._lang]:window._T&&window._T['ar']?window._T['ar']:{syncCardReturnLabel:'عائد',syncCardSyncBtn:'مزامنة'};
               var glow = t.glowColor || 'rgba(99,102,241,0.2)';
               var card = document.createElement('div');
               card.className = 'sync-card';
@@ -10358,10 +10383,10 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                       /* معدل العائد */
                       '<div style="text-align:center;flex-shrink:0;min-width:44px;">'+
                           '<div style="font-size:13px;font-weight:900;color:#10b981;line-height:1;">'+t.returnRate+'</div>'+
-                          '<div class="sync-rate-label" style="font-size:9px;font-weight:600;margin-top:1px;">عائد</div>'+
+                          '<div class="sync-rate-label" style="font-size:9px;font-weight:600;margin-top:1px;">'+(_ct.syncCardReturnLabel||'عائد')+'</div>'+
                       '</div>'+
                       /* زر المزامنة */
-                      '<button onclick="window._doSyncNow(this)" data-trader-name="'+t.name+'" data-return-rate="'+t.returnRate+'" style="flex-shrink:0;padding:6px 10px;border-radius:8px;border:none;background:linear-gradient(135deg,#5b5ef4,#7c3aed);color:#fff;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 2px 8px rgba(99,102,241,0.4);">مزامنة</button>'+
+                      '<button onclick="window._doSyncNow(this)" data-trader-name="'+t.name+'" data-return-rate="'+t.returnRate+'" style="flex-shrink:0;padding:6px 10px;border-radius:8px;border:none;background:linear-gradient(135deg,#5b5ef4,#7c3aed);color:#fff;font-size:10px;font-weight:800;cursor:pointer;font-family:inherit;white-space:nowrap;box-shadow:0 2px 8px rgba(99,102,241,0.4);">'+((_ct&&_ct.syncCardSyncBtn)||'مزامنة')+'</button>'+
                   '</div>';
               return card;
           }
@@ -10370,16 +10395,17 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
           function openMoreSheet() {
               _injectSyncStyles();
               var el = document.getElementById('hxMoreFull');
+              if (el) { el.remove(); el = null; }
               if (!el) {
                   el = document.createElement('div');
                   el.id = 'hxMoreFull';
-                  el.style.cssText = 'position:fixed;inset:0;z-index:90100;display:flex;flex-direction:column;background:var(--bg-secondary);transform:translateY(100%);transition:transform 0.32s cubic-bezier(0.32,0.72,0,1);direction:rtl;';
+                  var _mLang=window._T&&window._lang&&window._T[window._lang]?window._T[window._lang]:{dir:'rtl'};el.style.cssText = 'position:fixed;inset:0;z-index:90100;display:flex;flex-direction:column;background:var(--bg-secondary);transform:translateY(100%);transition:transform 0.32s cubic-bezier(0.32,0.72,0,1);direction:'+(_mLang.dir||'rtl')+';';
 
                   var hdr = document.createElement('div');
                   hdr.style.cssText = 'display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0;';
                   hdr.innerHTML =
                       '<div style="width:36px;height:36px;"></div>'+
-                      '<span style="font-size:17px;font-weight:800;color:var(--text);">قائمة المزامنة</span>'+
+                      '<span style="font-size:17px;font-weight:800;color:var(--text);">'+(window._T&&window._lang&&window._T[window._lang]&&window._T[window._lang].syncListTitle?window._T[window._lang].syncListTitle:'قائمة المزامنة')+'</span>'+
                       '<button onclick="window.closeMoreFull()" style="width:36px;height:36px;border-radius:50%;background:rgba(139,155,180,0.12);border:none;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;">'+
                           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'+
                       '</button>';
@@ -10419,6 +10445,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
           window._syncSubBalance = window._syncSubBalance || 0;
 
           window._doSyncNow = function(btn) {
+              var _ct=window._T&&window._lang&&window._T[window._lang]?window._T[window._lang]:window._T&&window._T['ar']?window._T['ar']:{};
               // استخراج بيانات المتداول من data attributes
               var traderName = btn.getAttribute('data-trader-name') || 'المتداول';
               var returnRate = btn.getAttribute('data-return-rate') || '';
@@ -10432,35 +10459,35 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
 
               var modal = document.createElement('div');
               modal.id = 'syncSubModal';
-              modal.style.cssText = 'position:fixed;inset:0;z-index:90300;display:flex;align-items:flex-end;background:rgba(0,0,0,0.55);direction:rtl;';
+              modal.style.cssText = 'position:fixed;inset:0;z-index:90300;display:flex;align-items:flex-end;background:rgba(0,0,0,0.55);direction:'+((_ct&&_ct.dir)||'rtl')+';';
               modal.innerHTML =
                   '<div style="width:100%;background:var(--bg-secondary,#0f1b2d);border-radius:20px 20px 0 0;padding:18px 16px 32px;border-top:1px solid var(--border,rgba(255,255,255,0.1));">'+
                       '<div style="width:38px;height:4px;border-radius:99px;background:var(--border);margin:0 auto 16px;"></div>'+
-                      '<div style="font-size:14px;font-weight:800;color:var(--text,#e2e8f0);text-align:center;margin-bottom:14px;">تفاصيل الاشتراك</div>'+
+                      '<div style="font-size:14px;font-weight:800;color:var(--text,#e2e8f0);text-align:center;margin-bottom:14px;">'+(_ct.syncSubDetailsTitle||'تفاصيل الاشتراك')+'</div>'+
                       '<div class="sync-modal-box" style="border-radius:12px;padding:11px 13px;margin-bottom:11px;">'+
                           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">'+
-                              '<span style="font-size:11px;color:var(--text-secondary,#8b9bb4);">المتداول</span>'+
+                              '<span style="font-size:11px;color:var(--text-secondary,#8b9bb4);">'+(_ct.syncSubTraderLabel||'المتداول')+'</span>'+
                               '<span class="sync-modal-tname" style="font-size:11px;font-weight:700;">'+traderName+'</span>'+
                           '</div>'+
                           (returnRate ? '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">'+
-                              '<span style="font-size:11px;color:var(--text-secondary,#8b9bb4);">معدل العائد</span>'+
+                              '<span style="font-size:11px;color:var(--text-secondary,#8b9bb4);">'+(_ct.syncSubReturnRateLabel||'معدل العائد')+'</span>'+
                               '<span style="font-size:11px;font-weight:700;color:#10b981;">'+returnRate+'</span>'+
                           '</div>' : '')+
                           '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;">'+
-                              '<span style="font-size:11px;color:var(--text-secondary,#8b9bb4);">رسوم الاشتراك</span>'+
-                              '<span style="font-size:11px;font-weight:700;color:#f59e0b;">'+subPrice+' USDT / شهر</span>'+
+                              '<span style="font-size:11px;color:var(--text-secondary,#8b9bb4);">'+(_ct.syncSubFeeLabel||'رسوم الاشتراك')+'</span>'+
+                              '<span style="font-size:11px;font-weight:700;color:#f59e0b;">'+subPrice+' USDT / '+(_ct.syncSubPerMonth||'شهر')+'</span>'+
                           '</div>'+
                           '<div class="sync-modal-divider" style="height:1px;margin:7px 0;"></div>'+
                           '<div style="display:flex;justify-content:space-between;align-items:center;">'+
-                              '<span style="font-size:11px;color:var(--text-secondary,#8b9bb4);">رصيدك المتاح</span>'+
+                              '<span style="font-size:11px;color:var(--text-secondary,#8b9bb4);">'+(_ct.syncSubAvailBalance||'رصيدك المتاح')+'</span>'+
                               '<span style="font-size:11px;font-weight:700;color:'+(hasBal?'#10b981':'#ef4444')+';">'+bal.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})+' USDT</span>'+
                           '</div>'+
                       '</div>'+
                       (hasBal
-                          ? '<button id="syncSubConfirmBtn" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#5b5ef4,#7c3aed);color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 0 18px rgba(99,102,241,0.4);">تأكيد الاشتراك</button>'
-                          : '<div style="text-align:center;padding:11px;border-radius:12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);font-size:11px;color:#ef4444;font-weight:600;">⚠️ رصيد غير كافٍ للاشتراك</div>'
+                          ? '<button id="syncSubConfirmBtn" style="width:100%;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#5b5ef4,#7c3aed);color:#fff;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 0 18px rgba(99,102,241,0.4);">'+(_ct.syncSubConfirmBtn||'تأكيد الاشتراك')+'</button>'
+                          : '<div style="text-align:center;padding:11px;border-radius:12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);font-size:11px;color:#ef4444;font-weight:600;">'+(_ct.syncSubInsufficient||'⚠️ رصيد غير كافٍ للاشتراك')+'</div>'
                       )+
-                      '<button id="syncSubCancelBtn" style="width:100%;padding:9px;border-radius:12px;border:none;background:transparent;color:var(--text-secondary,#8b9bb4);font-size:12px;cursor:pointer;font-family:inherit;margin-top:7px;">إلغاء</button>'+
+                      '<button id="syncSubCancelBtn" style="width:100%;padding:9px;border-radius:12px;border:none;background:transparent;color:var(--text-secondary,#8b9bb4);font-size:12px;cursor:pointer;font-family:inherit;margin-top:7px;">'+(_ct.syncSubCancelBtn||'إلغاء')+'</button>'+
                   '</div>';
 
               document.body.appendChild(modal);
@@ -10472,15 +10499,15 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                       window._syncSubBalance -= subPrice;
                       modal.remove();
                       var orig = btn.innerHTML;
-                      btn.innerHTML = '⏳<br>جارٍ...';
+                      var _ctNow=window._T&&window._lang&&window._T[window._lang]?window._T[window._lang]:{};btn.innerHTML = (_ctNow.syncSubLoadingBtn||'⏳')+'<br>...';
                       btn.style.opacity = '0.7';
                       btn.disabled = true;
                       setTimeout(function(){
-                          btn.innerHTML = '✅<br>مفعّل';
+                          btn.innerHTML = (_ctNow.syncSubActivatedBtn||'✅')+'<br>...';
                           btn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
                           btn.style.opacity = '1';
                           btn.disabled = false;
-                          if (typeof showToast === 'function') showToast('✅ تم تفعيل الاشتراك بنجاح', 'success');
+                          if (typeof showToast === 'function') showToast((_ctNow.syncSubSuccessToast||'✅ تم تفعيل الاشتراك بنجاح'), 'success');
                       }, 1200);
                   });
               }
@@ -10494,37 +10521,38 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
           // ===== شاشة إضافة تفاصيل المزامنة =====
           window.openAddSyncModal = function() {
               var modal = document.getElementById('addSyncModal');
+              if (modal) { modal.remove(); modal = null; }
               if (!modal) {
                   modal = document.createElement('div');
                   modal.id = 'addSyncModal';
-                  modal.style.cssText = 'position:fixed;inset:0;z-index:90200;display:flex;flex-direction:column;background:var(--bg-secondary);transform:translateY(100%);transition:transform 0.32s cubic-bezier(0.32,0.72,0,1);direction:rtl;';
+                  var _alLang=window._T&&window._lang&&window._T[window._lang]?window._T[window._lang]:{dir:'rtl'};modal.style.cssText = 'position:fixed;inset:0;z-index:90200;display:flex;flex-direction:column;background:var(--bg-secondary);transform:translateY(100%);transition:transform 0.32s cubic-bezier(0.32,0.72,0,1);direction:'+(_alLang.dir||'rtl')+';';
                   modal.innerHTML =
                       '<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px 12px;border-bottom:1px solid var(--border);flex-shrink:0;">'+
                           '<button onclick="window.closeAddSyncModal()" style="width:36px;height:36px;border-radius:50%;background:rgba(139,155,180,0.12);border:none;cursor:pointer;color:var(--text);display:flex;align-items:center;justify-content:center;">'+
                               '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>'+
                           '</button>'+
-                          '<span style="font-size:17px;font-weight:800;color:var(--text);">إضافة متداول</span>'+
+                          '<span style="font-size:17px;font-weight:800;color:var(--text);">'+(_alLang.syncAddTitle||'إضافة متداول')+'</span>'+
                           '<div style="width:36px;"></div>'+
                       '</div>'+
                       '<div style="overflow-y:auto;flex:1;padding:22px 16px 40px;-webkit-overflow-scrolling:touch;">'+
                           '<div style="margin-bottom:16px;">'+
-                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">اسم المتداول / البوت</label>'+
+                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">'+(_alLang.syncAddNameLabel||'اسم المتداول / البوت')+'</label>'+
                               '<input id="syncAddName" type="text" placeholder="مثال: Quantum Elite Pro" style="width:100%;padding:14px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-size:15px;font-family:inherit;outline:none;box-sizing:border-box;" />'+
                           '</div>'+
                           '<div style="margin-bottom:16px;">'+
-                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">الرمز المختصر (حرفان)</label>'+
+                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">'+(_alLang.syncAddInitialsLabel||'الرمز المختصر (حرفان)')+'</label>'+
                               '<input id="syncAddInitials" type="text" maxlength="2" placeholder="مثال: CK" style="width:100%;padding:14px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-size:15px;font-family:inherit;outline:none;box-sizing:border-box;text-transform:uppercase;" />'+
                           '</div>'+
                           '<div style="margin-bottom:16px;">'+
-                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">معدل العائد (%)</label>'+
+                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">'+(_alLang.syncAddRateLabel||'معدل العائد (%)')+'</label>'+
                               '<input id="syncAddRate" type="number" inputmode="decimal" placeholder="مثال: 145.2" style="width:100%;padding:14px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-size:15px;font-family:inherit;outline:none;box-sizing:border-box;transition:border-color 0.2s;" />'+
                           '</div>'+
                           '<div style="margin-bottom:16px;">'+
-                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">نسبة التقدم (0-100)</label>'+
+                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:8px;">'+(_alLang.syncAddProgressLabel||'نسبة التقدم (0-100)')+'</label>'+
                               '<input id="syncAddProgress" type="number" min="0" max="100" inputmode="numeric" placeholder="مثال: 72" style="width:100%;padding:14px 12px;border-radius:12px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-size:15px;font-family:inherit;outline:none;box-sizing:border-box;" />'+
                           '</div>'+
                           '<div style="margin-bottom:22px;">'+
-                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:10px;">نوع الشارة</label>'+
+                              '<label style="display:block;font-size:13px;color:var(--text-secondary);font-weight:600;margin-bottom:10px;">'+(_alLang.syncAddBadgeLabel||'نوع الشارة')+'</label>'+
                               '<div style="display:flex;gap:10px;">'+
                                   '<label style="flex:1;display:flex;align-items:center;gap:8px;padding:12px;border-radius:12px;background:var(--bg);border:1px solid var(--border);cursor:pointer;">'+
                                       '<input type="radio" name="syncBadge" value="TOP" style="accent-color:#f59e0b;" checked> <span style="color:#f59e0b;font-weight:700;">TOP</span>'+
@@ -10537,7 +10565,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
                                   '</label>'+
                               '</div>'+
                           '</div>'+
-                          '<button onclick="window.saveAddSync()" style="width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.5px;box-shadow:0 4px 14px rgba(99,102,241,0.4);">إضافة للقائمة</button>'+
+                          '<button onclick="window.saveAddSync()" style="width:100%;padding:16px;border-radius:14px;border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.5px;box-shadow:0 4px 14px rgba(99,102,241,0.4);">'+(_alLang.syncAddSubmitBtn||'إضافة للقائمة')+'</button>'+
                       '</div>';
                   document.body.appendChild(modal);
               } else {
@@ -10604,7 +10632,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
               if (list) list.appendChild(_buildSyncCard(trader));
 
               window.closeAddSyncModal();
-              if (typeof showToast === 'function') showToast('✅ تمت الإضافة بنجاح', 'success');
+              var _saLang=window._T&&window._lang&&window._T[window._lang]?window._T[window._lang]:{};if (typeof showToast === 'function') showToast((_saLang.syncAddSuccessToast||'✅ تمت الإضافة بنجاح'), 'success');
           };
     
 
@@ -11942,7 +11970,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
         <!-- زر السجل صغير في الأعلى -->
         <button onclick="openDepositHistory()" style="background:none;border:none;cursor:pointer;color:var(--text-secondary,#8b9ab8);padding:4px 6px;display:flex;align-items:center;gap:5px;line-height:1;transition:color 0.2s;" onmouseenter="this.style.color='#10b981'" onmouseleave="this.style.color='var(--text-secondary,#8b9ab8)'">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            <span id="depHistoryBtnText" style="font-size:12px;font-weight:600;">السجل</span>
+            
         </button>
     </div>
 
@@ -12413,8 +12441,8 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
         <span id="excModalTitle" style="font-size:18px;font-weight:700;color:var(--text,#e2e8f0);">صرف سريع</span>
-        <button onclick="exchangeShowHistory()" style="background:none;border:none;cursor:pointer;color:var(--text,#e2e8f0);padding:4px;display:flex;align-items:center;line-height:1;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="7" x2="15" y2="7"/><line x1="9" y1="11" x2="15" y2="11"/><line x1="9" y1="15" x2="12" y2="15"/></svg>
+        <button onclick="openExchangeHistory()" style="background:none;border:none;cursor:pointer;color:var(--text-secondary,#8b9ab8);padding:4px 6px;display:flex;align-items:center;gap:5px;line-height:1;transition:color 0.2s;" onmouseenter="this.style.color='#10b981'" onmouseleave="this.style.color='var(--text-secondary,#8b9ab8)'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
         </button>
     </div>
 
@@ -12488,6 +12516,26 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
 
         <!-- زر تحويل -->
         <button id="excConvertBtn" onclick="excDoConvert()" style="width:100%;padding:16px;border-radius:14px;border:none;background:#10b981;color:#fff;font-size:18px;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:0.5px;margin-top:20px;margin-bottom:30px;transition:background 0.2s;" onmousedown="this.style.background='#059669'" onmouseup="this.style.background='#10b981'">تحويل</button>
+    </div>
+
+    <!-- شاشة سجل الصرف السريع (داخل نفس المودال) -->
+    <div id="exchangeHistoryScreen" style="display:none;position:fixed;inset:0;z-index:100000;background:var(--bg,#0a1628);z-index:5;overflow-y:auto;">
+        <!-- هيدر السجل -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,0.08);position:sticky;top:0;background:var(--bg,#0a1628);z-index:5;">
+            <button onclick="closeExchangeHistory()" style="background:none;border:none;cursor:pointer;color:var(--text,#e2e8f0);padding:4px;display:flex;align-items:center;line-height:1;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="24" height="24"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <span id="excHistoryTitle" style="font-size:17px;font-weight:700;color:var(--text,#e2e8f0);">سجل الصرف السريع</span>
+            <div style="width:32px;"></div>
+        </div>
+        <!-- محتوى السجل: فارغ -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px;">
+            <div style="width:72px;height:72px;border-radius:50%;background:rgba(139,155,180,0.1);display:flex;align-items:center;justify-content:center;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="rgba(139,155,180,0.5)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="36" height="36"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <div id="excHistoryEmpty" style="font-size:15px;font-weight:700;color:var(--text-secondary,#8b9ab8);">لا توجد معاملات</div>
+            <div id="excHistoryEmptySub" style="font-size:12px;color:rgba(139,155,180,0.6);text-align:center;max-width:200px;">لم يتم تسجيل أي عمليات صرف بعد</div>
+        </div>
     </div>
 </div>
 
@@ -12676,9 +12724,15 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
         document.getElementById('excToAmount').textContent = '0';
     };
 
-    window.exchangeShowHistory = function(){
-        if(typeof toast === 'function'){var _tm=window._T&&window._T[window._lang||'ar'];toast((_tm&&_tm.excHistoryToast)||'📋 سجل الصرف السريع');}
+    window.openExchangeHistory = function(){
+        var s = document.getElementById('exchangeHistoryScreen');
+        if(s){ s.style.display='block'; var m=document.getElementById('exchangeModal'); if(m) m.scrollTop=0; }
     };
+    window.closeExchangeHistory = function(){
+        var s = document.getElementById('exchangeHistoryScreen');
+        if(s) s.style.display='none';
+    };
+    window.exchangeShowHistory = window.openExchangeHistory;
 
     window.openExchangeModal = function(){
         var modal = document.getElementById('exchangeModal');
@@ -13208,7 +13262,7 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
       </div>
       <div style="background:rgba(124,58,237,0.08);border-radius:10px;padding:10px 12px;">
         <div id="wpTradesLabel" style="font-size:11px;color:var(--text-secondary,#8b9bb4);margin-bottom:4px;">عدد الصفقات</div>
-        <div style="font-size:14px;font-weight:700;color:var(--text,#fff);">0 صفقة</div>
+        <div style="font-size:14px;font-weight:700;color:var(--text,#fff);">0 <span id="wpTradesUnit">صفقة</span></div>
       </div>
       <div style="background:rgba(124,58,237,0.08);border-radius:10px;padding:10px 12px;">
         <div id="wpAvgLevLabel" style="font-size:11px;color:var(--text-secondary,#8b9bb4);margin-bottom:4px;">متوسط الرافعة</div>
@@ -13670,7 +13724,9 @@ function hhCopyUID(){
       <div id="itModalTitle" style="font-size:17px;font-weight:700;color:var(--text,#fff);">تحويل داخلي</div>
       <div id="itModalSubtitle" style="font-size:11px;color:var(--text-secondary,#8b9bb4);margin-top:1px;">بين حسابات المنصة عبر UID</div>
     </div>
-    <button onclick="openITHistory()" style="margin-right:auto;background:rgba(15,30,51,0.9);border:1px solid rgba(60,100,150,0.35);border-radius:10px;padding:7px 13px;color:var(--text-secondary,#8b9bb4);font-size:12px;cursor:pointer;font-family:inherit;"><span id="itHistoryBtnLabel">السجل</span></button>
+    <button onclick="openITHistory()" style="margin-right:auto;background:none;border:none;cursor:pointer;color:var(--text-secondary,#8b9ab8);padding:4px 6px;display:flex;align-items:center;line-height:1;transition:color 0.2s;" onmouseenter="this.style.color='#10b981'" onmouseleave="this.style.color='var(--text-secondary,#8b9ab8)'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    </button>
   </div>
 
   <div style="padding:18px 16px 40px;">
@@ -14156,33 +14212,9 @@ function hhCopyUID(){
   };
 
   window.openITHistory = function(){
-    var hist = JSON.parse(localStorage.getItem('it_history')||'[]');
     var list = document.getElementById('itHistoryList');
     if(!list) return;
-    if(hist.length === 0){
-      list.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text-secondary,#8b9bb4);"><div style="font-size:40px;margin-bottom:12px;">📭</div><div style="font-size:14px;">لا توجد تحويلات داخلية بعد</div></div>';
-    } else {
-      list.innerHTML = hist.map(function(h){
-        return '<div style="background:rgba(15,30,51,0.85);border:1px solid rgba(30,58,95,0.5);border-radius:13px;padding:14px 16px;">'+
-          '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">'+
-            '<div style="display:flex;align-items:center;gap:10px;">'+
-              '<div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#f59e0b,#d97706);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#000;flex-shrink:0;">'+(h.to||'?').charAt(0)+'</div>'+
-              '<div><div style="font-size:13px;font-weight:700;color:var(--text,#fff);">'+(h.to||'')+'</div>'+
-              '<div style="font-size:10px;color:var(--text-secondary,#8b9bb4);font-family:monospace;letter-spacing:0.8px;">'+(h.toUID||'')+'</div></div>'+
-            '</div>'+
-            '<div style="text-align:left;">'+
-              '<div style="font-size:14px;font-weight:800;color:#ef4444;">-'+(h.amount||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:6})+' '+(h.currency||'')+'</div>'+
-              '<div style="font-size:10px;color:#10b981;font-weight:600;">مجاني</div>'+
-            '</div>'+
-          '</div>'+
-          '<div style="display:flex;justify-content:space-between;padding-top:8px;border-top:1px solid rgba(30,58,95,0.4);">'+
-            '<span style="font-size:10px;color:var(--text-secondary,#8b9bb4);font-family:monospace;">'+(h.txID||'')+'</span>'+
-            '<span style="font-size:10px;color:var(--text-secondary,#8b9bb4);">'+(h.time||'')+'</span>'+
-          '</div>'+
-          (h.note ? '<div style="font-size:11px;color:var(--text-secondary,#8b9bb4);margin-top:6px;">📝 '+h.note+'</div>' : '')+
-        '</div>';
-      }).join('');
-    }
+    list.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:16px;"><div style="width:72px;height:72px;border-radius:50%;background:rgba(139,155,180,0.1);display:flex;align-items:center;justify-content:center;"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"rgba(139,155,180,0.5)\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" width=\"36\" height=\"36\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"/><polyline points=\"14 2 14 8 20 8\"/><line x1=\"16\" y1=\"13\" x2=\"8\" y2=\"13\"/><line x1=\"16\" y1=\"17\" x2=\"8\" y2=\"17\"/></svg></div><div style=\"font-size:15px;font-weight:700;color:var(--text-secondary,#8b9ab8)\">لا توجد معاملات</div><div style=\"font-size:12px;color:rgba(139,155,180,0.6);text-align:center;max-width:200px\">لم يتم تسجيل أي تحويلات بعد</div></div>';
     var hs = document.getElementById('itHistoryScreen');
     if(hs){ hs.style.display = 'block'; hs.scrollTop = 0; }
   };
@@ -16472,7 +16504,7 @@ body.light-mode .nav-item.active::before {
   var T=window.T=window._T={
     ar:{htmlLang:'ar',dir:'rtl',badge:'AR',
       navHome:'الصفحة الرئيسية',navMarkets:'الأسواق',navDerivatives:'العقود المشتقة',navPerpetual:'عقد العملات المستمر',navAssets:'الأصول',
-      qaWithdraw:'سحب العملة',qaDeposit:'اضافة عملة',qaExchange:'صرف سريع',qaSync:'مزامنة',
+      qaWithdraw:'سحب العملة',qaDeposit:'اضافة عملة',qaExchange:'صرف سريع',qaSync:'مزامنة',syncTabTitle:'مزامنة',syncHistoryTitle:'سجل المزامنة',syncHistoryEmpty:'لا توجد معاملات',syncHistoryEmptySub:'لم يتم تسجيل أي عمليات مزامنة بعد',syncHeroTitle:'نشر المستخدمين الأصدقاء للتزامن معهم',syncHeroSub:'الحصول على عمولة دعوة عالية',syncInputPh:'يرجى إدخال كود الطلب',syncConfirmBtnText:'التزامن بالصفقة',syncAvailableTradersTitle:'المتداولون المتاحون',syncCardReturnLabel:'عائد',syncCardSyncBtn:'مزامنة',syncListTitle:'قائمة المزامنة',syncSubDetailsTitle:'تفاصيل الاشتراك',syncSubTraderLabel:'المتداول',syncSubReturnRateLabel:'معدل العائد',syncSubFeeLabel:'رسوم الاشتراك',syncSubPerMonth:'شهر',syncSubAvailBalance:'رصيدك المتاح',syncSubConfirmBtn:'تأكيد الاشتراك',syncSubInsufficient:'⚠️ رصيد غير كافٍ للاشتراك',syncSubCancelBtn:'إلغاء',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ تم تفعيل الاشتراك بنجاح',syncAddTitle:'إضافة متداول',syncAddNameLabel:'اسم المتداول / البوت',syncAddInitialsLabel:'الرمز المختصر (حرفان)',syncAddRateLabel:'معدل العائد (%)',syncAddProgressLabel:'نسبة التقدم (0-100)',syncAddBadgeLabel:'نوع الشارة',syncAddSubmitBtn:'إضافة للقائمة',syncAddSuccessToast:'✅ تمت الإضافة بنجاح',
       itModalTitle:'تحويل داخلي',itModalSubtitle:'بين حسابات المنصة عبر UID',itHistoryBtnLabel:'السجل',itBadge1Title:'فوري',itBadge1Sub:'لا انتظار',itBadge2Title:'صفري',itBadge2Sub:'بدون رسوم',itBadge3Title:'آمن',itMyUIDLabel:'🪪 UID الخاص بك',itMyUIDDesc:'أرسل هذا الرقم للمستلم ليتمكن من تحويل الأموال إليك',itCurrLabel:'العملة',itRecipientLabel:'UID المستلم',itRecipientPlaceholder:'أدخل الـ UID المكوّن من 10 أرقام',itAmountLabel:'المبلغ',itAvailLabel:'المتاح:',itSetAllBtn:'الكل',itFeeLabel:'رسوم التحويل',itFeeValue:'مجاني — 0.00',itRecAmountLabel:'المبلغ الذي يستلمه',itNoteLabel:'ملاحظة',itNoteOptional:'(اختياري)',itNotePlaceholder:'مثال: دفع اشتراك، هدية...',itInstructTitle:'تعليمات التحويل الداخلي',itStep1:'اطلب من المستلم تزويدك بـ <strong style="color:var(--text,#fff);">UID</strong> الخاص به من صفحة الأصول.',itStep2:'أدخل الـ UID المكوّن من <strong style="color:var(--text,#fff);">10 أرقام</strong> في الخانة أعلاه وتحقق من اسم الحساب.',itStep3:'اختر العملة والمبلغ واضغط <strong style="color:var(--text,#fff);">تحويل الآن</strong> لمراجعة تفاصيل العملية.',itStep4:'التحويل <strong style="color:#10b981;">فوري وبدون رسوم</strong> — يظهر في رصيد المستلم لحظياً.',itWarnText:'تأكد من صحة الـ UID قبل الإرسال — <strong>لا يمكن استرداد التحويلات</strong> بعد تأكيدها.',itSubmitBtnText:'تحويل الآن',itCfTitle:'تأكيد التحويل',itCfSubtitle:'يرجى مراجعة التفاصيل قبل الإرسال',itCfToLabel:'إلى',itCfAmountLabel:'المبلغ',itCfFeeLabel:'الرسوم',itCfFeeValue:'مجاني',itCfNoteLabel:'ملاحظة',itCancelBtn:'إلغاء',itConfirmBtn:'تأكيد الإرسال',itSuccessTitle:'تم التحويل بنجاح!',itTxIDLabel:'رقم العملية',itTimeLabel:'الوقت',itOkBtn:'حسناً',itHistoryScreenTitle:'سجل التحويلات الداخلية',itHistoryEmpty:'لا توجد تحويلات داخلية بعد',
       depModalTitle:'الإيداع',depHistoryBtnText:'السجل',depCurrSelectLabel:'اختيار العملة',depChainLabel:'اسم السلسلة :',depQRFallbackText:'رمز الاستجابة السريعة',depSaveQRBtn:'حفظ رمز الاستجابة السريعة',depAddrTitle:'عنوان الإيداع',depCopyBtn:'نسخ',depWarn1:'1. بعد إرسال الإيداع للعنوان أعلاه ، تحتاج إلى تأكيد عقدة الشبكة بالكامل قبل أن تتمكن من استلامها :',depWarn2:'2. يرجى التأكد من أمان جهاز الكمبيوتر والمتصفح الخاص بك لمنع.',depHistoryTitle:'سجل الإيداع',depHistoryEmpty:'لا توجد معاملات',depHistoryEmptySub:'لم يتم تسجيل أي عمليات إيداع بعد',
       headerTitle:'الإعدادات',copyBtn:'نسخ',
@@ -16539,18 +16571,18 @@ body.light-mode .nav-item.active::before {
       regBtn:'إنشاء الحساب',regSwitchText:'لديك حساب بالفعل؟',regSwitchLink:'تسجيل الدخول',registerPwaTooltip:'تثبيت التطبيق',registerLangTooltip:'اختر اللغة',
       derivDirectionLabel:'اتجاه',derivTimePeriodLabel:'الدورة الزمنية',derivCountdownLabel:'العد التنازلي',derivOrderExpiryLabel:'(UTC+3) وقت انتهاء الطلب',derivChartCandle:'شموع',derivChartLine:'خط',derivSubtabOrder:'ترتيب الموقع',derivSubtabHistory:'الطلبات التاريخية',derivSubtabSupport:'دعاني',derivSubtabPlan:'خطة المتابعة',derivHistoryEmpty:'لا توجد طلبات تاريخية',derivSupportStartBtn:'بدء أمر المتابعة',derivSupportCopyBtn:'نسخ التاريخ',derivSupportInputPh:'الرجاء إدخال رمز الطلب',derivSupportConfirmBtn:'تأكيد',derivPlanEmpty:'لا توجد خطط متابعة',derivBtnUp:'يعلو',derivBtnDown:'انخفاض',coinPickerTitle:'اختر العملة',coinSearchPh:'بحث...',perpHeaderTitle:'عقود العملات المستمرة',perpBackBtn:'رجوع',perpStatPairs:'إجمالي الأزواج',perpStat24h:'حجم 24س (USDT)',perpStatOpen:'مراكز مفتوحة',perpFilterAll:'الكل',perpSearchPh:'بحث عن عقد...',perpHeadPair:'زوج التداول',perpHeadPrice:'السعر',perpHeadFunding:'معدل التمويل',perpHead24h:'24س %',perpEmptyMsg:'لا توجد عقود مطابقة',perpPerpLabel:'دائمة',perpEvery8h:'كل 8س',mktHeadPair:'زوج التداول',mktHeadPrice:'السعر الأخير',mktHeadChange:'الارتفاعات<br/>والانخفاضات',mktSearchPh:'بحث...',
       excModalTitle:'صرف سريع',excFromStaticLabel:'استهلاك',excAvailableText:'متاح',excMaxBtn:'الحد الأقصى',excToStaticLabel:'الحصول على',excSlippageLabel:'انزلاق السعر',excRateLabel:'سعر الصرف الحالي',excConvertBtn:'تحويل',excPickerTitle:'اختيار العملة',excFromInputPh:'الرجاء إدخال الكمية',
-      excAvailableBalanceToast:'الرصيد المتاح: 0.00',excEnterAmountToast:'⚠️ الرجاء إدخال الكمية',excConvertSuccessToast:'✅ تم التحويل:',excHistoryToast:'📋 سجل الصرف السريع',
+      excAvailableBalanceToast:'الرصيد المتاح: 0.00',excEnterAmountToast:'⚠️ الرجاء إدخال الكمية',excConvertSuccessToast:'✅ تم التحويل:',excHistoryToast:'📋 سجل الصرف السريع',excHistoryTitle:'سجل الصرف السريع',excHistoryEmpty:'لا توجد معاملات',excHistoryEmptySub:'لم يتم تسجيل أي عمليات صرف بعد',
       wdModalTitle:'سحب العملات',wdAddressLabel:'عنوان الإرسال',wdAddressPlaceholder:'أدخل عنوان المحفظة',wdAmountLabel:'الكمية المستخرجة',wdBalanceLabel:'الرصيد المتوفر للسحب (USDT) :',wdMaxBtn:'السحب الكامل',wdPasswordLabel:'كلمة مرور التعامل',wdPasswordPlaceholder:'يرجى إدخال كلمة مرور التعامل',wdNetworkFeeLabel:'رسوم الشبكة',wdReceiveLabel:'المبلغ المستلم',wdConfirmBtn:'تأكيد السحب',wdSecNoteTitle:'ملاحظة أمنية',wdHistoryTitle:'سجل السحب',wdHistoryEmpty:'لا توجد معاملات',wdHistoryEmptySub:'لم يتم تسجيل أي عمليات سحب بعد',
       wdOtpTitle:'تأكيد عملية السحب',wdOtpSubtitle:'سيتم إرسال طلب السحب للمراجعة',wdOtpCancelBtn:'إلغاء',wdOtpConfirmBtn:'تأكيد',
       wdOtpLabelNetwork:'الشبكة',wdOtpLabelAddress:'العنوان',wdOtpLabelAmount:'الكمية',wdOtpLabelFee:'رسوم الشبكة',wdOtpLabelReceive:'المبلغ المستلم',
       wdNoPinToast:'🔒 يجب إنشاء كلمة مرور الدفع أولاً لتتمكن من السحب',wdEnterAddressToast:'⚠️ الرجاء إدخال عنوان الإرسال',wdEnterAmountToast:'⚠️ الرجاء إدخال الكمية',wdEnterPasswordToast:'⚠️ الرجاء إدخال كلمة مرور التعامل',wdWrongPasswordToast:'❌ كلمة مرور الدفع غير صحيحة',wdSuccessToast:'✅ تم إرسال طلب السحب بنجاح',wdPasteManuallyToast:'📋 الرجاء اللصق يدوياً',wdScanQRToast:'📷 مسح QR غير متاح في هذا المتصفح',
       derrTitle:'حدث خطأ ما',derrSub:'هذه الخدمة غير متاحة حالياً',
-      assetRefreshToast:'🔄 تم تحديث البيانات',assetSwitchToast:'🔁 تبديل نوع الحساب',
+      assetRefreshToast:'🔄 تم تحديث البيانات',assetSwitchToast:'🔁 تبديل نوع الحساب',assetLiveConnected:'متصل — تحديث مباشر',assetLastUpdateNow:'آخر تحديث الآن',assetLastUpdatePrefix:'آخر تحديث ',deriv24hHighLbl:'24H أعلى',deriv24hLowLbl:'24H أدنى',deriv24hVolLbl:'حجم 24H',deriv24hFundingLbl:'معدل التمويل',wpTradesUnit:'صفقة',
       toast:'🌐 تم تغيير اللغة إلى العربية',loginPassOldEmpty:'⚠️ أدخل كلمة المرور الحالية',loginPassTooShort:'⚠️ كلمة المرور يجب أن تكون 8 أحرف على الأقل',loginPassMismatch:'⚠️ كلمتا المرور غير متطابقتين',loginPassSuccess:'✅ تم تغيير كلمة المرور بنجاح',pcPassStrLabels:['','ضعيفة','متوسطة','جيدة','قوية جداً'],pinCorrectToast:'✅ صحيح — أدخل رمز PIN الجديد الآن',pinWrongToast:'⚠️ رمز PIN غير صحيح، حاول مجدداً',pinReenterToast:'🔁 أعد إدخال الرمز للتأكيد',pinSavedToast:'✅ تم حفظ رمز PIN بنجاح',pinMismatchToast:'⚠️ الرمزان غير متطابقان، حاول مجدداً',notifNoneToast:'🔔 لا توجد إشعارات جديدة',notifOnToast:'🔔 تم تفعيل الإشعارات',notifOffToast:'🔕 تم إيقاف الإشعارات',darkModeLabel:'الوضع الداكن',darkModeToast:'🌙 تم تفعيل الوضع الداكن',lightModeLabel:'الوضع الفاتح',lightModeToast:'☀️ تم تفعيل الوضع الفاتح',logoutToast:'👋 تم تسجيل الخروج بنجاح',kycLabelCountryIssue:'بلد الإصدار',kycLabelDocType:'نوع الوثيقة',dateLocale:'ar-SA',wfTitle:'محفظة العقود الآجلة',wfBalanceLabel:'إجمالي رصيد المحفظة',wfUnrealizedLabel:'إجمالي الأرباح والخسائر غير المحققة:',wfAvailMarginLabel:'الهامش المتاح',wfPosMrgLabel:'هامش المراكز',wfOrdMrgLabel:'هامش الطلبات',wfMrgRatioLabel:'نسبة الهامش',wfMaxLevLabel:'الرافعة المالية القصوى',wfTodayPerfLabel:'أداء اليوم',wfTodayProfitLabel:'ربح اليوم',wfTradesCountLabel:'عدد الصفقات',wfTradesUnit:'صفقة',wfWinRateLabel:'نسبة الفوز',wfWinRateUnit:'من الصفقات',wfOpenPosLabel:'المراكز المفتوحة',wfContractTypeLabel:'عقود آجلة · 20×',wfBuyLongLabel:'شراء (Long)',wfEntryPriceLabel:'سعر الدخول',wfCurPriceLabel:'السعر الحالي',wfPnlLabel:'الأرباح/الخسائر',wfNoPosLabel:'لا توجد مراكز أخرى مفتوحة',wfTotalProfitLabel:'الأرباح الإجمالية (كل الوقت)',wfTotalTradesLabel:'إجمالي الصفقات المنفذة',wfTotalTradesVal:'0.000',wfLiqLabel:'سعر التصفية المقدر',
       wpTitle:'محفظة العقود الدائمة',wpBalanceLabel:'إجمالي رصيد المحفظة',wpUnrealizedLabel:'الأرباح والخسائر غير المحققة:',wpAvailMarginLabel:'الهامش المتاح',wpPosMrgLabel:'هامش المراكز',wpTotalPosLabel:'إجمالي قيمة المراكز',wpMrgRatioLabel:'نسبة الهامش',wpMaxLevLabel:'الرافعة القصوى',wpFundingRateTitle:'معدل التمويل الحالي',wpEvery8h:'كل 8 ساعات',wpOpenPosLabel:'المراكز الدائمة المفتوحة',wpNoPosMsg:'لا توجد مراكز دائمة مفتوحة',wpNoPosHint:'افتح مركزاً من تبويب العقود الدائمة',wpStatsLabel:'إحصائيات المحفظة',wpTotalFundingLabel:'إجمالي التمويل المدفوع',wpTotalProfitLabel:'إجمالي الأرباح',wpTradesLabel:'عدد الصفقات',wpAvgLevLabel:'متوسط الرافعة',wpRiskTitle:'تنبيه المخاطر',wpRiskText:'تداول العقود الدائمة ينطوي على مخاطر عالية بسبب الرافعة المالية. يرجى إدارة المخاطر بعناية وضبط أوامر وقف الخسارة.'},
     en:{htmlLang:'en',dir:'ltr',badge:'EN',
       navHome:'Home',navMarkets:'Markets',navDerivatives:'Derivatives',navPerpetual:'Perpetual',navAssets:'Assets',
-      qaWithdraw:'Withdraw',qaDeposit:'Deposit',qaExchange:'Quick Swap',qaSync:'Sync',
+      qaWithdraw:'Withdraw',qaDeposit:'Deposit',qaExchange:'Quick Swap',qaSync:'Sync',syncTabTitle:'Sync',syncHistoryTitle:'Sync History',syncHistoryEmpty:'No transactions',syncHistoryEmptySub:'No sync records yet',syncHeroTitle:'Invite friends to sync together',syncHeroSub:'Earn high referral commissions',syncInputPh:'Please enter the request code',syncConfirmBtnText:'Sync This Trade',syncAvailableTradersTitle:'Available Traders',syncCardReturnLabel:'Return',syncCardSyncBtn:'Sync',syncListTitle:'Sync List',syncSubDetailsTitle:'Subscription Details',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Return Rate',syncSubFeeLabel:'Subscription Fee',syncSubPerMonth:'mo',syncSubAvailBalance:'Your Balance',syncSubConfirmBtn:'Confirm Subscription',syncSubInsufficient:'⚠️ Insufficient balance',syncSubCancelBtn:'Cancel',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Subscription activated',syncAddTitle:'Add Trader',syncAddNameLabel:'Trader / Bot Name',syncAddInitialsLabel:'Initials (2 chars)',syncAddRateLabel:'Return Rate (%)',syncAddProgressLabel:'Progress (0-100)',syncAddBadgeLabel:'Badge Type',syncAddSubmitBtn:'Add to List',syncAddSuccessToast:'✅ Added successfully',
       itModalTitle:'Internal Transfer',itModalSubtitle:'Between platform accounts via UID',itHistoryBtnLabel:'History',itBadge1Title:'Instant',itBadge1Sub:'No wait',itBadge2Title:'Zero',itBadge2Sub:'No fees',itBadge3Title:'Secure',itMyUIDLabel:'🪪 Your UID',itMyUIDDesc:'Share this number with the recipient so they can send funds to you',itCurrLabel:'Currency',itRecipientLabel:'Recipient UID',itRecipientPlaceholder:'Enter 10-digit UID',itAmountLabel:'Amount',itAvailLabel:'Available:',itSetAllBtn:'All',itFeeLabel:'Transfer Fee',itFeeValue:'Free — 0.00',itRecAmountLabel:'Recipient receives',itNoteLabel:'Note',itNoteOptional:'(optional)',itNotePlaceholder:'e.g. subscription, gift...',itInstructTitle:'Internal Transfer Instructions',itStep1:'Ask the recipient for their <strong style="color:var(--text,#fff);">UID</strong> from the Assets page.',itStep2:'Enter the <strong style="color:var(--text,#fff);">10-digit UID</strong> above and verify the account name.',itStep3:'Choose currency and amount, then tap <strong style="color:var(--text,#fff);">Transfer Now</strong> to review.',itStep4:'Transfer is <strong style="color:#10b981;">instant and fee-free</strong> — appears in recipient\'s balance immediately.',itWarnText:'Verify the UID before sending — <strong>transfers cannot be reversed</strong> once confirmed.',itSubmitBtnText:'Transfer Now',itCfTitle:'Confirm Transfer',itCfSubtitle:'Please review the details before sending',itCfToLabel:'To',itCfAmountLabel:'Amount',itCfFeeLabel:'Fee',itCfFeeValue:'Free',itCfNoteLabel:'Note',itCancelBtn:'Cancel',itConfirmBtn:'Confirm & Send',itSuccessTitle:'Transfer Successful!',itTxIDLabel:'Transaction ID',itTimeLabel:'Time',itOkBtn:'OK',itHistoryScreenTitle:'Internal Transfer History',itHistoryEmpty:'No internal transfers yet',
       depModalTitle:'Deposit',depHistoryBtnText:'History',depCurrSelectLabel:'Select Currency',depChainLabel:'Network :',depQRFallbackText:'QR Code',depSaveQRBtn:'Save QR Code',depAddrTitle:'Deposit Address',depCopyBtn:'Copy',depWarn1:'1. After sending to the address above, full network confirmation is needed before you can receive it.',depWarn2:'2. Please ensure your device and browser are secure to prevent unauthorised access.',depHistoryTitle:'Deposit History',depHistoryEmpty:'No transactions',depHistoryEmptySub:'No deposit records yet',
       headerTitle:'Settings',copyBtn:'Copy',
@@ -16611,18 +16643,18 @@ body.light-mode .nav-item.active::before {
       regBtn:'Create Account',regSwitchText:'Already have an account?',regSwitchLink:'Log In',registerPwaTooltip:'Install App',registerLangTooltip:'Choose Language',
       derivDirectionLabel:'Direction',derivTimePeriodLabel:'Time Period',derivCountdownLabel:'Countdown',derivOrderExpiryLabel:'(UTC+3) Order Expiry',derivChartCandle:'Candles',derivChartLine:'Line',derivSubtabOrder:'Position',derivSubtabHistory:'History',derivSubtabSupport:'Follow',derivSubtabPlan:'Follow Plan',derivHistoryEmpty:'No historical orders',derivSupportStartBtn:'Start Follow Order',derivSupportCopyBtn:'Copy History',derivSupportInputPh:'Please enter order code',derivSupportConfirmBtn:'Confirm',derivPlanEmpty:'No follow plans',derivBtnUp:'Rise',derivBtnDown:'Fall',coinPickerTitle:'Choose Currency',coinSearchPh:'Search...',perpHeaderTitle:'Perpetual Contracts',perpBackBtn:'Back',perpStatPairs:'Total Pairs',perpStat24h:'24h Volume (USDT)',perpStatOpen:'Open Positions',perpFilterAll:'All',perpSearchPh:'Search contract...',perpHeadPair:'Trading Pair',perpHeadPrice:'Price',perpHeadFunding:'Funding Rate',perpHead24h:'24h %',perpEmptyMsg:'No matching contracts',perpPerpLabel:'Perp',perpEvery8h:'Every 8h',mktHeadPair:'Trading Pair',mktHeadPrice:'Last Price',mktHeadChange:'High / Low',mktSearchPh:'Search...',
       excModalTitle:'Quick Swap',excFromStaticLabel:'You Pay',excAvailableText:'Available',excMaxBtn:'Max',excToStaticLabel:'You Get',excSlippageLabel:'Price Slippage',excRateLabel:'Current Rate',excConvertBtn:'Swap',excPickerTitle:'Select Currency',excFromInputPh:'Enter amount',
-      excAvailableBalanceToast:'Available balance: 0.00',excEnterAmountToast:'⚠️ Please enter the amount',excConvertSuccessToast:'✅ Swapped:',excHistoryToast:'📋 Swap History',
+      excAvailableBalanceToast:'Available balance: 0.00',excEnterAmountToast:'⚠️ Please enter the amount',excConvertSuccessToast:'✅ Swapped:',excHistoryToast:'📋 Swap History',excHistoryTitle:'Swap History',excHistoryEmpty:'No transactions',excHistoryEmptySub:'No swap records yet',
       wdModalTitle:'Withdraw',wdAddressLabel:'Recipient Address',wdAddressPlaceholder:'Enter wallet address',wdAmountLabel:'Withdrawal Amount',wdBalanceLabel:'Available balance (USDT):',wdMaxBtn:'Max',wdPasswordLabel:'Transaction Password',wdPasswordPlaceholder:'Enter transaction password',wdNetworkFeeLabel:'Network Fee',wdReceiveLabel:'You Will Receive',wdConfirmBtn:'Confirm Withdrawal',wdSecNoteTitle:'Security Note',wdHistoryTitle:'Withdrawal History',wdHistoryEmpty:'No transactions',wdHistoryEmptySub:'No withdrawal records yet',
       wdOtpTitle:'Confirm Withdrawal',wdOtpSubtitle:'Withdrawal request will be sent for review',wdOtpCancelBtn:'Cancel',wdOtpConfirmBtn:'Confirm',
       wdOtpLabelNetwork:'Network',wdOtpLabelAddress:'Address',wdOtpLabelAmount:'Amount',wdOtpLabelFee:'Network Fee',wdOtpLabelReceive:'You Receive',
       wdNoPinToast:'🔒 Please set a payment password first to withdraw',wdEnterAddressToast:'⚠️ Please enter the recipient address',wdEnterAmountToast:'⚠️ Please enter the amount',wdEnterPasswordToast:'⚠️ Please enter the transaction password',wdWrongPasswordToast:'❌ Incorrect payment password',wdSuccessToast:'✅ Withdrawal request sent successfully',wdPasteManuallyToast:'📋 Please paste manually',wdScanQRToast:'📷 QR scan not available in this browser',
       derrTitle:'Something went wrong',derrSub:'This service is currently unavailable',
-      assetRefreshToast:'🔄 Data refreshed',assetSwitchToast:'🔁 Account type switched',
+      assetRefreshToast:'🔄 Data refreshed',assetSwitchToast:'🔁 Account type switched',assetLiveConnected:'Connected — Live',assetLastUpdateNow:'Last updated now',assetLastUpdatePrefix:'Updated at ',deriv24hHighLbl:'24H High',deriv24hLowLbl:'24H Low',deriv24hVolLbl:'24H Volume',deriv24hFundingLbl:'Funding Rate',wpTradesUnit:'trades',
       toast:'🌐 Language changed to English',loginPassOldEmpty:'⚠️ Enter current password',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords do not match',loginPassSuccess:'✅ Password changed successfully',pcPassStrLabels:['','Weak','Medium','Good','Very Strong'],pinCorrectToast:'✅ Correct — enter new PIN now',pinWrongToast:'⚠️ Incorrect PIN, try again',pinReenterToast:'🔁 Re-enter PIN to confirm',pinSavedToast:'✅ PIN saved successfully',pinMismatchToast:'⚠️ PINs do not match, try again',notifNoneToast:'🔔 No new notifications',notifOnToast:'🔔 Notifications enabled',notifOffToast:'🔕 Notifications disabled',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode enabled',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode enabled',logoutToast:'👋 Logged out successfully',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-GB',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'0.000',wfLiqLabel:'Est. Liquidation Price',
       wpTitle:'Perpetual Wallet',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions',wpNoPosHint:'Open a position from the Perpetual tab',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning',wpRiskText:'Trading perpetual contracts involves high risk due to leverage. Please manage risk carefully and set stop-loss orders.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit',kycBtnSubtitleProcessing:'Your documents are being reviewed...',kycBtnSubtitleNone:'Verify your identity to unlock all features',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Unverified',kycBtnProgressApproved:'Verification complete',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start'},
     de:{htmlLang:'de',dir:'ltr',badge:'DE',
       navHome:'Startseite',navMarkets:'Märkte',navDerivatives:'Derivate',navPerpetual:'Perpetual',navAssets:'Vermögen',
-      qaWithdraw:'Abheben',qaDeposit:'Einzahlen',qaExchange:'Tauschen',qaSync:'Sync.',
+      qaWithdraw:'Abheben',qaDeposit:'Einzahlen',qaExchange:'Tauschen',qaSync:'Sync.',syncTabTitle:'Sync',syncHistoryTitle:'Sync-Verlauf',syncHistoryEmpty:'Keine Transaktionen',syncHistoryEmptySub:'Noch keine Sync-Einträge',syncHeroTitle:'Freunde einladen und gemeinsam synchronisieren',syncHeroSub:'Hohe Empfehlungsprovisionen verdienen',syncInputPh:'Bitte Anfragecode eingeben',syncConfirmBtnText:'Handel synchronisieren',syncAvailableTradersTitle:'Verfügbare Trader',syncCardReturnLabel:'Rendite',syncCardSyncBtn:'Sync',syncListTitle:'Sync-Liste',syncSubDetailsTitle:'Abo-Details',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Rendite',syncSubFeeLabel:'Abo-Gebühr',syncSubPerMonth:'Mo.',syncSubAvailBalance:'Ihr Guthaben',syncSubConfirmBtn:'Abo bestätigen',syncSubInsufficient:'⚠️ Guthaben unzureichend',syncSubCancelBtn:'Abbrechen',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Abo aktiviert',syncAddTitle:'Trader hinzufügen',syncAddNameLabel:'Trader / Bot Name',syncAddInitialsLabel:'Kürzel (2 Zeichen)',syncAddRateLabel:'Rendite (%)',syncAddProgressLabel:'Fortschritt (0-100)',syncAddBadgeLabel:'Badge-Typ',syncAddSubmitBtn:'Zur Liste hinzufügen',syncAddSuccessToast:'✅ Erfolgreich hinzugefügt',
       itModalTitle:'Interne Überweisung',itModalSubtitle:'Zwischen Plattformkonten per UID',itHistoryBtnLabel:'Verlauf',itBadge1Title:'Sofort',itBadge1Sub:'Kein Warten',itBadge2Title:'Null',itBadge2Sub:'Keine Gebühren',itBadge3Title:'Sicher',itMyUIDLabel:'🪪 Ihre UID',itMyUIDDesc:'Teilen Sie diese Nummer mit dem Empfänger',itCurrLabel:'Währung',itRecipientLabel:'Empfänger-UID',itRecipientPlaceholder:'10-stellige UID eingeben',itAmountLabel:'Betrag',itAvailLabel:'Verfügbar:',itSetAllBtn:'Alles',itFeeLabel:'Überweisungsgebühr',itFeeValue:'Kostenlos — 0.00',itRecAmountLabel:'Empfänger erhält',itNoteLabel:'Notiz',itNoteOptional:'(optional)',itNotePlaceholder:'z. B. Abonnement, Geschenk...',itInstructTitle:'Anweisungen zur internen Überweisung',itStep1:'Bitten Sie den Empfänger um seine <strong style="color:var(--text,#fff);">UID</strong> von der Seite Vermögenswerte.',itStep2:'Geben Sie die <strong style="color:var(--text,#fff);">10-stellige UID</strong> oben ein und prüfen Sie den Kontonamen.',itStep3:'Währung und Betrag wählen, dann <strong style="color:var(--text,#fff);">Jetzt überweisen</strong> tippen.',itStep4:'Überweisung ist <strong style="color:#10b981;">sofort und gebührenfrei</strong> — erscheint sofort im Guthaben.',itWarnText:'UID vor dem Senden prüfen — <strong>Überweisungen können nicht rückgängig gemacht werden</strong>.',itSubmitBtnText:'Jetzt überweisen',itCfTitle:'Überweisung bestätigen',itCfSubtitle:'Bitte Details vor dem Senden prüfen',itCfToLabel:'An',itCfAmountLabel:'Betrag',itCfFeeLabel:'Gebühr',itCfFeeValue:'Kostenlos',itCfNoteLabel:'Notiz',itCancelBtn:'Abbrechen',itConfirmBtn:'Bestätigen & Senden',itSuccessTitle:'Überweisung erfolgreich!',itTxIDLabel:'Transaktions-ID',itTimeLabel:'Zeit',itOkBtn:'OK',itHistoryScreenTitle:'Interne Überweisungshistorie',itHistoryEmpty:'Noch keine internen Überweisungen',
       depModalTitle:'Einzahlen',depHistoryBtnText:'Verlauf',depCurrSelectLabel:'Währung wählen',depChainLabel:'Netzwerk :',depQRFallbackText:'QR-Code',depSaveQRBtn:'QR-Code speichern',depAddrTitle:'Einzahlungsadresse',depCopyBtn:'Kopieren',depWarn1:'1. Nach dem Senden an obige Adresse ist eine vollständige Netzwerkbestätigung erforderlich.',depWarn2:'2. Bitte stellen Sie sicher, dass Ihr Gerät und Browser sicher sind.',depHistoryTitle:'Einzahlungsverlauf',depHistoryEmpty:'Keine Transaktionen',depHistoryEmptySub:'Noch keine Einzahlungen aufgezeichnet',
       headerTitle:'Einstellungen',copyBtn:'Kopieren',
@@ -16683,18 +16715,18 @@ body.light-mode .nav-item.active::before {
       regBtn:'Konto erstellen',regSwitchText:'Bereits ein Konto?',regSwitchLink:'Anmelden',registerPwaTooltip:'App installieren',registerLangTooltip:'Sprache wählen',
       derivDirectionLabel:'Richtung',derivTimePeriodLabel:'Zeitraum',derivCountdownLabel:'Countdown',derivOrderExpiryLabel:'(UTC+3) Ablaufzeit',derivChartCandle:'Kerzen',derivChartLine:'Linie',derivSubtabOrder:'Position',derivSubtabHistory:'Verlauf',derivSubtabSupport:'Folgen',derivSubtabPlan:'Follow-Plan',derivHistoryEmpty:'Keine historischen Orders',derivSupportStartBtn:'Follow-Order starten',derivSupportCopyBtn:'Verlauf kopieren',derivSupportInputPh:'Bitte Order-Code eingeben',derivSupportConfirmBtn:'Bestätigen',derivPlanEmpty:'Keine Follow-Pläne',derivBtnUp:'Steigen',derivBtnDown:'Fallen',coinPickerTitle:'Währung wählen',coinSearchPh:'Suchen...',perpHeaderTitle:'Perpetual-Kontrakte',perpBackBtn:'Zurück',perpStatPairs:'Paare gesamt',perpStat24h:'24h Vol. (USDT)',perpStatOpen:'Offene Positionen',perpFilterAll:'Alle',perpSearchPh:'Kontrakt suchen...',perpHeadPair:'Handelspaar',perpHeadPrice:'Preis',perpHeadFunding:'Finanzierungsrate',perpHead24h:'24h %',perpEmptyMsg:'Keine passenden Kontrakte',perpPerpLabel:'Unbefristet',perpEvery8h:'Alle 8h',mktHeadPair:'Handelspaar',mktHeadPrice:'Letzter Kurs',mktHeadChange:'Hoch / Tief',mktSearchPh:'Suchen...',
       excModalTitle:'Schnelltausch',excFromStaticLabel:'Sie zahlen',excAvailableText:'Verfügbar',excMaxBtn:'Max',excToStaticLabel:'Sie erhalten',excSlippageLabel:'Preisabweichung',excRateLabel:'Aktueller Kurs',excConvertBtn:'Tauschen',excPickerTitle:'Währung wählen',excFromInputPh:'Betrag eingeben',
-      excAvailableBalanceToast:'Verfügbares Guthaben: 0.00',excEnterAmountToast:'⚠️ Bitte Betrag eingeben',excConvertSuccessToast:'✅ Getauscht:',excHistoryToast:'📋 Tauschverlauf',
+      excAvailableBalanceToast:'Verfügbares Guthaben: 0.00',excEnterAmountToast:'⚠️ Bitte Betrag eingeben',excConvertSuccessToast:'✅ Getauscht:',excHistoryToast:'📋 Tauschverlauf',excHistoryTitle:'Tauschverlauf',excHistoryEmpty:'Keine Transaktionen',excHistoryEmptySub:'Noch keine Tauscheintrag',
       wdModalTitle:'Abhebung',wdAddressLabel:'Empfängeradresse',wdAddressPlaceholder:'Wallet-Adresse eingeben',wdAmountLabel:'Abhebungsbetrag',wdBalanceLabel:'Verfügbares Guthaben (USDT):',wdMaxBtn:'Max',wdPasswordLabel:'Transaktionspasswort',wdPasswordPlaceholder:'Transaktionspasswort eingeben',wdNetworkFeeLabel:'Netzwerkgebühr',wdReceiveLabel:'Sie erhalten',wdConfirmBtn:'Abhebung bestätigen',wdSecNoteTitle:'Sicherheitshinweis',wdHistoryTitle:'Abhebungsverlauf',wdHistoryEmpty:'Keine Transaktionen',wdHistoryEmptySub:'Noch keine Abhebungen aufgezeichnet',
       wdOtpTitle:'Abhebung bestätigen',wdOtpSubtitle:'Abhebungsanfrage wird zur Überprüfung gesendet',wdOtpCancelBtn:'Abbrechen',wdOtpConfirmBtn:'Bestätigen',
       wdOtpLabelNetwork:'Netzwerk',wdOtpLabelAddress:'Adresse',wdOtpLabelAmount:'Betrag',wdOtpLabelFee:'Netzwerkgebühr',wdOtpLabelReceive:'Sie erhalten',
       wdNoPinToast:'🔒 Bitte zuerst ein Zahlungspasswort einrichten',wdEnterAddressToast:'⚠️ Bitte Empfängeradresse eingeben',wdEnterAmountToast:'⚠️ Bitte Betrag eingeben',wdEnterPasswordToast:'⚠️ Bitte Transaktionspasswort eingeben',wdWrongPasswordToast:'❌ Falsches Zahlungspasswort',wdSuccessToast:'✅ Abhebungsanfrage erfolgreich gesendet',wdPasteManuallyToast:'📋 Bitte manuell einfügen',wdScanQRToast:'📷 QR-Scan in diesem Browser nicht verfügbar',
       derrTitle:'Ein Fehler ist aufgetreten',derrSub:'Dieser Dienst ist derzeit nicht verfügbar',
-      assetRefreshToast:'🔄 Daten aktualisiert',assetSwitchToast:'🔁 Kontotyp gewechselt',
+      assetRefreshToast:'🔄 Daten aktualisiert',assetSwitchToast:'🔁 Kontotyp gewechselt',assetLiveConnected:'Verbunden — Live',assetLastUpdateNow:'Gerade aktualisiert',assetLastUpdatePrefix:'Aktualisiert um ',deriv24hHighLbl:'24H Hoch',deriv24hLowLbl:'24H Tief',deriv24hVolLbl:'24H Volumen',deriv24hFundingLbl:'Finanzierungsrate',wpTradesUnit:'Trades',
       toast:'🌐 Sprache auf Deutsch geändert',loginPassOldEmpty:'⚠️ Aktuelles Passwort eingeben',loginPassTooShort:'⚠️ Passwort muss mindestens 8 Zeichen haben',loginPassMismatch:'⚠️ Passwörter stimmen nicht überein',loginPassSuccess:'✅ Passwort erfolgreich geändert',pcPassStrLabels:['','Schwach','Mittel','Gut','Sehr stark'],pinCorrectToast:'✅ Richtig — neuen PIN eingeben',pinWrongToast:'⚠️ Falscher PIN, erneut versuchen',pinReenterToast:'🔁 PIN zur Bestätigung erneut eingeben',pinSavedToast:'✅ PIN erfolgreich gespeichert',pinMismatchToast:'⚠️ PINs stimmen nicht überein',notifNoneToast:'🔔 Keine neuen Benachrichtigungen',notifOnToast:'🔔 Benachrichtigungen aktiviert',notifOffToast:'🔕 Benachrichtigungen deaktiviert',darkModeLabel:'Dunkelmodus',darkModeToast:'🌙 Dunkelmodus aktiviert',lightModeLabel:'Hellmodus',lightModeToast:'☀️ Hellmodus aktiviert',logoutToast:'👋 Erfolgreich abgemeldet',kycLabelCountryIssue:'Ausstellungsland',kycLabelDocType:'Dokumenttyp',dateLocale:'de-DE',wfTitle:'Futures-Wallet',wfBalanceLabel:'Gesamtguthaben',wfUnrealizedLabel:'Nicht realisierter Gesamt-PnL:',wfAvailMarginLabel:'Verfügbare Margin',wfPosMrgLabel:'Positions-Margin',wfOrdMrgLabel:'Auftrags-Margin',wfMrgRatioLabel:'Margin-Verhältnis',wfMaxLevLabel:'Max. Hebel',wfTodayPerfLabel:'Heutige Performance',wfTodayProfitLabel:'Heutiger Gewinn',wfTradesCountLabel:'Trades',wfTradesUnit:'Trades',wfWinRateLabel:'Gewinnrate',wfWinRateUnit:'der Trades',wfOpenPosLabel:'Offene Positionen',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Kaufen (Long)',wfEntryPriceLabel:'Einstiegspreis',wfCurPriceLabel:'Aktueller Preis',wfPnlLabel:'PnL',wfNoPosLabel:'Keine weiteren offenen Positionen',wfTotalProfitLabel:'Gesamtgewinn (Gesamt)',wfTotalTradesLabel:'Ausgeführte Trades gesamt',wfTotalTradesVal:'43 Trades',wfLiqLabel:'Gesch. Liquidationspreis',
       wpTitle:'Perpetual-Wallet',wpBalanceLabel:'Gesamtguthaben',wpUnrealizedLabel:'Nicht realisierter PnL:',wpAvailMarginLabel:'Verfügbare Margin',wpPosMrgLabel:'Positions-Margin',wpTotalPosLabel:'Gesamtpositionswert',wpMrgRatioLabel:'Margin-Verhältnis',wpMaxLevLabel:'Max. Hebel',wpFundingRateTitle:'Aktueller Finanzierungssatz',wpEvery8h:'Alle 8h',wpOpenPosLabel:'Offene Perpetual-Positionen',wpNoPosMsg:'Keine offenen Perpetual-Positionen',wpNoPosHint:'Position im Perpetual-Tab öffnen',wpStatsLabel:'Wallet-Statistiken',wpTotalFundingLabel:'Gezahlte Finanzierungsgebühren',wpTotalProfitLabel:'Gesamtgewinn',wpTradesLabel:'Anzahl der Trades',wpAvgLevLabel:'Ø Hebel',wpRiskTitle:'Risikowarnung',wpRiskText:'Der Handel mit Perpetual-Kontrakten ist mit hohen Risiken durch den Hebel verbunden. Bitte verwalten Sie das Risiko sorgfältig und setzen Sie Stop-Loss-Orders.',kycBtnSubtitleApproved:'Identität verifiziert — unbegrenztes Auszahlungslimit',kycBtnSubtitleProcessing:'Ihre Dokumente werden geprüft...',kycBtnSubtitleNone:'Identität bestätigen, um alle Funktionen zu nutzen',kycBtnBadgeApproved:'Verifiziert ✓',kycBtnBadgeProcessing:'In Prüfung',kycBtnBadgeNone:'Nicht verifiziert',kycBtnProgressApproved:'Verifizierung abgeschlossen',kycBtnProgressProcessing:'Prüfung läuft',kycBtnProgressNone:'Bereit zum Start'},
     fr:{htmlLang:'fr',dir:'ltr',badge:'FR',
       navHome:'Accueil',navMarkets:'Marchés',navDerivatives:'Dérivés',navPerpetual:'Perpétuel',navAssets:'Actifs',
-      qaWithdraw:'Retrait',qaDeposit:'Dépôt',qaExchange:'Échange',qaSync:'Sync.',
+      qaWithdraw:'Retrait',qaDeposit:'Dépôt',qaExchange:'Échange',qaSync:'Sync.',syncTabTitle:'Sync',syncHistoryTitle:'Historique de sync',syncHistoryEmpty:'Aucune transaction',syncHistoryEmptySub:'Aucune synchronisation enregistrée',syncHeroTitle:'Invitez des amis à synchroniser ensemble',syncHeroSub:'Gagnez des commissions de parrainage élevées',syncInputPh:'Veuillez entrer le code de demande',syncConfirmBtnText:'Synchroniser ce trade',syncAvailableTradersTitle:'Traders disponibles',syncCardReturnLabel:'Rendement',syncCardSyncBtn:'Sync',syncListTitle:'Liste de sync',syncSubDetailsTitle:'Détails abonnement',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Taux de rendement',syncSubFeeLabel:'Frais abonnement',syncSubPerMonth:'mois',syncSubAvailBalance:'Votre solde',syncSubConfirmBtn:'Confirmer l\'abonnement',syncSubInsufficient:'⚠️ Solde insuffisant',syncSubCancelBtn:'Annuler',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Abonnement activé',syncAddTitle:'Ajouter un trader',syncAddNameLabel:'Nom du trader / bot',syncAddInitialsLabel:'Initiales (2 car.)',syncAddRateLabel:'Rendement (%)',syncAddProgressLabel:'Progression (0-100)',syncAddBadgeLabel:'Type de badge',syncAddSubmitBtn:'Ajouter à la liste',syncAddSuccessToast:'✅ Ajouté avec succès',
       itModalTitle:'Virement interne',itModalSubtitle:'Entre comptes de la plateforme via UID',itHistoryBtnLabel:'Historique',itBadge1Title:'Instantané',itBadge1Sub:'Sans attente',itBadge2Title:'Zéro',itBadge2Sub:'Sans frais',itBadge3Title:'Sécurisé',itMyUIDLabel:'🪪 Votre UID',itMyUIDDesc:'Partagez ce numéro avec le destinataire',itCurrLabel:'Devise',itRecipientLabel:'UID du destinataire',itRecipientPlaceholder:'Entrer l\'UID à 10 chiffres',itAmountLabel:'Montant',itAvailLabel:'Disponible :',itSetAllBtn:'Tout',itFeeLabel:'Frais de virement',itFeeValue:'Gratuit — 0.00',itRecAmountLabel:'Le destinataire reçoit',itNoteLabel:'Note',itNoteOptional:'(optionnel)',itNotePlaceholder:'ex : abonnement, cadeau...',itInstructTitle:'Instructions de virement interne',itStep1:'Demandez au destinataire son <strong style="color:var(--text,#fff);">UID</strong> depuis la page Actifs.',itStep2:'Entrez l\'<strong style="color:var(--text,#fff);">UID à 10 chiffres</strong> ci-dessus et vérifiez le nom du compte.',itStep3:'Sélectionnez la devise et le montant, puis appuyez sur <strong style="color:var(--text,#fff);">Virer maintenant</strong>.',itStep4:'Le virement est <strong style="color:#10b981;">instantané et sans frais</strong> — apparaît immédiatement.',itWarnText:'Vérifiez l\'UID avant d\'envoyer — <strong>les virements ne peuvent pas être annulés</strong>.',itSubmitBtnText:'Virer maintenant',itCfTitle:'Confirmer le virement',itCfSubtitle:'Veuillez vérifier les détails avant envoi',itCfToLabel:'À',itCfAmountLabel:'Montant',itCfFeeLabel:'Frais',itCfFeeValue:'Gratuit',itCfNoteLabel:'Note',itCancelBtn:'Annuler',itConfirmBtn:'Confirmer et envoyer',itSuccessTitle:'Virement réussi !',itTxIDLabel:'ID de transaction',itTimeLabel:'Heure',itOkBtn:'OK',itHistoryScreenTitle:'Historique des virements internes',itHistoryEmpty:'Aucun virement interne pour l\'instant',
       depModalTitle:'Dépôt',depHistoryBtnText:'Historique',depCurrSelectLabel:'Sélectionner la devise',depChainLabel:'Réseau :',depQRFallbackText:'Code QR',depSaveQRBtn:'Enregistrer le code QR',depAddrTitle:'Adresse de dépôt',depCopyBtn:'Copier',depWarn1:'1. Après l\'envoi à l\'adresse ci-dessus, une confirmation complète du réseau est requise.',depWarn2:'2. Assurez-vous que votre appareil et votre navigateur sont sécurisés.',depHistoryTitle:'Historique des dépôts',depHistoryEmpty:'Aucune transaction',depHistoryEmptySub:'Aucun dépôt enregistré pour l\'instant',
       headerTitle:'Paramètres',copyBtn:'Copier',
@@ -16755,18 +16787,18 @@ body.light-mode .nav-item.active::before {
       regBtn:'Créer un compte',regSwitchText:'Vous avez déjà un compte ?',regSwitchLink:'Se connecter',registerPwaTooltip:"Installer l'application",registerLangTooltip:'Choisir la langue',
       derivDirectionLabel:'Direction',derivTimePeriodLabel:'Période',derivCountdownLabel:'Compte à rebours',derivOrderExpiryLabel:"(UTC+3) Expiration",derivChartCandle:'Bougies',derivChartLine:'Ligne',derivSubtabOrder:'Position',derivSubtabHistory:'Historique',derivSubtabSupport:'Suivre',derivSubtabPlan:'Plan de suivi',derivHistoryEmpty:'Aucun ordre historique',derivSupportStartBtn:'Démarrer un suivi',derivSupportCopyBtn:"Copier l'historique",derivSupportInputPh:"Entrez le code de l'ordre",derivSupportConfirmBtn:'Confirmer',derivPlanEmpty:'Aucun plan de suivi',derivBtnUp:'Hausse',derivBtnDown:'Baisse',coinPickerTitle:'Choisir la devise',coinSearchPh:'Rechercher...',perpHeaderTitle:'Contrats perpétuels',perpBackBtn:'Retour',perpStatPairs:'Total des paires',perpStat24h:'Volume 24h (USDT)',perpStatOpen:'Positions ouvertes',perpFilterAll:'Tout',perpSearchPh:'Rechercher un contrat...',perpHeadPair:'Paire',perpHeadPrice:'Prix',perpHeadFunding:'Taux de financement',perpHead24h:'24h %',perpEmptyMsg:'Aucun contrat correspondant',perpPerpLabel:'Perpétuel',perpEvery8h:'Toutes les 8h',mktHeadPair:'Paire',mktHeadPrice:'Dernier prix',mktHeadChange:'Haut / Bas',mktSearchPh:'Rechercher...',
       excModalTitle:'Échange rapide',excFromStaticLabel:'Vous payez',excAvailableText:'Disponible',excMaxBtn:'Max',excToStaticLabel:'Vous recevez',excSlippageLabel:'Glissement de prix',excRateLabel:'Taux actuel',excConvertBtn:'Échanger',excPickerTitle:'Choisir la devise',excFromInputPh:'Entrez le montant',
-      excAvailableBalanceToast:'Solde disponible : 0.00',excEnterAmountToast:'⚠️ Veuillez entrer le montant',excConvertSuccessToast:'✅ Échangé :',excHistoryToast:"📋 Historique d'échange",
+      excAvailableBalanceToast:'Solde disponible : 0.00',excEnterAmountToast:'⚠️ Veuillez entrer le montant',excConvertSuccessToast:'✅ Échangé :',excHistoryToast:"📋 Historique d'échange",excHistoryTitle:"Historique d'échange",excHistoryEmpty:'Aucune transaction',excHistoryEmptySub:'Aucun échange enregistré',
       wdModalTitle:'Retrait',wdAddressLabel:"Adresse du destinataire",wdAddressPlaceholder:"Entrez l'adresse du portefeuille",wdAmountLabel:'Montant du retrait',wdBalanceLabel:'Solde disponible (USDT) :',wdMaxBtn:'Max',wdPasswordLabel:'Mot de passe de transaction',wdPasswordPlaceholder:'Entrez le mot de passe de transaction',wdNetworkFeeLabel:'Frais de réseau',wdReceiveLabel:'Vous recevrez',wdConfirmBtn:'Confirmer le retrait',wdSecNoteTitle:'Note de sécurité',wdHistoryTitle:'Historique des retraits',wdHistoryEmpty:'Aucune transaction',wdHistoryEmptySub:"Aucun retrait enregistré pour l'instant",
       wdOtpTitle:'Confirmer le retrait',wdOtpSubtitle:'La demande de retrait sera envoyée pour examen',wdOtpCancelBtn:'Annuler',wdOtpConfirmBtn:'Confirmer',
       wdOtpLabelNetwork:'Réseau',wdOtpLabelAddress:'Adresse',wdOtpLabelAmount:'Montant',wdOtpLabelFee:'Frais réseau',wdOtpLabelReceive:'Vous recevez',
       wdNoPinToast:"🔒 Veuillez d'abord définir un mot de passe de paiement",wdEnterAddressToast:"⚠️ Veuillez entrer l'adresse du destinataire",wdEnterAmountToast:'⚠️ Veuillez entrer le montant',wdEnterPasswordToast:'⚠️ Veuillez entrer le mot de passe de transaction',wdWrongPasswordToast:'❌ Mot de passe de paiement incorrect',wdSuccessToast:'✅ Demande de retrait envoyée avec succès',wdPasteManuallyToast:'📋 Veuillez coller manuellement',wdScanQRToast:'📷 Scan QR non disponible dans ce navigateur',
       derrTitle:'Une erreur est survenue',derrSub:'Ce service est actuellement indisponible',
-      assetRefreshToast:'🔄 Données actualisées',assetSwitchToast:'🔁 Type de compte changé',
+      assetRefreshToast:'🔄 Données actualisées',assetSwitchToast:'🔁 Type de compte changé',assetLiveConnected:'Connecté — En direct',assetLastUpdateNow:'Mis à jour maintenant',assetLastUpdatePrefix:'Mis à jour à ',deriv24hHighLbl:'24H Haut',deriv24hLowLbl:'24H Bas',deriv24hVolLbl:'Volume 24H',deriv24hFundingLbl:'Taux financement',wpTradesUnit:'trades',
       toast:'🌐 Langue changée en Français',loginPassOldEmpty:'⚠️ Entrez le mot de passe actuel',loginPassTooShort:'⚠️ Le mot de passe doit comporter au moins 8 caractères',loginPassMismatch:'⚠️ Les mots de passe ne correspondent pas',loginPassSuccess:'✅ Mot de passe modifié avec succès',pcPassStrLabels:['','Faible','Moyen','Bon','Très fort'],pinCorrectToast:'✅ Correct — entrez le nouveau PIN',pinWrongToast:'⚠️ PIN incorrect, réessayez',pinReenterToast:'🔁 Ré-entrez le PIN pour confirmer',pinSavedToast:'✅ PIN enregistré avec succès',pinMismatchToast:'⚠️ Les PIN ne correspondent pas',notifNoneToast:'🔔 Aucune nouvelle notification',notifOnToast:'🔔 Notifications activées',notifOffToast:'🔕 Notifications désactivées',darkModeLabel:'Mode sombre',darkModeToast:'🌙 Mode sombre activé',lightModeLabel:'Mode clair',lightModeToast:'☀️ Mode clair activé',logoutToast:'👋 Déconnexion réussie',kycLabelCountryIssue:"Pays d'émission",kycLabelDocType:'Type de document',dateLocale:'fr-FR',wfTitle:'Portefeuille Futures',wfBalanceLabel:'Solde total du portefeuille',wfUnrealizedLabel:'PnL non réalisé total :',wfAvailMarginLabel:'Marge disponible',wfPosMrgLabel:'Marge de position',wfOrdMrgLabel:'Marge de commande',wfMrgRatioLabel:'Ratio de marge',wfMaxLevLabel:'Levier max',wfTodayPerfLabel:'Performance du jour',wfTodayProfitLabel:'Profit du jour',wfTradesCountLabel:'Transactions',wfTradesUnit:'trades',wfWinRateLabel:'Taux de réussite',wfWinRateUnit:'des trades',wfOpenPosLabel:'Positions ouvertes',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Achat (Long)',wfEntryPriceLabel:"Prix d'entrée",wfCurPriceLabel:'Prix actuel',wfPnlLabel:'PnL',wfNoPosLabel:'Aucune autre position ouverte',wfTotalProfitLabel:'Profit total (tout le temps)',wfTotalTradesLabel:'Total des trades exécutés',wfTotalTradesVal:'0.000',wfLiqLabel:'Prix de liquidation estimé',
       wpTitle:'Portefeuille Perpétuel',wpBalanceLabel:'Solde total du portefeuille',wpUnrealizedLabel:'PnL non réalisé :',wpAvailMarginLabel:'Marge disponible',wpPosMrgLabel:'Marge de position',wpTotalPosLabel:'Valeur totale des positions',wpMrgRatioLabel:'Ratio de marge',wpMaxLevLabel:'Levier max',wpFundingRateTitle:'Taux de financement actuel',wpEvery8h:'Toutes les 8h',wpOpenPosLabel:'Positions perpétuelles ouvertes',wpNoPosMsg:'Aucune position perpétuelle ouverte',wpNoPosHint:'Ouvrez une position depuis l\'onglet Perpétuel',wpStatsLabel:'Statistiques du portefeuille',wpTotalFundingLabel:'Total des frais de financement',wpTotalProfitLabel:'Profit total',wpTradesLabel:'Nombre de trades',wpAvgLevLabel:'Levier moyen',wpRiskTitle:'Avertissement de risque',wpRiskText:'Le trading de contrats perpétuels comporte des risques élevés en raison du levier. Gérez le risque avec soin et définissez des ordres stop-loss.',kycBtnSubtitleApproved:'Identité vérifiée — limite de retrait illimitée',kycBtnSubtitleProcessing:'Vos documents sont en cours d\'examen...',kycBtnSubtitleNone:'Vérifiez votre identité pour accéder à toutes les fonctionnalités',kycBtnBadgeApproved:'Vérifié ✓',kycBtnBadgeProcessing:'En cours',kycBtnBadgeNone:'Non vérifié',kycBtnProgressApproved:'Vérification terminée',kycBtnProgressProcessing:'Examen en cours',kycBtnProgressNone:'Prêt à commencer'},
     sg:{htmlLang:'en-SG',dir:'ltr',badge:'SG',
       navHome:'Home',navMarkets:'Markets',navDerivatives:'Derivatives',navPerpetual:'Perpetual',navAssets:'Assets',
-      qaWithdraw:'Withdraw',qaDeposit:'Top Up',qaExchange:'Swap Lah',qaSync:'Sync',
+      qaWithdraw:'Withdraw',qaDeposit:'Top Up',qaExchange:'Swap Lah',qaSync:'Sync',syncTabTitle:'Sync',syncHistoryTitle:'Sync History',syncHistoryEmpty:'No transactions',syncHistoryEmptySub:'No sync records yet lah',syncHeroTitle:'Invite your kakis to sync together lah',syncHeroSub:'Earn high referral commission one',syncInputPh:'Please enter the request code lah',syncConfirmBtnText:'Sync This Trade Lah',syncAvailableTradersTitle:'Available Traders',syncCardReturnLabel:'Returns',syncCardSyncBtn:'Sync',syncListTitle:'Sync List',syncSubDetailsTitle:'Subscription Details',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Return Rate',syncSubFeeLabel:'Subscription Fee',syncSubPerMonth:'mo',syncSubAvailBalance:'Your Balance',syncSubConfirmBtn:'Confirm Subscription',syncSubInsufficient:'⚠️ Not enough balance lah',syncSubCancelBtn:'Cancel',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Subscription activated lah',syncAddTitle:'Add Trader',syncAddNameLabel:'Trader / Bot Name',syncAddInitialsLabel:'Initials (2 chars)',syncAddRateLabel:'Return Rate (%)',syncAddProgressLabel:'Progress (0-100)',syncAddBadgeLabel:'Badge Type',syncAddSubmitBtn:'Add to List',syncAddSuccessToast:'✅ Added lah',syncCardReturnLabel:'Return',syncCardSyncBtn:'Sync',syncListTitle:'Sync List',syncSubDetailsTitle:'Subscription Details',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Return Rate',syncSubFeeLabel:'Subscription Fee',syncSubPerMonth:'mo',syncSubAvailBalance:'Your Balance',syncSubConfirmBtn:'Confirm Subscription',syncSubInsufficient:'⚠️ Insufficient balance',syncSubCancelBtn:'Cancel',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Subscription activated',syncAddTitle:'Add Trader',syncAddNameLabel:'Trader / Bot Name',syncAddInitialsLabel:'Initials (2 chars)',syncAddRateLabel:'Return Rate (%)',syncAddProgressLabel:'Progress (0-100)',syncAddBadgeLabel:'Badge Type',syncAddSubmitBtn:'Add to List',syncAddSuccessToast:'✅ Added successfully',
       itModalTitle:'Internal Transfer',itModalSubtitle:'Between platform accounts via UID lah',itHistoryBtnLabel:'History',itBadge1Title:'Instant',itBadge1Sub:'No wait',itBadge2Title:'Zero',itBadge2Sub:'No fees',itBadge3Title:'Safe',itMyUIDLabel:'🪪 Your UID',itMyUIDDesc:'Share this number with the recipient can already',itCurrLabel:'Currency',itRecipientLabel:'Recipient UID',itRecipientPlaceholder:'Enter 10-digit UID lah',itAmountLabel:'Amount',itAvailLabel:'Available:',itSetAllBtn:'All',itFeeLabel:'Transfer Fee',itFeeValue:'Free — 0.00',itRecAmountLabel:'Recipient gets',itNoteLabel:'Note',itNoteOptional:'(optional)',itNotePlaceholder:'e.g. subscription, gift lah...',itInstructTitle:'Internal Transfer Instructions',itStep1:'Ask recipient to give you their <strong style="color:var(--text,#fff);">UID</strong> from the Assets page lah.',itStep2:'Enter the <strong style="color:var(--text,#fff);">10-digit UID</strong> above and check the account name.',itStep3:'Choose currency and amount, then tap <strong style="color:var(--text,#fff);">Transfer Now</strong> to review.',itStep4:'Transfer is <strong style="color:#10b981;">instant and free</strong> — appears in recipient balance immediately one.',itWarnText:'Check UID before sending — <strong>transfers cannot be reversed</strong> once confirmed lah.',itSubmitBtnText:'Transfer Now',itCfTitle:'Confirm Transfer',itCfSubtitle:'Please check details before sending lah',itCfToLabel:'To',itCfAmountLabel:'Amount',itCfFeeLabel:'Fee',itCfFeeValue:'Free',itCfNoteLabel:'Note',itCancelBtn:'Cancel',itConfirmBtn:'Confirm & Send',itSuccessTitle:'Transfer Done Lah!',itTxIDLabel:'Transaction ID',itTimeLabel:'Time',itOkBtn:'OK',itHistoryScreenTitle:'Internal Transfer History',itHistoryEmpty:'No internal transfers yet lah',
       depModalTitle:'Top Up',depHistoryBtnText:'History',depCurrSelectLabel:'Choose Currency',depChainLabel:'Network :',depQRFallbackText:'QR Code',depSaveQRBtn:'Save QR Code',depAddrTitle:'Deposit Address',depCopyBtn:'Copy',depWarn1:'1. After sending to the address above, need full network confirmation before can receive.',depWarn2:'2. Please make sure your device and browser are secure lah.',depHistoryTitle:'Deposit History',depHistoryEmpty:'No transactions lah',depHistoryEmptySub:'No deposit records yet',
       headerTitle:'Settings',copyBtn:'Copy',
@@ -16827,13 +16859,13 @@ body.light-mode .nav-item.active::before {
       regBtn:'Create Account Lah',regSwitchText:'Already got account?',regSwitchLink:'Log In',registerPwaTooltip:'Install App Lah',registerLangTooltip:'Choose Language',
       derivDirectionLabel:'Direction',derivTimePeriodLabel:'Time Period',derivCountdownLabel:'Countdown',derivOrderExpiryLabel:'(UTC+3) Order Expiry',derivChartCandle:'Candles',derivChartLine:'Line',derivSubtabOrder:'Position',derivSubtabHistory:'History',derivSubtabSupport:'Follow Lah',derivSubtabPlan:'Follow Plan',derivHistoryEmpty:'No historical orders lah',derivSupportStartBtn:'Start Follow Order',derivSupportCopyBtn:'Copy History',derivSupportInputPh:'Enter order code lah',derivSupportConfirmBtn:'Confirm',derivPlanEmpty:'No follow plans lah',derivBtnUp:'Rise',derivBtnDown:'Fall',coinPickerTitle:'Choose Currency',coinSearchPh:'Search...',perpHeaderTitle:'Perpetual Contracts',perpBackBtn:'Back',perpStatPairs:'Total Pairs',perpStat24h:'24h Volume (USDT)',perpStatOpen:'Open Positions',perpFilterAll:'All',perpSearchPh:'Search contract lah...',perpHeadPair:'Trading Pair',perpHeadPrice:'Price',perpHeadFunding:'Funding Rate',perpHead24h:'24h %',perpEmptyMsg:'No matching contracts lah',perpPerpLabel:'Perp',perpEvery8h:'Every 8h',mktHeadPair:'Trading Pair',mktHeadPrice:'Last Price',mktHeadChange:'High / Low',mktSearchPh:'Search...',
       excModalTitle:'Quick Swap Lah',excFromStaticLabel:'You Pay',excAvailableText:'Available',excMaxBtn:'Max',excToStaticLabel:'You Get',excSlippageLabel:'Price Slippage',excRateLabel:'Current Rate',excConvertBtn:'Swap Lah',excPickerTitle:'Choose Currency',excFromInputPh:'Enter amount lah',
-      excAvailableBalanceToast:'Available balance: 0.00',excEnterAmountToast:'⚠️ Please enter amount lah',excConvertSuccessToast:'✅ Swapped lah:',excHistoryToast:'📋 Swap History Lah',
+      excAvailableBalanceToast:'Available balance: 0.00',excEnterAmountToast:'⚠️ Please enter amount lah',excConvertSuccessToast:'✅ Swapped lah:',excHistoryToast:'📋 Swap History Lah',excHistoryTitle:'Swap History Lah',excHistoryEmpty:'No transactions',excHistoryEmptySub:'No swap records yet lah',
       wdModalTitle:'Withdraw',wdAddressLabel:'Recipient Address',wdAddressPlaceholder:'Enter wallet address lah',wdAmountLabel:'Withdrawal Amount',wdBalanceLabel:'Available balance (USDT):',wdMaxBtn:'Max',wdPasswordLabel:'Transaction Password',wdPasswordPlaceholder:'Enter transaction password lah',wdNetworkFeeLabel:'Network Fee',wdReceiveLabel:'You Will Receive',wdConfirmBtn:'Confirm Withdraw',wdSecNoteTitle:'Security Note',wdHistoryTitle:'Withdrawal History',wdHistoryEmpty:'No transactions lah',wdHistoryEmptySub:'No withdrawal records yet',
       wdOtpTitle:'Confirm Withdrawal Lah',wdOtpSubtitle:'Request will be sent for review',wdOtpCancelBtn:'Cancel',wdOtpConfirmBtn:'Confirm',
       wdOtpLabelNetwork:'Network',wdOtpLabelAddress:'Address',wdOtpLabelAmount:'Amount',wdOtpLabelFee:'Network Fee',wdOtpLabelReceive:'You Receive',
       wdNoPinToast:'🔒 Must set payment password first lah',wdEnterAddressToast:'⚠️ Please enter recipient address lah',wdEnterAmountToast:'⚠️ Please enter amount lah',wdEnterPasswordToast:'⚠️ Please enter transaction password lah',wdWrongPasswordToast:'❌ Wrong payment password lah',wdSuccessToast:'✅ Withdrawal request sent lah!',wdPasteManuallyToast:'📋 Please paste manually lah',wdScanQRToast:'📷 QR scan not available in this browser',
       derrTitle:'Something went wrong lah',derrSub:'This service is temporarily unavailable',
-      assetRefreshToast:'🔄 Data refreshed lah',assetSwitchToast:'🔁 Account type switched',
+      assetRefreshToast:'🔄 Data refreshed lah',assetSwitchToast:'🔁 Account type switched',assetLiveConnected:'Connected Lah — Live',assetLastUpdateNow:'Just updated lah',assetLastUpdatePrefix:'Updated at ',deriv24hHighLbl:'24H High',deriv24hLowLbl:'24H Low',deriv24hVolLbl:'24H Volume',deriv24hFundingLbl:'Funding Rate',wpTradesUnit:'trades',
       toast:'🌐 Language changed to Singapore English',loginPassOldEmpty:'⚠️ Enter current password lah',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords no match lah',loginPassSuccess:'✅ Password changed successfully lah',pcPassStrLabels:['','Weak','OK Only','Good','Very Strong Lah'],pinCorrectToast:'✅ Correct lah — enter new PIN now',pinWrongToast:'⚠️ Wrong PIN lah, try again',pinReenterToast:'🔁 Re-enter PIN to confirm lah',pinSavedToast:'✅ PIN saved lah!',pinMismatchToast:'⚠️ PINs no match lah',notifNoneToast:'🔔 No new notifications lah',notifOnToast:'🔔 Notifications on lah',notifOffToast:'🔕 Notifications off lah',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode on lah',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode on lah',logoutToast:'👋 Logged out lah!',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-SG',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance lah",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions lah',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'0.000',wfLiqLabel:'Est. Liquidation Price',
       wpTitle:'Perpetual Wallet Lah',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate Lah',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions lah',wpNoPosHint:'Open a position from the Perpetual tab lah',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning Lah',wpRiskText:'Trading perpetual contracts is very risky one because of leverage. Please manage risk carefully and set stop-loss orders lah.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit lah!',kycBtnSubtitleProcessing:'Your documents being reviewed lah...',kycBtnSubtitleNone:'Verify your identity to unlock all features lah',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Not Verified',kycBtnProgressApproved:'Verification done lah',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start lah'}
   }; window._T=T;
@@ -16887,9 +16919,9 @@ body.light-mode .nav-item.active::before {
       var _rpw=document.getElementById('regPassword');
       if(typeof updatePwStrength==='function') updatePwStrength(_rpw?_rpw.value:'');
     }
-    st('navHome',t.navHome);st('navMarkets',t.navMarkets);
+    st('navHome',t.navHome);st('navMarkets',t.navMarkets);st('navMarketsTitle',t.navMarkets);
     st('navDerivatives',t.navDerivatives);st('navPerpetual',t.navPerpetual);st('navAssets',t.navAssets);st('tabAccountTitle',t.navAssets);
-    st('qaWithdraw',t.qaWithdraw);st('qaDeposit',t.qaDeposit);st('qaExchange',t.qaExchange);st('qaSync',t.qaSync);
+    st('qaWithdraw',t.qaWithdraw);st('qaDeposit',t.qaDeposit);st('qaExchange',t.qaExchange);st('qaSync',t.qaSync);st('syncTabTitle',t.syncTabTitle);st('syncHistoryTitle',t.syncHistoryTitle);st('syncHistoryEmpty',t.syncHistoryEmpty);st('syncHistoryEmptySub',t.syncHistoryEmptySub);if(t.syncHeroTitle){st('dihSyncHeroTitle',t.syncHeroTitle);st('dihSyncHeroSub',t.syncHeroSub);var _ssi=document.getElementById('syncSupportCodeInput');if(_ssi){_ssi.placeholder=t.syncInputPh;_ssi.dir=t.dir;}st('syncConfirmBtn',t.syncConfirmBtnText);st('syncAvailableTradersTitle',t.syncAvailableTradersTitle);var _stl=document.getElementById('syncTabTraderList');if(_stl){_stl.innerHTML='';if(typeof _syncTraders!=='undefined')_syncTraders.forEach(function(tr){_stl.appendChild(_buildSyncCard(tr));});}}var _shs=document.getElementById('syncHistoryScreen');if(_shs){_shs.dir=t.dir;_shs.style.direction=t.dir;}
     st('headerTitle',t.headerTitle);st('copyBtnText',t.copyBtn);
     st('ctaTitle',t.ctaTitle);st('ctaSub',t.ctaSub);
     st('settingsLangTitle',t.settingsLangTitle);st('settingsLangName',t.settingsLangName);st('settingsLangCode',t.settingsLangCode);
@@ -16904,7 +16936,7 @@ body.light-mode .nav-item.active::before {
     st('assetBtnTransfer',t.assetBtnTransfer);st('assetBtnExchange',t.assetBtnExchange);
     st('assetBtnWithdraw',t.assetBtnWithdraw);st('assetBtnDeposit',t.assetBtnDeposit);
     st('assetAccountLabel',t.assetAccountLabel);st('assetAccountType',t.assetAccountType);st('assetBtnSwitch',t.assetBtnSwitch);
-    st('assetMyAccountLabel',t.assetMyAccountLabel);
+    st('assetMyAccountLabel',t.assetMyAccountLabel);if(t.assetLiveConnected){st('assetLiveStatus',t.assetLiveConnected);if(typeof setLastUpdate==='function')setLastUpdate();}
     st('walletCurrencyLabel',t.walletCurrencyLabel);st('walletFuturesLabel',t.walletFuturesLabel);st('walletPerpetualLabel',t.walletPerpetualLabel);
     // ── Currency (Spot) Wallet Screen
     if(t.wcTitle){
@@ -16935,7 +16967,7 @@ body.light-mode .nav-item.active::before {
       st('wpEvery8h1',t.wpEvery8h);st('wpEvery8h2',t.wpEvery8h);st('wpEvery8h3',t.wpEvery8h);
       st('wpOpenPosLabel',t.wpOpenPosLabel);st('wpNoPosMsg',t.wpNoPosMsg);st('wpNoPosHint',t.wpNoPosHint);
       st('wpStatsLabel',t.wpStatsLabel);st('wpTotalFundingLabel',t.wpTotalFundingLabel);st('wpTotalProfitLabel',t.wpTotalProfitLabel);
-      st('wpTradesLabel',t.wpTradesLabel);st('wpAvgLevLabel',t.wpAvgLevLabel);
+      st('wpTradesLabel',t.wpTradesLabel);st('wpAvgLevLabel',t.wpAvgLevLabel);if(t.wpTradesUnit)st('wpTradesUnit',t.wpTradesUnit);
       st('wpRiskTitle',t.wpRiskTitle);st('wpRiskText',t.wpRiskText);
       // update direction for perpetual wallet screen
       var _wps=document.getElementById('walletPerpetualScreen');if(_wps){_wps.dir=t.dir;_wps.style.direction=t.dir;}
@@ -16947,7 +16979,7 @@ body.light-mode .nav-item.active::before {
       st('derivSubtabOrder',t.derivSubtabOrder);st('derivSubtabHistory',t.derivSubtabHistory);st('derivSubtabSupport',t.derivSubtabSupport);st('derivSubtabPlan',t.derivSubtabPlan);
       st('derivHistoryEmpty',t.derivHistoryEmpty);st('derivSupportStartBtn',t.derivSupportStartBtn);st('derivSupportCopyBtn',t.derivSupportCopyBtn);st('derivSupportConfirmBtn',t.derivSupportConfirmBtn);st('derivPlanEmpty',t.derivPlanEmpty);
       var _dsci=document.getElementById('derivSupportCodeInput');if(_dsci){_dsci.placeholder=t.derivSupportInputPh;_dsci.dir=t.dir;}
-      st('derivBtnUpLabel',t.derivBtnUp);st('derivBtnDownLabel',t.derivBtnDown);st('dtbUpLabel',t.derivBtnUp);st('dtbDownLabel',t.derivBtnDown);
+      st('derivBtnUpLabel',t.derivBtnUp);st('derivBtnDownLabel',t.derivBtnDown);st('dtbUpLabel',t.derivBtnUp);st('dtbDownLabel',t.derivBtnDown);if(t.deriv24hHighLbl){st('deriv24hHighLbl',t.deriv24hHighLbl);st('deriv24hLowLbl',t.deriv24hLowLbl);st('deriv24hVolLbl',t.deriv24hVolLbl);st('deriv24hFundingLbl',t.deriv24hFundingLbl);}
       st('coinPickerTitle',t.coinPickerTitle);
       var _csi=document.getElementById('coinSearchInput');if(_csi){_csi.placeholder=t.coinSearchPh;_csi.dir=t.dir;}
       var _cps=document.getElementById('coinPickerSheet');if(_cps){_cps.dir=t.dir;_cps.style.direction=t.dir;}
@@ -17055,7 +17087,7 @@ body.light-mode .nav-item.active::before {
     var _itcf=document.getElementById('itCfCard');if(_itcf){_itcf.dir=t.dir;_itcf.style.direction=t.dir;}
     var _itsc=document.getElementById('itSuccessCard');if(_itsc){_itsc.dir=t.dir;_itsc.style.direction=t.dir;}
     // ── Exchange Modal
-    st('excModalTitle',t.excModalTitle);st('excFromStaticLabel',t.excFromStaticLabel);st('excAvailableText',t.excAvailableText);st('excMaxBtn',t.excMaxBtn);st('excToStaticLabel',t.excToStaticLabel);st('excSlippageLabel',t.excSlippageLabel);st('excRateLabel',t.excRateLabel);st('excConvertBtn',t.excConvertBtn);st('excPickerTitle',t.excPickerTitle);
+    st('excModalTitle',t.excModalTitle);st('excFromStaticLabel',t.excFromStaticLabel);st('excAvailableText',t.excAvailableText);st('excMaxBtn',t.excMaxBtn);st('excToStaticLabel',t.excToStaticLabel);st('excSlippageLabel',t.excSlippageLabel);st('excRateLabel',t.excRateLabel);st('excConvertBtn',t.excConvertBtn);st('excPickerTitle',t.excPickerTitle);st('excHistoryTitle',t.excHistoryTitle);st('excHistoryEmpty',t.excHistoryEmpty);st('excHistoryEmptySub',t.excHistoryEmptySub);
     var _excFI=document.getElementById('excFromInput');if(_excFI&&t.excFromInputPh)_excFI.placeholder=t.excFromInputPh;
     var _excM=document.getElementById('exchangeModal');if(_excM){_excM.dir=t.dir;_excM.style.direction=t.dir;}
     var _excCPS=document.getElementById('excCoinPickerSheet');if(_excCPS){_excCPS.dir=t.dir;_excCPS.style.direction=t.dir;}
@@ -17624,7 +17656,7 @@ body.light-mode #tabAccount .asset-live-meta {
         var meta = document.createElement('div');
         meta.id = 'assetLiveMeta';
         meta.className = 'asset-live-meta';
-        meta.innerHTML = '<span><i class="asset-live-dot"></i><span id="assetLiveStatus">متصل — تحديث مباشر</span></span><span id="assetLastUpdate">آخر تحديث الآن</span>';
+        var _alt=window._T&&window._T[window._lang];var _alc=(_alt&&_alt.assetLiveConnected)||'متصل — تحديث مباشر';var _alu=(_alt&&_alt.assetLastUpdateNow)||'آخر تحديث الآن';meta.innerHTML='<span><i class="asset-live-dot"></i><span id="assetLiveStatus">'+_alc+'</span></span><span id="assetLastUpdate">'+_alu+'</span>';
         bar.parentNode.insertBefore(meta, bar.nextSibling);
     }
     function setLastUpdate(){
@@ -17632,7 +17664,7 @@ body.light-mode #tabAccount .asset-live-meta {
         if (!el) return;
         var now = new Date();
         var time = now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-        el.textContent = 'آخر تحديث ' + time;
+        var _alt2=window._T&&window._T[window._lang];var _pre=(_alt2&&_alt2.assetLastUpdatePrefix)||'آخر تحديث ';el.textContent=_pre+time;
     }
     function decorate(){
         ensureLiveMeta();
@@ -17688,7 +17720,7 @@ body.light-mode #tabAccount .asset-live-meta {
             if (status) status.textContent = label;
             setTimeout(function(){
                 var s = byId('assetLiveStatus');
-                if (s) s.textContent = 'متصل — تحديث مباشر';
+                var _art=window._T&&window._T[window._lang];if(s)s.textContent=(_art&&_art.assetLiveConnected)||'متصل — تحديث مباشر';
             }, 1600);
         }
         if (typeof originalAction === 'function') return originalAction(type);
@@ -17954,6 +17986,14 @@ body.light-mode #tabSync .dih-subtitle {
     }
 
     /* --- syncSupportConfirm --- */
+    window.openSyncHistory = function(){
+        var s = document.getElementById('syncHistoryScreen');
+        if(s){ s.style.display = 'block'; }
+    };
+    window.closeSyncHistory = function(){
+        var s = document.getElementById('syncHistoryScreen');
+        if(s){ s.style.display = 'none'; }
+    };
     window.syncSupportConfirm = function(){
         var inp = document.getElementById('syncSupportCodeInput');
         var code = inp ? inp.value.trim() : '';

@@ -12163,8 +12163,8 @@ body.light-mode .hh-globe-orbit-ring-2 { border-color:rgba(52,211,153,.22) !impo
         function fallbackCopy(){
             try{
                 var ta = document.createElement('textarea');
-                ta.value = addr; ta.style.position='fixed'; ta.style.opacity='0';
-                document.body.appendChild(ta); ta.focus(); ta.select();
+                ta.value = addr; ta.readOnly = true; ta.style.position='fixed'; ta.style.top='-9999px'; ta.style.left='-9999px'; ta.style.opacity='0';
+                document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, 99999);
                 document.execCommand('copy'); document.body.removeChild(ta);
             }catch(e){}
         }
@@ -13314,8 +13314,8 @@ function hhCopyUID(){
     } catch(e){
         // fallback
         var ta = document.createElement('textarea');
-        ta.value = uid; ta.style.position='fixed'; ta.style.opacity='0';
-        document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+        ta.value = uid; ta.readOnly = true; ta.style.position='fixed'; ta.style.top='-9999px'; ta.style.left='-9999px'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, 99999); document.execCommand('copy');
         document.body.removeChild(ta);
         var btn = document.getElementById('hhUidCopyBtn');
         if(btn){ btn.textContent='✓ تم'; btn.style.color='#10b981'; }
@@ -14273,23 +14273,58 @@ function hhCopyUID(){
     </div>
   </div>
 
-  <!-- بطاقة دعوة الأصدقاء -->
-  <div class="pc-invite-card">
-    <div id="pcInviteTitle" style="font-size:11px;color:rgba(99,102,241,0.8);font-weight:700;margin-bottom:12px;letter-spacing:0.5px;position:relative;z-index:1;">دعوة الأصدقاء</div>
-    <div style="display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;">
-      <div>
-        <div id="pcInviteCodeLabel" style="font-size:10px;color:rgba(148,163,184,0.6);margin-bottom:4px;">كود الدعوة</div>
-        <div style="display:flex;align-items:center;gap:8px;">
-          <span id="pcInviteCode" style="font-size:20px;font-weight:800;color:#818cf8;letter-spacing:2px;font-family:monospace;">──────</span>
-          <button onclick="pcCopyInviteCode()" style="background:none;border:none;cursor:pointer;color:#818cf8;padding:0;transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.85)'" onmouseup="this.style.transform='scale(1)'">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          </button>
+  <!-- ===== بطاقة الأعضاء التابعين ===== -->
+  <div class="pc-sub-members-card" onclick="pcViewMembers()" id="pcSubMembersCard">
+    <div class="pc-sub-members-inner">
+      <div class="pc-sub-members-left">
+        <div class="pc-sub-members-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div>
+          <div class="pc-sub-members-label" id="pcSubMembersLabel">عرض الأعضاء التابعين</div>
+          <div class="pc-sub-members-count-row">
+            <span class="pc-sub-members-count" id="pcSubMembersCount">0</span>
+            <span class="pc-sub-members-count-sub" id="pcSubMembersCountSub">عضو</span>
+          </div>
         </div>
       </div>
-      <button onclick="pcShareInvite()" style="background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(79,70,229,0.3));border:1px solid rgba(99,102,241,0.35);border-radius:12px;padding:10px 14px;color:#a78bfa;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px;transition:all 0.2s;" onmousedown="this.style.transform='scale(0.95)'" onmouseup="this.style.transform='scale(1)'">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-        <span id="pcShareBtnLabel">نسخ الرابط</span>
-      </button>
+      <div class="pc-sub-members-btn" style="display:flex;align-items:center;gap:7px;">
+        <button onclick="event.stopPropagation();pcShowInviteInfo()" style="width:19px;height:19px;border-radius:50%;background:linear-gradient(135deg,rgba(245,158,11,0.22),rgba(234,88,12,0.15));border:1.5px solid rgba(245,158,11,0.55);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;flex-shrink:0;transition:transform 0.15s;" title="شرط المكافأة">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="11" height="11"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </button>
+        <span id="pcSubMembersBtnLabel">الانتقال لعرض</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+    </div>
+    <div class="pc-sub-members-bar">
+      <div class="pc-sub-members-bar-fill" id="pcSubMembersBarFill"></div>
+    </div>
+  </div>
+
+  <!-- popup شرط الإيداع -->
+  <div id="pcInviteInfoOverlay" onclick="pcHideInviteInfo()" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:24px;">
+    <div onclick="event.stopPropagation()" style="background:linear-gradient(160deg,#0f1f3a 0%,#0a1628 100%);border:1px solid rgba(245,158,11,0.30);border-radius:18px;padding:22px 20px 20px;max-width:340px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,0.55),0 0 0 1px rgba(245,158,11,0.08);position:relative;direction:rtl;">
+      <!-- أيقونة عنوان -->
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,rgba(245,158,11,0.20),rgba(234,88,12,0.12));border:1px solid rgba(245,158,11,0.30);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <span style="font-size:14px;font-weight:800;color:#f59e0b;letter-spacing:0.2px;">شرط احتساب المكافأة</span>
+        <button onclick="pcHideInviteInfo()" style="margin-right:auto;background:rgba(255,255,255,0.07);border:none;border-radius:8px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:rgba(148,163,184,0.8);flex-shrink:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <!-- النص -->
+      <div style="font-size:13px;color:rgba(203,213,225,0.88);line-height:1.75;margin-bottom:16px;">
+        لن يتم احتساب الأعضاء المدعوّين أو منح أي مكافأة إلا بعد قيام الشخص المدعو بإجراء
+        <span style="color:#fbbf24;font-weight:700;"> أول إيداع </span>
+        في حسابه.
+      </div>
+      <!-- تذييل -->
+      <div style="display:flex;align-items:center;gap:7px;padding:9px 12px;border-radius:10px;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.15);">
+        <div style="width:7px;height:7px;border-radius:50%;background:#f59e0b;flex-shrink:0;"></div>
+        <span style="font-size:11px;color:rgba(251,191,36,0.80);font-weight:600;">يُطبَّق على جميع دعوات الأصدقاء</span>
+      </div>
     </div>
   </div>
 
@@ -14511,6 +14546,79 @@ function hhCopyUID(){
   </script>
 </div>
 
+<!-- ========== مودال الأعضاء التابعين ========== -->
+<div id="pcSubMembersModal">
+  <!-- Header -->
+  <div class="pcm-header">
+    <button class="pcm-back-btn" onclick="pcCloseSubMembers()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2.5" width="18" height="18"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="pcm-title">
+      <div class="pcm-title-main" id="pcmTitleMain">الأعضاء التابعون</div>
+      <div class="pcm-title-sub" id="pcmTitleSub">أعضاء انضموا بكود دعوتك</div>
+    </div>
+    <div style="width:38px;"></div>
+  </div>
+
+  <!-- إحصائيات سريعة -->
+  <div class="pcm-stats-row" id="pcmStatsRow">
+    <div class="pcm-stat-box">
+      <div class="pcm-stat-val" id="pcmStatTotal">0</div>
+      <div class="pcm-stat-lbl" id="pcmStatTotalLbl">إجمالي الأعضاء</div>
+    </div>
+    <div class="pcm-stat-box">
+      <div class="pcm-stat-val green" id="pcmStatActive">0</div>
+      <div class="pcm-stat-lbl" id="pcmStatActiveLbl">نشطون الآن</div>
+    </div>
+    <div class="pcm-stat-box">
+      <div class="pcm-stat-val gold" id="pcmStatEarn">0</div>
+      <div class="pcm-stat-lbl" id="pcmStatEarnLbl">مكافآت USDT</div>
+    </div>
+  </div>
+
+  <!-- بطاقة دعوة الأصدقاء داخل مودال الأعضاء -->
+  <div class="pc-invite-card" style="margin:0 14px 14px;border-radius:16px;">
+    <div id="pcInviteTitle" style="font-size:11px;color:rgba(99,102,241,0.8);font-weight:700;margin-bottom:12px;letter-spacing:0.5px;position:relative;z-index:1;">دعوة الأصدقاء</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;">
+      <div>
+        <div id="pcInviteCodeLabel" style="font-size:10px;color:rgba(148,163,184,0.6);margin-bottom:4px;">كود الدعوة</div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="pcInviteCode" style="font-size:20px;font-weight:800;color:#818cf8;letter-spacing:2px;font-family:monospace;">──────</span>
+          <button onclick="pcCopyInviteCode()" style="background:none;border:none;cursor:pointer;color:#818cf8;padding:0;transition:transform 0.2s;" onmousedown="this.style.transform='scale(0.85)'" onmouseup="this.style.transform='scale(1)'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- زر نسخ رابط المشاركة -->
+  <div style="padding:0 14px 14px;">
+    <button onclick="pcmCopyShareLink()" id="pcmShareBtn" style="width:100%;background:linear-gradient(135deg,rgba(99,102,241,0.25),rgba(79,70,229,0.35));border:1px solid rgba(99,102,241,0.4);border-radius:14px;padding:13px 16px;color:#a78bfa;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;" onmousedown="this.style.transform='scale(0.97)'" onmouseup="this.style.transform='scale(1)'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span id="pcmShareBtnLabel">نسخ رابط المشاركة</span>
+    </button>
+  </div>
+
+  <!-- تبويبات التصفية -->
+  <div class="pcm-filter-tabs" id="pcmFilterTabs">
+    <div class="pcm-filter-tab active" data-filter="all" id="pcmFilterAllTab" onclick="pcmSetFilter('all',this)">الكل</div>
+    <div class="pcm-filter-tab" data-filter="active" id="pcmFilterActiveTab" onclick="pcmSetFilter('active',this)">النشطون</div>
+    <div class="pcm-filter-tab" data-filter="inactive" id="pcmFilterInactiveTab" onclick="pcmSetFilter('inactive',this)">غير النشطين</div>
+    <div class="pcm-filter-tab" data-filter="vip" id="pcmFilterVipTab" onclick="pcmSetFilter('vip',this)">VIP فقط</div>
+  </div>
+
+  <!-- عنوان القائمة -->
+  <div class="pcm-section-head">
+    <span id="pcmListTitle">قائمة الأعضاء</span>
+    <span id="pcmListCount" style="font-size:11px;color:rgba(148,163,184,0.5);font-weight:500;"></span>
+  </div>
+
+  <!-- قائمة الأعضاء -->
+  <div class="pcm-list" id="pcmMemberList"></div>
+</div>
+
 
 <!-- ===== شاشة KYC ===== -->
 <div id="pcKYCScreen" style="display:none;position:fixed;inset:0;z-index:100000;background:#0d1f3c;overflow-y:auto;direction:rtl;font-family:inherit;">
@@ -14648,8 +14756,7 @@ function hhCopyUID(){
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           <span id="kycFrontCamLabel">&#x1F4F7; تصوير</span>
         </button>
-        <label for="kycFrontFile" style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;border-radius:10px;border:1.5px solid rgba(100,116,139,0.4);background:rgba(30,58,95,0.3);color:#94a3b8;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;box-sizing:border-box;">
-          من المعرض
+        <label for="kycFrontFile" style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;border-radius:10px;border:1.5px solid rgba(100,116,139,0.4);background:rgba(30,58,95,0.3);color:#94a3b8;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;box-sizing:border-box;"><span id="kycFrontGalleryLabel">من المعرض</span>
         </label>
       </div>
     </div>
@@ -14666,8 +14773,7 @@ function hhCopyUID(){
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           <span id="kycBackCamLabel">&#x1F4F7; تصوير</span>
         </button>
-        <label for="kycBackFile" style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;border-radius:10px;border:1.5px solid rgba(100,116,139,0.4);background:rgba(30,58,95,0.3);color:#94a3b8;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;box-sizing:border-box;">
-          من المعرض
+        <label for="kycBackFile" style="flex:1;display:flex;align-items:center;justify-content:center;gap:7px;padding:11px 6px;border-radius:10px;border:1.5px solid rgba(100,116,139,0.4);background:rgba(30,58,95,0.3);color:#94a3b8;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;box-sizing:border-box;"><span id="kycBackGalleryLabel">من المعرض</span>
         </label>
       </div>
     </div>
@@ -14700,10 +14806,9 @@ function hhCopyUID(){
     <div style="display:flex;gap:10px;">
       <button onclick="kycOpenFrontCamera()" style="flex:2;display:flex;align-items:center;justify-content:center;gap:8px;padding:14px 10px;border-radius:12px;border:2px solid rgba(139,92,246,0.6);background:rgba(139,92,246,0.14);color:#c4b5fd;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;box-sizing:border-box;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-        &#x1F933; التقاط صورة الوجه
+        <span id="kycSelfieCaptureLabel">&#x1F933; التقاط صورة الوجه</span>
       </button>
-      <label for="kycSelfieFile" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 8px;border-radius:12px;border:1.5px solid rgba(100,116,139,0.4);background:rgba(30,58,95,0.3);color:#94a3b8;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;box-sizing:border-box;text-align:center;">
-        من المعرض
+      <label for="kycSelfieFile" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:14px 8px;border-radius:12px;border:1.5px solid rgba(100,116,139,0.4);background:rgba(30,58,95,0.3);color:#94a3b8;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;box-sizing:border-box;text-align:center;"><span id="kycSelfieGalleryLabel">من المعرض</span>
       </label>
     </div>
   </div>
@@ -15175,6 +15280,19 @@ function hhCopyUID(){
   };
 
   /* ---------- نسخ UID ---------- */
+  /* ---------- popup شرط الإيداع ---------- */
+  window.pcShowInviteInfo = function(){
+    var el = document.getElementById('pcInviteInfoOverlay');
+    if(!el) return;
+    el.style.display = 'flex';
+    setTimeout(function(){ el.style.opacity='1'; }, 10);
+  };
+  window.pcHideInviteInfo = function(){
+    var el = document.getElementById('pcInviteInfoOverlay');
+    if(!el) return;
+    el.style.display = 'none';
+  };
+
   window.pcCopyUID = function(){
     var uid = localStorage.getItem('hh_uid') || window._hhUID || '';
     try { navigator.clipboard.writeText(uid).then(function(){ if(typeof toast==='function') toast('✅ تم نسخ الـ UID'); }); }
@@ -15183,10 +15301,27 @@ function hhCopyUID(){
 
   /* ---------- نسخ كود الدعوة ---------- */
   window.pcCopyInviteCode = function(){
-    var uid = localStorage.getItem('hh_uid') || window._hhUID || '';
-    var code = uid.slice(0,6);
-    try { navigator.clipboard.writeText(code).then(function(){ if(typeof toast==='function') toast('✅ تم نسخ كود الدعوة'); }); }
-    catch(e){ if(typeof toast==='function') toast('✅ تم نسخ كود الدعوة'); }
+    // قراءة الكود مباشرة من العنصر المعروض أو من localStorage
+    var el = document.getElementById('pcInviteCode');
+    var code = (el && el.textContent && el.textContent.trim() !== '──────') ? el.textContent.trim() : '';
+    if(!code){
+      var uid = localStorage.getItem('hh_uid') || window._hhUID || '';
+      code = uid.slice(0,6);
+    }
+    if(!code){ if(typeof toast==='function') toast('⚠️ لا يوجد كود دعوة بعد'); return; }
+    function _fallbackCopy(txt){
+      var ta = document.createElement('textarea');
+      ta.value = txt; ta.readOnly = true; ta.style.position='fixed'; ta.style.top='-9999px'; ta.style.left='-9999px';
+      ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0, 99999);
+      try{ document.execCommand('copy'); }catch(e){}
+      document.body.removeChild(ta);
+      if(typeof toast==='function') toast('✅ تم نسخ كود الدعوة');
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(code).then(function(){
+        if(typeof toast==='function') toast('✅ تم نسخ كود الدعوة');
+      }).catch(function(){ _fallbackCopy(code); });
+    } else { _fallbackCopy(code); }
   };
 
   /* ---------- مشاركة رابط الدعوة ---------- */
@@ -15197,23 +15332,163 @@ function hhCopyUID(){
         if(typeof toast==='function') toast('🔗 تم نسخ الرابط');
       }).catch(function(){
         var ta=document.createElement('textarea');
-        ta.value=link; ta.style.position='fixed'; ta.style.opacity='0';
-        document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+        ta.value=link; ta.readOnly=true; ta.style.position='fixed'; ta.style.top='-9999px'; ta.style.left='-9999px'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,99999); document.execCommand('copy');
         document.body.removeChild(ta);
         if(typeof toast==='function') toast('🔗 تم نسخ الرابط');
       });
     } else {
       var ta=document.createElement('textarea');
-      ta.value=link; ta.style.position='fixed'; ta.style.opacity='0';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      ta.value=link; ta.readOnly=true; ta.style.position='fixed'; ta.style.top='-9999px'; ta.style.left='-9999px'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,99999); document.execCommand('copy');
       document.body.removeChild(ta);
       if(typeof toast==='function') toast('🔗 تم نسخ الرابط');
     }
   };
 
-  /* ---------- زر الأعضاء ---------- */
+  /* ---------- زر الأعضاء التابعين ---------- */
+  /* ===== بيانات الأعضاء: يمكن تحديثها من الخادم ===== */
+  var _pcSubMembersData = [];
+  var _pcmCurrentFilter = 'all';
+
+  /* ألوان الأفاتار */
+  var _pcmAvatarColors = [
+    'linear-gradient(135deg,#6366f1,#8b5cf6)',
+    'linear-gradient(135deg,#10b981,#059669)',
+    'linear-gradient(135deg,#f59e0b,#d97706)',
+    'linear-gradient(135deg,#3b82f6,#1d4ed8)',
+    'linear-gradient(135deg,#ec4899,#be185d)',
+    'linear-gradient(135deg,#06b6d4,#0284c7)',
+    'linear-gradient(135deg,#a78bfa,#7c3aed)',
+    'linear-gradient(135deg,#34d399,#10b981)',
+  ];
+
+  function _pcmGetColor(name){ var h=0; for(var i=0;i<name.length;i++) h=(h*31+name.charCodeAt(i))%_pcmAvatarColors.length; return _pcmAvatarColors[Math.abs(h)%_pcmAvatarColors.length]; }
+
+  function _pcmRenderList(filter){
+    var list = document.getElementById('pcmMemberList');
+    if(!list) return;
+    var data = _pcSubMembersData.filter(function(m){
+      if(filter==='active') return m.active;
+      if(filter==='inactive') return !m.active;
+      if(filter==='vip') return m.vip > 0;
+      return true;
+    });
+    var countEl = document.getElementById('pcmListCount');
+    if(countEl){var _pcmLt=window._T&&window._T[window._lang||'ar'];countEl.textContent=data.length+' '+((_pcmLt&&_pcmLt.pcmMemberWord)||'عضو');}
+    if(data.length===0){
+      var _pcmEt=window._T&&window._T[window._lang||'ar'];list.innerHTML='<div class="pcm-empty"><div class="pcm-empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.5" width="36" height="36"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><div class="pcm-empty-title">'+(_pcmEt&&_pcmEt.pcmEmptyTitle?_pcmEt.pcmEmptyTitle:'لا توجد نتائج')+'</div><div class="pcm-empty-sub">'+(_pcmEt&&_pcmEt.pcmEmptySub?_pcmEt.pcmEmptySub:'لا يوجد أعضاء ضمن هذه الفئة.')+'</div></div>';
+      return;
+    }
+    var html = '';
+    data.forEach(function(m, idx){
+      var initial = (m.name||'?')[0].toUpperCase();
+      var color = _pcmGetColor(m.name);
+      var _pcmRt=window._T&&window._T[window._lang||'ar'];var vipLabel=m.vip>0?'VIP'+m.vip:((_pcmRt&&_pcmRt.pcmVipNormal)||'عادي');
+      var vipClass = m.vip>0 ? '' : ' vip0';
+      var earnStr = m.earn>0 ? m.earn.toFixed(2)+' USDT' : '—';
+      var dateShort = m.date ? m.date.replace(/^20/,'') : '';
+      html += '<div class="pcm-member-card" style="animation-delay:'+(idx*0.04)+'s">';
+      html +=   '<div class="pcm-avatar" style="background:'+color+'">'+initial+'<span class="pcm-avatar-status '+(m.active?'online':'offline')+'"></span></div>';
+      html +=   '<div class="pcm-member-info">';
+      html +=     '<div class="pcm-member-name">'+m.name+'</div>';
+      html +=     '<div class="pcm-member-meta">';
+      html +=       '<span class="pcm-member-date">'+dateShort+'</span>';
+      html +=       '<span class="pcm-vip-badge'+vipClass+'">'+vipLabel+'</span>';
+      html +=     '</div>';
+      html +=   '</div>';
+      html +=   '<div class="pcm-member-right">';
+      html +=     '<span class="pcm-member-status-badge '+(m.active?'active':'inactive')+'">'+(m.active?((_pcmRt&&_pcmRt.pcmStatusActive)||'نشط'):((_pcmRt&&_pcmRt.pcmStatusInactive)||'غير نشط'))+'</span>';
+      html +=     '<div class="pcm-member-earn">'+earnStr+'</div>';
+      html +=   '</div>';
+      html += '</div>';
+    });
+    list.innerHTML = html;
+  }
+
+  window.pcmSetFilter = function(filter, el){
+    _pcmCurrentFilter = filter;
+    var tabs = document.querySelectorAll('.pcm-filter-tab');
+    tabs.forEach(function(t){ t.classList.remove('active'); });
+    if(el) el.classList.add('active');
+    _pcmRenderList(filter);
+  };
+
   window.pcViewMembers = function(){
-    if(typeof toast==='function') toast('👥 لا يوجد أعضاء تابعون حتى الآن — شارك كود دعوتك!');
+    // تحديث عدد الأعضاء في البطاقة
+    var cnt = _pcSubMembersData.length;
+    var cntEl = document.getElementById('pcSubMembersCount');
+    if(cntEl) cntEl.textContent = cnt;
+    var bar = document.getElementById('pcSubMembersBarFill');
+    if(bar) setTimeout(function(){ bar.style.width = Math.min(cnt*6, 90)+'%'; }, 200);
+
+    // تحديث كود الدعوة داخل المودال
+    var uid = localStorage.getItem('hh_uid') || window._hhUID || '';
+    var invCode = uid ? uid.slice(0,6) : '──────';
+    var icEl = document.getElementById('pcInviteCode');
+    if(icEl) icEl.textContent = invCode;
+
+    // فتح المودال
+    var modal = document.getElementById('pcSubMembersModal');
+    if(!modal) return;
+    modal.style.display = 'block';
+    modal.scrollTop = 0;
+
+    // تحديث إحصائيات
+    var active = _pcSubMembersData.filter(function(m){ return m.active; }).length;
+    var totalEarn = _pcSubMembersData.reduce(function(s,m){ return s+m.earn; }, 0);
+    var statTotal = document.getElementById('pcmStatTotal');
+    var statActive = document.getElementById('pcmStatActive');
+    var statEarn = document.getElementById('pcmStatEarn');
+    if(statTotal) statTotal.textContent = cnt;
+    if(statActive) statActive.textContent = active;
+    if(statEarn) statEarn.textContent = totalEarn.toFixed(1);
+
+    // رسم القائمة
+    _pcmCurrentFilter = 'all';
+    var tabs = document.querySelectorAll('.pcm-filter-tab');
+    tabs.forEach(function(t){ t.classList.remove('active'); if(t.dataset.filter==='all') t.classList.add('active'); });
+    _pcmRenderList('all');
+  };
+
+  window.pcmCopyShareLink = function(){
+    var link = 'https://exurs7app.github.io/ExByteX-78359/';
+    // محاولة نسخ الرابط الفعلي من كود الدعوة إذا كان متاحاً
+    var uid = localStorage.getItem('hh_uid') || window._hhUID || '';
+    if(uid) link = 'https://exurs7app.github.io/ExByteX-78359/?ref=' + uid.slice(0,6);
+    var btn = document.getElementById('pcmShareBtnLabel');
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(link).then(function(){
+        var _clT=window._T&&window._T[window._lang||'ar'];if(typeof toast==='function')toast((_clT&&_clT.pcmShareCopiedToast)||'🔗 تم نسخ رابط المشاركة');
+        if(btn){btn.textContent=(_clT&&_clT.pcmShareCopied)||'✅ تم النسخ!';setTimeout(function(){btn.textContent=(_clT&&_clT.pcmShareBtnLabel)||'نسخ رابط المشاركة';},2000);}
+      }).catch(function(){
+        var ta=document.createElement('textarea'); ta.value=link; ta.readOnly=true; ta.style.position='fixed'; ta.style.top='-9999px'; ta.style.left='-9999px'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,99999); document.execCommand('copy'); document.body.removeChild(ta);
+        var _clT2=window._T&&window._T[window._lang||'ar'];if(typeof toast==='function')toast((_clT2&&_clT2.pcmShareCopiedToast)||'🔗 تم نسخ رابط المشاركة');
+        if(btn){btn.textContent=(_clT2&&_clT2.pcmShareCopied)||'✅ تم النسخ!';setTimeout(function(){btn.textContent=(_clT2&&_clT2.pcmShareBtnLabel)||'نسخ رابط المشاركة';},2000);}
+      });
+    } else {
+      var ta=document.createElement('textarea'); ta.value=link; ta.readOnly=true; ta.style.position='fixed'; ta.style.top='-9999px'; ta.style.left='-9999px'; ta.style.opacity='0';
+      document.body.appendChild(ta); ta.select(); ta.setSelectionRange(0,99999); document.execCommand('copy'); document.body.removeChild(ta);
+      var _clT3=window._T&&window._T[window._lang||'ar'];if(typeof toast==='function')toast((_clT3&&_clT3.pcmShareCopiedToast)||'🔗 تم نسخ رابط المشاركة');
+      if(btn){btn.textContent=(_clT3&&_clT3.pcmShareCopied)||'✅ تم النسخ!';setTimeout(function(){btn.textContent=(_clT3&&_clT3.pcmShareBtnLabel)||'نسخ رابط المشاركة';},2000);}
+    }
+  };
+
+  window.pcCloseSubMembers = function(){
+    var modal = document.getElementById('pcSubMembersModal');
+    if(modal) modal.style.display = 'none';
+  };
+
+  /* تحديث عدد الأعضاء في البطاقة عند فتح المركز الشخصي */
+  var _pcOrigOpen = window.openPersonalCenter;
+  window.openPersonalCenter = function(){
+    if(typeof _pcOrigOpen === 'function') _pcOrigOpen();
+    var cnt = _pcSubMembersData.length;
+    var cntEl = document.getElementById('pcSubMembersCount');
+    if(cntEl) cntEl.textContent = cnt;
+    var bar = document.getElementById('pcSubMembersBarFill');
+    if(bar) setTimeout(function(){ bar.style.width = Math.min(cnt*6, 90)+'%'; }, 500);
   };
 
   /* ---------- تعديل الملف الشخصي ---------- */
@@ -15228,7 +15503,7 @@ function hhCopyUID(){
   /* ---------- KYC ---------- */
 
   /* تحديث شارة زر KYC في الصفحة الرئيسية */
-  function kycUpdateMainBtn(){
+  window.kycUpdateMainBtn = function(){
     var state = localStorage.getItem('kycState') || 'none';
     var submitTime = parseInt(localStorage.getItem('kycSubmitTime') || '0');
     var approveTime = parseInt(localStorage.getItem('kycApproveTime') || '0');
@@ -15256,7 +15531,7 @@ function hhCopyUID(){
       if(progressText){ var _t8p=window.T&&window.T[window._lang||'ar']; progressText.textContent = (_t8p&&_t8p.kycBtnProgressApproved)||'اكتمل التحقق'; }
       if(statusDot) statusDot.setAttribute('aria-label', 'حالة التحقق: موثّق');
       if(vipVerified){ vipVerified.style.display='none'; }
-      if(kycStatusBadge){ kycStatusBadge.style.display='inline-block'; kycStatusBadge.textContent='تم التوثيق ✓'; kycStatusBadge.style.background='rgba(16,185,129,0.12)'; kycStatusBadge.style.border='1px solid rgba(16,185,129,0.35)'; kycStatusBadge.style.color='#10b981'; }
+      if(kycStatusBadge){ kycStatusBadge.style.display='inline-block'; kycStatusBadge.textContent=(_t8b&&_t8b.kycBtnBadgeApproved)||'تم التوثيق ✓'; kycStatusBadge.style.background='rgba(16,185,129,0.12)'; kycStatusBadge.style.border='1px solid rgba(16,185,129,0.35)'; kycStatusBadge.style.color='#10b981'; }
     } else if(state === 'processing'){
       var _t9=window.T&&window.T[window._lang||'ar']; subtitle.textContent = (_t9&&_t9.kycBtnSubtitleProcessing)||'جارٍ مراجعة وثائقك...';
       var _t9b=window.T&&window.T[window._lang||'ar']; badge.textContent = (_t9b&&_t9b.kycBtnBadgeProcessing)||'قيد التحقق';
@@ -15270,7 +15545,7 @@ function hhCopyUID(){
       }
       if(statusDot) statusDot.setAttribute('aria-label', 'حالة التحقق: قيد المراجعة');
       if(vipVerified){ vipVerified.style.display='none'; }
-      if(kycStatusBadge){ kycStatusBadge.style.display='inline-block'; kycStatusBadge.textContent='قيد التحقق'; kycStatusBadge.style.background='rgba(245,158,11,0.12)'; kycStatusBadge.style.border='1px solid rgba(245,158,11,0.3)'; kycStatusBadge.style.color='#f59e0b'; }
+      if(kycStatusBadge){ kycStatusBadge.style.display='inline-block'; kycStatusBadge.textContent=(_t9b&&_t9b.kycBtnBadgeProcessing)||'قيد التحقق'; kycStatusBadge.style.background='rgba(245,158,11,0.12)'; kycStatusBadge.style.border='1px solid rgba(245,158,11,0.3)'; kycStatusBadge.style.color='#f59e0b'; }
     } else {
       var _t10=window.T&&window.T[window._lang||'ar']; subtitle.textContent = (_t10&&_t10.kycBtnSubtitleNone)||'تحقق من هويتك لفتح كامل المزايا';
       var _t10b=window.T&&window.T[window._lang||'ar']; badge.textContent = (_t10b&&_t10b.kycBtnBadgeNone)||'غير موثّق';
@@ -15548,17 +15823,21 @@ function hhCopyUID(){
     if(!container) return;
     var q = (query || '').trim().toLowerCase();
     var html = '';
+    var _isAr = (window._lang || 'ar') === 'ar';
+    var _t = (window._T && window._T[window._lang || 'ar']) || {};
 
     function buildItem(c){
       var selected = window._kycCountry === c.name;
-      return '<div class="kyc-country-item'+(selected?' selected':'')+'" onclick="kycSelectCountry(\''+c.name.replace(/'/g,"\\'")+'\')">'
-        +'<span style="font-size:22px;line-height:1;flex-shrink:0;">'+c.flag+'</span>'
-        +'<div style="flex:1;min-width:0;">'
-          +'<div style="font-size:13px;font-weight:'+(selected?'700':'500')+';color:'+(selected?'#93c5fd':'#cbd5e1')+';">'+c.name+'</div>'
-          +'<div style="font-size:10px;color:#64748b;margin-top:1px;">'+c.en+'</div>'
-        +'</div>'
-        +(selected?'<svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" width="18" height="18" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>':'')
-        +'</div>';
+      var mainName = _isAr ? c.name : c.en;
+      var subName  = _isAr ? c.en   : c.name;
+      return '<div class="kyc-country-item'+(selected?' selected':'')+'" onclick="kycSelectCountry(\''+c.name.replace(/'/g,"\\'")+'\')">'+
+        '<span style="font-size:22px;line-height:1;flex-shrink:0;">'+c.flag+'</span>'+
+        '<div style="flex:1;min-width:0;">'+
+          '<div style="font-size:13px;font-weight:'+(selected?'700':'500')+';color:'+(selected?'#93c5fd':'#cbd5e1')+';">'+mainName+'</div>'+
+          '<div style="font-size:10px;color:#64748b;margin-top:1px;">'+subName+'</div>'+
+        '</div>'+
+        (selected?'<svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2.5" width="18" height="18" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>':'')+
+        '</div>';
     }
 
     if(q){
@@ -15566,19 +15845,22 @@ function hhCopyUID(){
         return c.name.toLowerCase().indexOf(q) !== -1 || c.en.toLowerCase().indexOf(q) !== -1;
       });
       if(allResults.length === 0){
-        html = '<div style="padding:24px;text-align:center;color:#8b9bb4;font-size:13px;">لا توجد نتائج للبحث</div>';
+        var noResMsg = _isAr ? 'لا توجد نتائج للبحث' : 'No results found';
+        html = '<div style="padding:24px;text-align:center;color:#8b9bb4;font-size:13px;">'+noResMsg+'</div>';
       } else {
         allResults.forEach(function(c){ html += buildItem(c); });
       }
     } else {
-      html += '<div class="kyc-section-header">&#x1F310; الدول الأجنبية والدولية</div>';
+      var hdrIntl = _isAr ? '&#x1F310; الدول الأجنبية والدولية' : '&#x1F310; International Countries';
+      var hdrArab = _isAr ? '&#x1F30D; الدول العربية'            : '&#x1F30D; Arab Countries';
+      html += '<div class="kyc-section-header">'+hdrIntl+'</div>';
       _kycCountriesIntl.forEach(function(c){ html += buildItem(c); });
-      html += '<div class="kyc-section-header">&#x1F30D; الدول العربية</div>';
+      html += '<div class="kyc-section-header">'+hdrArab+'</div>';
       _kycCountriesArab.forEach(function(c){ html += buildItem(c); });
     }
 
     container.innerHTML = html;
-  };
+  }
 
   window.kycFilterCountries = function(q){ kycRenderCountryList(q); };
 
@@ -15669,7 +15951,13 @@ function hhCopyUID(){
     if(step === 1){
       if(!window._kycCountry){ if(typeof toast==='function') toast('&#x26A0;&#xFE0F; يرجى اختيار دولة الإصدار'); return; }
       var lbl2 = document.getElementById('kycStep2Country');
-      if(lbl2) lbl2.textContent = 'الدولة المختارة: ' + window._kycCountry;
+      if(lbl2){
+        var _isAr2=(window._lang||'ar')==='ar';
+        var _allC=(_kycCountriesIntl||[]).concat(_kycCountriesArab||[]);
+        var _foundC=null;
+        for(var _ci=0;_ci<_allC.length;_ci++){if(_allC[_ci].name===window._kycCountry){_foundC=_allC[_ci];break;}}
+        lbl2.textContent=_isAr2?window._kycCountry:(_foundC?_foundC.en:window._kycCountry);
+      }
       kycSelectDoc2(window._kycDocType || 'passport');
       kycShowStep(2);
     } else if(step === 2){
@@ -15694,12 +15982,23 @@ function hhCopyUID(){
 
   /* ===== Render Review (Step 5) ===== */
   function kycRenderReview(){
-    var docLabels = {passport:'جواز السفر', nid:'بطاقة الهوية الوطنية', driverslicense:'رخصة القيادة', residence:'الإقامة / تصريح إقامة'};
+    var _isAr = (window._lang || 'ar') === 'ar';
+    var _t = (window._T && window._T[window._lang || 'ar']) || {};
+    var docLabels = {
+      passport: _t.kycDocPPTitle || 'Passport',
+      nid: _t.kycDocNIDTitle || 'National ID Card',
+      driverslicense: _t.kycDocDLTitle || "Driver's License",
+      residence: _t.kycDocRESTitle || 'Residence Permit'
+    };
+    var _allCR = (_kycCountriesIntl || []).concat(_kycCountriesArab || []);
+    var _foundCR = null;
+    for(var _cri = 0; _cri < _allCR.length; _cri++){if(_allCR[_cri].name === window._kycCountry){_foundCR = _allCR[_cri];break;}}
+    var countryDisplay = _isAr ? (window._kycCountry || '—') : ((_foundCR ? _foundCR.en : window._kycCountry) || '—');
     var rows = [
-      {label:'دولة الإصدار',   value: window._kycCountry || '—',   icon:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'},
-      {label:'نوع الوثيقة',    value: docLabels[window._kycDocType||'passport'], icon:'<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/>'},
-      {label:'صورة الوثيقة',  value: '&#x2705; تم الرفع', icon:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/>'},
-      {label:'صورة السيلفي',   value: '&#x2705; تم الالتقاط', icon:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'},
+      {label: _t.kycLabelCountryIssue || 'Issuing Country', value: countryDisplay, icon:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'},
+      {label: _t.kycLabelDocType || 'Document Type', value: docLabels[window._kycDocType||'passport'], icon:'<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/>'},
+      {label: _isAr ? 'صورة الوثيقة' : 'Document Photo', value: '&#x2705; ' + (_isAr ? 'تم الرفع' : 'Uploaded'), icon:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/>'},
+      {label: _isAr ? 'صورة السيلفي' : 'Selfie Photo', value: '&#x2705; ' + (_isAr ? 'تم الالتقاط' : 'Captured'), icon:'<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>'},
     ];
     var body = document.getElementById('kycReviewContent');
     if(!body) return;
@@ -15721,8 +16020,11 @@ function hhCopyUID(){
     var frontFile = document.getElementById('kycFrontFile');
     var frontCam  = document.getElementById('kycFrontCam');
     var hasFront  = (frontFile && frontFile.files.length) || (frontCam && frontCam.files.length);
-    var docLabels = {passport:'جواز السفر', nid:'بطاقة الهوية الوطنية', driverslicense:'رخصة القيادة', residence:'الإقامة / تصريح إقامة'};
-    var docTypeAr = docLabels[window._kycDocType||'passport'];
+    var docLabelsAr = {passport:'جواز السفر', nid:'بطاقة الهوية الوطنية', driverslicense:'رخصة القيادة', residence:'الإقامة / تصريح إقامة'};
+    var docTypeAr = docLabelsAr[window._kycDocType||'passport'];
+    var _allCSubmit = (_kycCountriesIntl || []).concat(_kycCountriesArab || []);
+    var _foundCSubmit = null;
+    for(var _csj = 0; _csj < _allCSubmit.length; _csj++){if(_allCSubmit[_csj].name === window._kycCountry){_foundCSubmit = _allCSubmit[_csj];break;}}
 
     var minMs = 4 * 60 * 1000;
     var maxMs = 10 * 60 * 1000;
@@ -15734,7 +16036,10 @@ function hhCopyUID(){
     localStorage.setItem('kycApproveTime', (now + approveDelay).toString());
     localStorage.setItem('kycData', JSON.stringify({
       nationality: window._kycCountry || '',
+      nationalityEn: _foundCSubmit ? _foundCSubmit.en : (window._kycCountry || ''),
+      docTypeKey: window._kycDocType || 'passport',
       docType: docTypeAr,
+      approvedAtTs: now + approveDelay,
       approvedAt: new Date(now + approveDelay).toLocaleDateString('ar-SA', {year:'numeric',month:'long',day:'numeric'})
     }));
 
@@ -15934,11 +16239,64 @@ function hhCopyUID(){
   function kycRenderApproved(){
     var data = {};
     try{ data = JSON.parse(localStorage.getItem('kycData') || '{}'); } catch(e){}
+    var _isAr = (window._lang || 'ar') === 'ar';
+    var _t = (window._T && window._T[window._lang || 'ar']) || {};
     var body = document.getElementById('kycDetailsBody');
     if(!body) return;
+    var docLabels = {
+      passport: _t.kycDocPPTitle || 'Passport',
+      nid: _t.kycDocNIDTitle || 'National ID Card',
+      driverslicense: _t.kycDocDLTitle || "Driver's License",
+      residence: _t.kycDocRESTitle || 'Residence Permit'
+    };
+    var docLabelsAr = {passport:'جواز السفر', nid:'بطاقة الهوية الوطنية', driverslicense:'رخصة القيادة', residence:'الإقامة / تصريح إقامة'};
+    /* ------ Country name: support both new (nationalityEn saved) and old localStorage data ------ */
+    var countryValue;
+    if(_isAr){
+      countryValue = data.nationality || '—';
+    } else {
+      /* Try saved English name first, then look up from country arrays by Arabic name */
+      if(data.nationalityEn){
+        countryValue = data.nationalityEn;
+      } else if(data.nationality){
+        var _allCAppr = (_kycCountriesIntl || []).concat(_kycCountriesArab || []);
+        var _foundCAppr = null;
+        for(var _cai = 0; _cai < _allCAppr.length; _cai++){
+          if(_allCAppr[_cai].name === data.nationality){ _foundCAppr = _allCAppr[_cai]; break; }
+        }
+        countryValue = _foundCAppr ? _foundCAppr.en : data.nationality;
+      } else {
+        countryValue = '—';
+      }
+    }
+    /* ------ Doc type: support both new (docTypeKey saved) and old localStorage data ------ */
+    var docTypeKey = data.docTypeKey;
+    var docTypeValue;
+    /* Helper: find docType key by matching Arabic label (exact or partial) */
+    function _findDocKey(arLabel){
+      if(!arLabel) return null;
+      var norm = arLabel.trim().replace(/\s+/g,' ');
+      for(var _k in docLabelsAr){
+        if(docLabelsAr[_k].trim().replace(/\s+/g,' ') === norm) return _k;
+      }
+      /* Partial fallback: keyword match */
+      var lower = norm;
+      if(lower.indexOf('جواز') !== -1) return 'passport';      /* جواز */
+      if(lower.indexOf('رخصة') !== -1) return 'driverslicense'; /* رخصة */
+      if(lower.indexOf('إقامة') !== -1 || lower.indexOf('اقامة') !== -1) return 'residence'; /* إقامة */
+      if(lower.indexOf('هوية') !== -1 || lower.indexOf('بطاقة') !== -1) return 'nid'; /* هوية / بطاقة */
+      return null;
+    }
+    if(docTypeKey && docLabels[docTypeKey]){
+      docTypeValue = docLabels[docTypeKey];
+    } else {
+      /* No key saved or key not found — try reverse-lookup from Arabic label */
+      var _resolvedKey = _findDocKey(data.docType) || docTypeKey;
+      docTypeValue = _resolvedKey ? (docLabels[_resolvedKey] || data.docType || '—') : (data.docType || '—');
+    }
     var rows = [
-      { label:'بلد الإصدار', value: data.nationality || '—', icon:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' },
-      { label:'نوع الوثيقة', value: data.docType || '—', icon:'<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/>' },
+      { label: _t.kycLabelCountryIssue || 'Issuing Country', value: countryValue, icon:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' },
+      { label: _t.kycLabelDocType || 'Document Type', value: docTypeValue, icon:'<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M2 10h20"/>' },
     ];
     body.innerHTML = rows.map(function(r){
       return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid rgba(30,58,95,0.3);">'
@@ -15952,7 +16310,23 @@ function hhCopyUID(){
         +'</div>';
     }).join('');
     var dateEl = document.getElementById('kycApproveDate');
-    if(dateEl) dateEl.textContent = data.approvedAt || new Date().toLocaleDateString('ar-SA',{year:'numeric',month:'long',day:'numeric'});
+    if(dateEl){
+      var _dateLocale = (_t && _t.dateLocale) || 'en-GB';
+      /* Always reformat from timestamp when available so month name respects current language */
+      if(data.approvedAtTs){
+        dateEl.textContent = new Date(data.approvedAtTs).toLocaleDateString(_dateLocale,{year:'numeric',month:'long',day:'numeric'});
+      } else if(data.approvedAt){
+        /* Old data: only Arabic string stored; show it as-is for AR, attempt reformat for non-AR */
+        if(_isAr){
+          dateEl.textContent = data.approvedAt;
+        } else {
+          /* No timestamp, guess a recent date from context */
+          dateEl.textContent = data.approvedAt; /* fallback — will still be Arabic for old data */
+        }
+      } else {
+        dateEl.textContent = new Date().toLocaleDateString(_dateLocale,{year:'numeric',month:'long',day:'numeric'});
+      }
+    }
   }
 
 
@@ -16021,35 +16395,40 @@ function hhCopyUID(){
     {q:'كيف أرفع مستوى KYC؟',a:'اذهب إلى المركز الشخصي ← التحقق من الهوية وأتمم خطوات التحقق المطلوبة.'},
     {q:'ما هو الحد الأدنى للسحب؟',a:'يختلف حسب العملة: USDT الحد الأدنى 10، BTC 0.0005، ETH 0.01.'},
     {q:'كيف أستخدم الرافعة المالية؟',a:'في قسم المشتقات، اختر العقد وحدد نسبة الرافعة المالية (حتى 125x) من قائمة الرافعة.'},
-    {q:'هل المنصة آمنة؟',a:'نعم، نستخدم تشفير 256-bit، مصادقة ثنائية، وتخزين 95% من الأصول في محافظ باردة.'}
+    {q:'هل المنصة آمنة؟',a:'نعم، نستخدم تشفير 256-bit، مصادقة ثنائية، وتخزين 95% من الأصول في محافظ باردة.'},
+    {q:'كيف يتم احتساب الأعضاء المدعوّين؟',a:'<div style="line-height:1.85;"><div style="display:flex;flex-direction:column;gap:6px;"><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">١</span><span>يقوم صديقك بالتسجيل عبر رابط الدعوة الخاص بك.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">٢</span><span>يُجري الشخص المدعو <strong style="color:#fbbf24;">أول إيداع</strong> في حسابه، بشرط ألا يقل عن الحد الأدنى للإيداع.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.30);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#34d399;flex-shrink:0;">٣</span><span>يُحتسب العضو تلقائياً في قائمة الأعضاء التابعين وتُصرف المكافأة.</span></div></div><div style="margin-top:10px;padding:8px 11px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.20);font-size:11.5px;color:rgba(251,191,36,0.85);"><strong>⚠️ تنبيه:</strong> لن يُضاف أي عضو ولن تُمنح أي مكافأة ما لم يتم الإيداع الأول من قِبَل الشخص المدعو.</div></div>'}
   ],en:[
     {q:'How do I deposit funds?',a:'Go to Assets → Deposit, select the currency and deposit method, then send to the displayed address.'},
     {q:'What are the trading fees?',a:'Maker fee 0.02%, Taker fee 0.06%. Reduced for VIP users.'},
     {q:'How do I complete KYC?',a:'Go to Personal Center → Identity Verification and complete the required steps.'},
     {q:'What is the minimum withdrawal?',a:'Varies by currency: USDT min 10, BTC 0.0005, ETH 0.01.'},
     {q:'How do I use leverage?',a:'In the Derivatives section, select the contract and set the leverage ratio (up to 125x).'},
-    {q:'Is the platform secure?',a:'Yes, we use 256-bit encryption, two-factor authentication, and 95% cold storage.'}
+    {q:'Is the platform secure?',a:'Yes, we use 256-bit encryption, two-factor authentication, and 95% cold storage.'},
+    {q:'How are invited members counted?',a:'<div style="line-height:1.85;"><div style="margin-bottom:8px;">The referral system requires a <strong style="color:#fbbf24;">first deposit</strong> before a member is counted and rewards are granted:</div><div style="display:flex;flex-direction:column;gap:6px;"><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">1</span><span>Your friend registers using your referral link.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">2</span><span>The invited person makes their <strong style="color:#fbbf24;">first deposit</strong> of any amount.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.30);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#34d399;flex-shrink:0;">3</span><span>The member is automatically added to your referral list and the reward is issued.</span></div></div><div style="margin-top:10px;padding:8px 11px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.20);font-size:11.5px;color:rgba(251,191,36,0.85);"><strong>⚠️ Note:</strong> No member will be added and no reward will be granted until the invited person makes their first deposit.</div></div>'}
   ],de:[
     {q:'Wie zahle ich Geld ein?',a:'Gehe zu Vermögen → Einzahlen, wähle die Währung und Einzahlungsmethode, sende an die angezeigte Adresse.'},
     {q:'Welche Handelsgebühren gibt es?',a:'Maker-Gebühr 0,02%, Taker-Gebühr 0,06%. Reduziert für VIP-Nutzer.'},
     {q:'Wie schließe ich KYC ab?',a:'Gehe zu Persönliches Profil → Identitätsverifizierung und schließe die Schritte ab.'},
     {q:'Mindestbetrag für Abhebungen?',a:'Je nach Währung: USDT mind. 10, BTC 0,0005, ETH 0,01.'},
     {q:'Wie nutze ich den Hebel?',a:'Im Derivate-Bereich Vertrag wählen und Hebelverhältnis (bis 125x) festlegen.'},
-    {q:'Ist die Plattform sicher?',a:'Ja, wir nutzen 256-Bit-Verschlüsselung, Zwei-Faktor-Authentifizierung und 95% Cold Storage.'}
+    {q:'Ist die Plattform sicher?',a:'Ja, wir nutzen 256-Bit-Verschlüsselung, Zwei-Faktor-Authentifizierung und 95% Cold Storage.'},
+    {q:'Wie werden eingeladene Mitglieder gezählt?',a:'<div style="line-height:1.85;"><div style="margin-bottom:8px;">Das Empfehlungssystem erfordert eine <strong style="color:#fbbf24;">erste Einzahlung</strong>, bevor ein Mitglied gezählt und Prämien gewährt werden:</div><div style="display:flex;flex-direction:column;gap:6px;"><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">1</span><span>Dein Freund registriert sich über deinen Empfehlungslink.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">2</span><span>Die eingeladene Person macht ihre <strong style="color:#fbbf24;">erste Einzahlung</strong> in beliebiger Höhe.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.30);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#34d399;flex-shrink:0;">3</span><span>Das Mitglied wird automatisch zur Empfehlungsliste hinzugefügt und die Prämie wird ausgezahlt.</span></div></div><div style="margin-top:10px;padding:8px 11px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.20);font-size:11.5px;color:rgba(251,191,36,0.85);"><strong>⚠️ Hinweis:</strong> Kein Mitglied wird hinzugefügt und keine Prämie gewährt, bis die eingeladene Person ihre erste Einzahlung vornimmt.</div></div>'}
   ],fr:[
     {q:'Comment déposer des fonds ?',a:"Aller dans Actifs → Dépôt, choisir la devise et la méthode, envoyer à l'adresse affichée."},
     {q:'Quels sont les frais de trading ?',a:'Frais Maker 0,02%, Taker 0,06%. Réduits pour les utilisateurs VIP.'},
     {q:'Comment compléter le KYC ?',a:"Aller dans Centre personnel → Vérification d'identité et suivre les étapes."},
     {q:'Retrait minimum ?',a:'Varie selon la devise : USDT min 10, BTC 0,0005, ETH 0,01.'},
     {q:"Comment utiliser l'effet de levier ?",a:"Dans la section Dérivés, choisir le contrat et le ratio de levier (jusqu'à 125x)."},
-    {q:'La plateforme est-elle sécurisée ?',a:'Oui, chiffrement 256 bits, authentification à deux facteurs et 95% de stockage à froid.'}
+    {q:'La plateforme est-elle sécurisée ?',a:'Oui, chiffrement 256 bits, authentification à deux facteurs et 95% de stockage à froid.'},
+    {q:'Comment les membres invités sont-ils comptés ?',a:'<div style="line-height:1.85;"><div style="margin-bottom:8px;">Le système de parrainage exige un <strong style="color:#fbbf24;">premier dépôt</strong> avant qu\'un membre soit comptabilisé et que les récompenses soient accordées :</div><div style="display:flex;flex-direction:column;gap:6px;"><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">1</span><span>Votre ami s\'inscrit via votre lien de parrainage.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">2</span><span>La personne invitée effectue son <strong style="color:#fbbf24;">premier dépôt</strong> de n\'importe quel montant.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.30);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#34d399;flex-shrink:0;">3</span><span>Le membre est automatiquement ajouté à la liste des filleuls et la récompense est versée.</span></div></div><div style="margin-top:10px;padding:8px 11px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.20);font-size:11.5px;color:rgba(251,191,36,0.85);"><strong>⚠️ Remarque :</strong> Aucun membre ne sera ajouté et aucune récompense accordée tant que la personne invitée n\'a pas effectué son premier dépôt.</div></div>'}
   ],sg:[
     {q:'How to deposit money?',a:'Go to Assets → Top Up, choose currency and method, send to the address shown lah.'},
     {q:'What are the trading fees?',a:'Maker 0.02%, Taker 0.06%. Lower for VIP users.'},
     {q:'How to complete KYC?',a:'Go to My Profile → Identity Verification and complete the steps.'},
     {q:'Minimum withdrawal amount?',a:'Depends on currency: USDT min 10, BTC 0.0005, ETH 0.01.'},
     {q:'How to use leverage?',a:'In Derivatives section, pick contract and set leverage (up to 125x).'},
-    {q:'Is platform safe?',a:'Yes lah! 256-bit encryption, 2FA, and 95% cold storage.'}
+    {q:'Is platform safe?',a:'Yes lah! 256-bit encryption, 2FA, and 95% cold storage.'},
+    {q:'How are invited members counted lah?',a:'<div style="line-height:1.85;"><div style="margin-bottom:8px;">The referral system needs a <strong style="color:#fbbf24;">first deposit</strong> before member is counted and reward given lah:</div><div style="display:flex;flex-direction:column;gap:6px;"><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">1</span><span>Your friend register using your referral link.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(99,102,241,0.18);border:1px solid rgba(99,102,241,0.35);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#818cf8;flex-shrink:0;">2</span><span>The invited person make their <strong style="color:#fbbf24;">first deposit</strong> lah, any amount can.</span></div><div style="display:flex;gap:8px;align-items:flex-start;"><span style="min-width:22px;height:22px;border-radius:50%;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.30);display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#34d399;flex-shrink:0;">3</span><span>Member automatically added to your list and reward issued lor.</span></div></div><div style="margin-top:10px;padding:8px 11px;border-radius:8px;background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.20);font-size:11.5px;color:rgba(251,191,36,0.85);"><strong>⚠️ Note:</strong> No member added, no reward given until the invited person deposit first one.</div></div>'}
   ]};
   var _faqs=_faqsByLang['ar'];
 
@@ -16634,7 +17013,7 @@ body.light-mode .nav-item.active::before {
       derrTitle:'حدث خطأ ما',derrSub:'هذه الخدمة غير متاحة حالياً',derivSupportEnterCodeTitle:'ادخل كود الطلب',derivSupportEnterCodeSub:'الرجاء إدخال رمز الطلب أولاً للمتابعة',derivSupportEnterCodeToast:'⚠️ الرجاء إدخال رمز الطلب',derivSupportNoBalTitle:'رصيد غير كافٍ',derivSupportNoBalSub:'لا يوجد رصيد كافٍ لإتمام هذه العملية',
       assetRefreshToast:'🔄 تم تحديث البيانات',assetSwitchToast:'🔁 تبديل نوع الحساب',assetLiveConnected:'متصل — تحديث مباشر',assetLastUpdateNow:'آخر تحديث الآن',assetLastUpdatePrefix:'آخر تحديث ',deriv24hHighLbl:'24H أعلى',deriv24hLowLbl:'24H أدنى',deriv24hVolLbl:'حجم 24H',deriv24hFundingLbl:'معدل التمويل',wpTradesUnit:'صفقة',
       toast:'🌐 تم تغيير اللغة إلى العربية',loginPassOldEmpty:'⚠️ أدخل كلمة المرور الحالية',loginPassTooShort:'⚠️ كلمة المرور يجب أن تكون 8 أحرف على الأقل',loginPassMismatch:'⚠️ كلمتا المرور غير متطابقتين',loginPassSuccess:'✅ تم تغيير كلمة المرور بنجاح',pcPassStrLabels:['','ضعيفة','متوسطة','جيدة','قوية جداً'],pinCorrectToast:'✅ صحيح — أدخل رمز PIN الجديد الآن',pinWrongToast:'⚠️ رمز PIN غير صحيح، حاول مجدداً',pinReenterToast:'🔁 أعد إدخال الرمز للتأكيد',pinSavedToast:'✅ تم حفظ رمز PIN بنجاح',pinMismatchToast:'⚠️ الرمزان غير متطابقان، حاول مجدداً',notifNoneToast:'🔔 لا توجد إشعارات جديدة',notifOnToast:'🔔 تم تفعيل الإشعارات',notifOffToast:'🔕 تم إيقاف الإشعارات',darkModeLabel:'الوضع الداكن',darkModeToast:'🌙 تم تفعيل الوضع الداكن',lightModeLabel:'الوضع الفاتح',lightModeToast:'☀️ تم تفعيل الوضع الفاتح',logoutToast:'👋 تم تسجيل الخروج بنجاح',kycLabelCountryIssue:'بلد الإصدار',kycLabelDocType:'نوع الوثيقة',dateLocale:'ar-SA',wfTitle:'محفظة العقود الآجلة',wfBalanceLabel:'إجمالي رصيد المحفظة',wfUnrealizedLabel:'إجمالي الأرباح والخسائر غير المحققة:',wfAvailMarginLabel:'الهامش المتاح',wfPosMrgLabel:'هامش المراكز',wfOrdMrgLabel:'هامش الطلبات',wfMrgRatioLabel:'نسبة الهامش',wfMaxLevLabel:'الرافعة المالية القصوى',wfTodayPerfLabel:'أداء اليوم',wfTodayProfitLabel:'ربح اليوم',wfTradesCountLabel:'عدد الصفقات',wfTradesUnit:'صفقة',wfWinRateLabel:'نسبة الفوز',wfWinRateUnit:'من الصفقات',wfOpenPosLabel:'المراكز المفتوحة',wfContractTypeLabel:'عقود آجلة · 20×',wfBuyLongLabel:'شراء (Long)',wfEntryPriceLabel:'سعر الدخول',wfCurPriceLabel:'السعر الحالي',wfPnlLabel:'الأرباح/الخسائر',wfNoPosLabel:'لا توجد مراكز أخرى مفتوحة',wfTotalProfitLabel:'الأرباح الإجمالية (كل الوقت)',wfTotalTradesLabel:'إجمالي الصفقات المنفذة',wfTotalTradesVal:'0.000',wfLiqLabel:'سعر التصفية المقدر',
-      wpTitle:'محفظة العقود الدائمة',wpBalanceLabel:'إجمالي رصيد المحفظة',wpUnrealizedLabel:'الأرباح والخسائر غير المحققة:',wpAvailMarginLabel:'الهامش المتاح',wpPosMrgLabel:'هامش المراكز',wpTotalPosLabel:'إجمالي قيمة المراكز',wpMrgRatioLabel:'نسبة الهامش',wpMaxLevLabel:'الرافعة القصوى',wpFundingRateTitle:'معدل التمويل الحالي',wpEvery8h:'كل 8 ساعات',wpOpenPosLabel:'المراكز الدائمة المفتوحة',wpNoPosMsg:'لا توجد مراكز دائمة مفتوحة',wpNoPosHint:'افتح مركزاً من تبويب العقود الدائمة',wpStatsLabel:'إحصائيات المحفظة',wpTotalFundingLabel:'إجمالي التمويل المدفوع',wpTotalProfitLabel:'إجمالي الأرباح',wpTradesLabel:'عدد الصفقات',wpAvgLevLabel:'متوسط الرافعة',wpRiskTitle:'تنبيه المخاطر',wpRiskText:'تداول العقود الدائمة ينطوي على مخاطر عالية بسبب الرافعة المالية. يرجى إدارة المخاطر بعناية وضبط أوامر وقف الخسارة.'},
+      wpTitle:'محفظة العقود الدائمة',wpBalanceLabel:'إجمالي رصيد المحفظة',wpUnrealizedLabel:'الأرباح والخسائر غير المحققة:',wpAvailMarginLabel:'الهامش المتاح',wpPosMrgLabel:'هامش المراكز',wpTotalPosLabel:'إجمالي قيمة المراكز',wpMrgRatioLabel:'نسبة الهامش',wpMaxLevLabel:'الرافعة القصوى',wpFundingRateTitle:'معدل التمويل الحالي',wpEvery8h:'كل 8 ساعات',wpOpenPosLabel:'المراكز الدائمة المفتوحة',wpNoPosMsg:'لا توجد مراكز دائمة مفتوحة',wpNoPosHint:'افتح مركزاً من تبويب العقود الدائمة',wpStatsLabel:'إحصائيات المحفظة',wpTotalFundingLabel:'إجمالي التمويل المدفوع',wpTotalProfitLabel:'إجمالي الأرباح',wpTradesLabel:'عدد الصفقات',wpAvgLevLabel:'متوسط الرافعة',wpRiskTitle:'تنبيه المخاطر',wpRiskText:'تداول العقود الدائمة ينطوي على مخاطر عالية بسبب الرافعة المالية. يرجى إدارة المخاطر بعناية وضبط أوامر وقف الخسارة.',pcSubMembersLabel:'عرض الأعضاء التابعين',pcSubMembersBtnLabel:'الانتقال لعرض',pcSubMembersCountSub:'عضو',pcmTitleMain:'الأعضاء التابعون',pcmTitleSub:'أعضاء انضموا بكود دعوتك',pcmStatTotalLbl:'إجمالي الأعضاء',pcmStatActiveLbl:'نشطون الآن',pcmStatEarnLbl:'مكافآت USDT',pcmFilterAll:'الكل',pcmFilterActive:'النشطون',pcmFilterInactive:'غير النشطين',pcmFilterVip:'VIP فقط',pcmListTitle:'قائمة الأعضاء',pcmShareBtnLabel:'نسخ رابط المشاركة',pcmShareCopied:'✅ تم النسخ!',pcmShareCopiedToast:'🔗 تم نسخ رابط المشاركة',pcmMemberWord:'عضو',pcmEmptyTitle:'لا توجد نتائج',pcmEmptySub:'لا يوجد أعضاء ضمن هذه الفئة.',pcmVipNormal:'عادي',pcmStatusActive:'نشط',kycGalleryLabel:'من المعرض',kycSelfieCaptureLabel:'&#x1F933; التقاط صورة الوجه',kycFrontStatusEmpty:'لم يتم الاختيار بعد',kycBackStatusEmpty:'لم يتم الاختيار بعد',kycSelfieStatusEmpty:'لم يتم التقاط الصورة الشخصية بعد',kycGuideOvalText:'ضع وجهك داخل الإطار',kycGuideRectText:'ضع الوثيقة داخل الإطار',kycProcSub:'يُرجى الانتظار، سيتم إخطارك فور الانتهاء',pcmStatusInactive:'غير نشط'},
     en:{htmlLang:'en',dir:'ltr',badge:'EN',
       navHome:'Home',navMarkets:'Markets',navDerivatives:'Derivatives',navPerpetual:'Perpetual',navAssets:'Assets',
       qaWithdraw:'Withdraw',qaDeposit:'Deposit',qaExchange:'Quick Swap',qaSync:'Sync',syncTabTitle:'Sync',syncHistoryTitle:'Sync History',syncHistoryEmpty:'No transactions',syncHistoryEmptySub:'No sync records yet',syncHeroTitle:'Invite friends to sync together',syncHeroSub:'Earn high referral commissions',syncInputPh:'Please enter the request code',syncConfirmBtnText:'Sync This Trade',syncAvailableTradersTitle:'Available Traders',syncCardReturnLabel:'Return',syncCardSyncBtn:'Sync',syncListTitle:'Sync List',syncSubDetailsTitle:'Subscription Details',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Return Rate',syncSubFeeLabel:'Subscription Fee',syncSubPerMonth:'mo',syncSubAvailBalance:'Your Balance',syncSubConfirmBtn:'Confirm Subscription',syncSubInsufficient:'⚠️ Insufficient balance',syncSubCancelBtn:'Cancel',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Subscription activated',syncAddTitle:'Add Trader',syncAddNameLabel:'Trader / Bot Name',syncAddInitialsLabel:'Initials (2 chars)',syncAddRateLabel:'Return Rate (%)',syncAddProgressLabel:'Progress (0-100)',syncAddBadgeLabel:'Badge Type',syncAddSubmitBtn:'Add to List',syncAddSuccessToast:'✅ Added successfully',
@@ -16706,7 +17085,7 @@ body.light-mode .nav-item.active::before {
       derrTitle:'Something went wrong',derrSub:'This service is currently unavailable',derivSupportEnterCodeTitle:'Enter Order Code',derivSupportEnterCodeSub:'Please enter an order code first to continue',derivSupportEnterCodeToast:'⚠️ Please enter an order code',derivSupportNoBalTitle:'Insufficient Balance',derivSupportNoBalSub:'Not enough balance to complete this operation',
       assetRefreshToast:'🔄 Data refreshed',assetSwitchToast:'🔁 Account type switched',assetLiveConnected:'Connected — Live',assetLastUpdateNow:'Last updated now',assetLastUpdatePrefix:'Updated at ',deriv24hHighLbl:'24H High',deriv24hLowLbl:'24H Low',deriv24hVolLbl:'24H Volume',deriv24hFundingLbl:'Funding Rate',wpTradesUnit:'trades',
       toast:'🌐 Language changed to English',loginPassOldEmpty:'⚠️ Enter current password',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords do not match',loginPassSuccess:'✅ Password changed successfully',pcPassStrLabels:['','Weak','Medium','Good','Very Strong'],pinCorrectToast:'✅ Correct — enter new PIN now',pinWrongToast:'⚠️ Incorrect PIN, try again',pinReenterToast:'🔁 Re-enter PIN to confirm',pinSavedToast:'✅ PIN saved successfully',pinMismatchToast:'⚠️ PINs do not match, try again',notifNoneToast:'🔔 No new notifications',notifOnToast:'🔔 Notifications enabled',notifOffToast:'🔕 Notifications disabled',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode enabled',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode enabled',logoutToast:'👋 Logged out successfully',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-GB',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'0.000',wfLiqLabel:'Est. Liquidation Price',
-      wpTitle:'Perpetual Wallet',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions',wpNoPosHint:'Open a position from the Perpetual tab',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning',wpRiskText:'Trading perpetual contracts involves high risk due to leverage. Please manage risk carefully and set stop-loss orders.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit',kycBtnSubtitleProcessing:'Your documents are being reviewed...',kycBtnSubtitleNone:'Verify your identity to unlock all features',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Unverified',kycBtnProgressApproved:'Verification complete',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start'},
+      wpTitle:'Perpetual Wallet',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions',wpNoPosHint:'Open a position from the Perpetual tab',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning',wpRiskText:'Trading perpetual contracts involves high risk due to leverage. Please manage risk carefully and set stop-loss orders.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit',kycBtnSubtitleProcessing:'Your documents are being reviewed...',kycBtnSubtitleNone:'Verify your identity to unlock all features',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Unverified',kycBtnProgressApproved:'Verification complete',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start',pcSubMembersLabel:'View Sub-Members',pcSubMembersBtnLabel:'Go to View',pcSubMembersCountSub:'member',pcmTitleMain:'Sub-Members',pcmTitleSub:'Members who joined via your invite code',pcmStatTotalLbl:'Total Members',pcmStatActiveLbl:'Active Now',pcmStatEarnLbl:'Rewards USDT',pcmFilterAll:'All',pcmFilterActive:'Active',pcmFilterInactive:'Inactive',pcmFilterVip:'VIP Only',pcmListTitle:'Member List',pcmShareBtnLabel:'Copy Share Link',pcmShareCopied:'✅ Copied!',pcmShareCopiedToast:'🔗 Share link copied',pcmMemberWord:'member',pcmEmptyTitle:'No results',pcmEmptySub:'No members in this category.',pcmVipNormal:'Regular',pcmStatusActive:'Active',kycGalleryLabel:'From Gallery',kycSelfieCaptureLabel:'&#x1F933; Take Selfie',kycFrontStatusEmpty:'Not selected yet',kycBackStatusEmpty:'Not selected yet',kycSelfieStatusEmpty:'Selfie not taken yet',kycGuideOvalText:'Place your face inside the frame',kycGuideRectText:'Place the document inside the frame',kycProcSub:'Please wait, you will be notified when done',pcmStatusInactive:'Inactive'},
     de:{htmlLang:'de',dir:'ltr',badge:'DE',
       navHome:'Startseite',navMarkets:'Märkte',navDerivatives:'Derivate',navPerpetual:'Perpetual',navAssets:'Vermögen',
       qaWithdraw:'Abheben',qaDeposit:'Einzahlen',qaExchange:'Tauschen',qaSync:'Sync.',syncTabTitle:'Sync',syncHistoryTitle:'Sync-Verlauf',syncHistoryEmpty:'Keine Transaktionen',syncHistoryEmptySub:'Noch keine Sync-Einträge',syncHeroTitle:'Freunde einladen und gemeinsam synchronisieren',syncHeroSub:'Hohe Empfehlungsprovisionen verdienen',syncInputPh:'Bitte Anfragecode eingeben',syncConfirmBtnText:'Handel synchronisieren',syncAvailableTradersTitle:'Verfügbare Trader',syncCardReturnLabel:'Rendite',syncCardSyncBtn:'Sync',syncListTitle:'Sync-Liste',syncSubDetailsTitle:'Abo-Details',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Rendite',syncSubFeeLabel:'Abo-Gebühr',syncSubPerMonth:'Mo.',syncSubAvailBalance:'Ihr Guthaben',syncSubConfirmBtn:'Abo bestätigen',syncSubInsufficient:'⚠️ Guthaben unzureichend',syncSubCancelBtn:'Abbrechen',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Abo aktiviert',syncAddTitle:'Trader hinzufügen',syncAddNameLabel:'Trader / Bot Name',syncAddInitialsLabel:'Kürzel (2 Zeichen)',syncAddRateLabel:'Rendite (%)',syncAddProgressLabel:'Fortschritt (0-100)',syncAddBadgeLabel:'Badge-Typ',syncAddSubmitBtn:'Zur Liste hinzufügen',syncAddSuccessToast:'✅ Erfolgreich hinzugefügt',
@@ -16778,7 +17157,7 @@ body.light-mode .nav-item.active::before {
       derrTitle:'Ein Fehler ist aufgetreten',derrSub:'Dieser Dienst ist derzeit nicht verfügbar',derivSupportEnterCodeTitle:'Order-Code eingeben',derivSupportEnterCodeSub:'Bitte zuerst einen Order-Code eingeben',derivSupportEnterCodeToast:'⚠️ Bitte Order-Code eingeben',derivSupportNoBalTitle:'Guthaben unzureichend',derivSupportNoBalSub:'Nicht genug Guthaben für diesen Vorgang',
       assetRefreshToast:'🔄 Daten aktualisiert',assetSwitchToast:'🔁 Kontotyp gewechselt',assetLiveConnected:'Verbunden — Live',assetLastUpdateNow:'Gerade aktualisiert',assetLastUpdatePrefix:'Aktualisiert um ',deriv24hHighLbl:'24H Hoch',deriv24hLowLbl:'24H Tief',deriv24hVolLbl:'24H Volumen',deriv24hFundingLbl:'Finanzierungsrate',wpTradesUnit:'Trades',
       toast:'🌐 Sprache auf Deutsch geändert',loginPassOldEmpty:'⚠️ Aktuelles Passwort eingeben',loginPassTooShort:'⚠️ Passwort muss mindestens 8 Zeichen haben',loginPassMismatch:'⚠️ Passwörter stimmen nicht überein',loginPassSuccess:'✅ Passwort erfolgreich geändert',pcPassStrLabels:['','Schwach','Mittel','Gut','Sehr stark'],pinCorrectToast:'✅ Richtig — neuen PIN eingeben',pinWrongToast:'⚠️ Falscher PIN, erneut versuchen',pinReenterToast:'🔁 PIN zur Bestätigung erneut eingeben',pinSavedToast:'✅ PIN erfolgreich gespeichert',pinMismatchToast:'⚠️ PINs stimmen nicht überein',notifNoneToast:'🔔 Keine neuen Benachrichtigungen',notifOnToast:'🔔 Benachrichtigungen aktiviert',notifOffToast:'🔕 Benachrichtigungen deaktiviert',darkModeLabel:'Dunkelmodus',darkModeToast:'🌙 Dunkelmodus aktiviert',lightModeLabel:'Hellmodus',lightModeToast:'☀️ Hellmodus aktiviert',logoutToast:'👋 Erfolgreich abgemeldet',kycLabelCountryIssue:'Ausstellungsland',kycLabelDocType:'Dokumenttyp',dateLocale:'de-DE',wfTitle:'Futures-Wallet',wfBalanceLabel:'Gesamtguthaben',wfUnrealizedLabel:'Nicht realisierter Gesamt-PnL:',wfAvailMarginLabel:'Verfügbare Margin',wfPosMrgLabel:'Positions-Margin',wfOrdMrgLabel:'Auftrags-Margin',wfMrgRatioLabel:'Margin-Verhältnis',wfMaxLevLabel:'Max. Hebel',wfTodayPerfLabel:'Heutige Performance',wfTodayProfitLabel:'Heutiger Gewinn',wfTradesCountLabel:'Trades',wfTradesUnit:'Trades',wfWinRateLabel:'Gewinnrate',wfWinRateUnit:'der Trades',wfOpenPosLabel:'Offene Positionen',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Kaufen (Long)',wfEntryPriceLabel:'Einstiegspreis',wfCurPriceLabel:'Aktueller Preis',wfPnlLabel:'PnL',wfNoPosLabel:'Keine weiteren offenen Positionen',wfTotalProfitLabel:'Gesamtgewinn (Gesamt)',wfTotalTradesLabel:'Ausgeführte Trades gesamt',wfTotalTradesVal:'43 Trades',wfLiqLabel:'Gesch. Liquidationspreis',
-      wpTitle:'Perpetual-Wallet',wpBalanceLabel:'Gesamtguthaben',wpUnrealizedLabel:'Nicht realisierter PnL:',wpAvailMarginLabel:'Verfügbare Margin',wpPosMrgLabel:'Positions-Margin',wpTotalPosLabel:'Gesamtpositionswert',wpMrgRatioLabel:'Margin-Verhältnis',wpMaxLevLabel:'Max. Hebel',wpFundingRateTitle:'Aktueller Finanzierungssatz',wpEvery8h:'Alle 8h',wpOpenPosLabel:'Offene Perpetual-Positionen',wpNoPosMsg:'Keine offenen Perpetual-Positionen',wpNoPosHint:'Position im Perpetual-Tab öffnen',wpStatsLabel:'Wallet-Statistiken',wpTotalFundingLabel:'Gezahlte Finanzierungsgebühren',wpTotalProfitLabel:'Gesamtgewinn',wpTradesLabel:'Anzahl der Trades',wpAvgLevLabel:'Ø Hebel',wpRiskTitle:'Risikowarnung',wpRiskText:'Der Handel mit Perpetual-Kontrakten ist mit hohen Risiken durch den Hebel verbunden. Bitte verwalten Sie das Risiko sorgfältig und setzen Sie Stop-Loss-Orders.',kycBtnSubtitleApproved:'Identität verifiziert — unbegrenztes Auszahlungslimit',kycBtnSubtitleProcessing:'Ihre Dokumente werden geprüft...',kycBtnSubtitleNone:'Identität bestätigen, um alle Funktionen zu nutzen',kycBtnBadgeApproved:'Verifiziert ✓',kycBtnBadgeProcessing:'In Prüfung',kycBtnBadgeNone:'Nicht verifiziert',kycBtnProgressApproved:'Verifizierung abgeschlossen',kycBtnProgressProcessing:'Prüfung läuft',kycBtnProgressNone:'Bereit zum Start'},
+      wpTitle:'Perpetual-Wallet',wpBalanceLabel:'Gesamtguthaben',wpUnrealizedLabel:'Nicht realisierter PnL:',wpAvailMarginLabel:'Verfügbare Margin',wpPosMrgLabel:'Positions-Margin',wpTotalPosLabel:'Gesamtpositionswert',wpMrgRatioLabel:'Margin-Verhältnis',wpMaxLevLabel:'Max. Hebel',wpFundingRateTitle:'Aktueller Finanzierungssatz',wpEvery8h:'Alle 8h',wpOpenPosLabel:'Offene Perpetual-Positionen',wpNoPosMsg:'Keine offenen Perpetual-Positionen',wpNoPosHint:'Position im Perpetual-Tab öffnen',wpStatsLabel:'Wallet-Statistiken',wpTotalFundingLabel:'Gezahlte Finanzierungsgebühren',wpTotalProfitLabel:'Gesamtgewinn',wpTradesLabel:'Anzahl der Trades',wpAvgLevLabel:'Ø Hebel',wpRiskTitle:'Risikowarnung',wpRiskText:'Der Handel mit Perpetual-Kontrakten ist mit hohen Risiken durch den Hebel verbunden. Bitte verwalten Sie das Risiko sorgfältig und setzen Sie Stop-Loss-Orders.',kycBtnSubtitleApproved:'Identität verifiziert — unbegrenztes Auszahlungslimit',kycBtnSubtitleProcessing:'Ihre Dokumente werden geprüft...',kycBtnSubtitleNone:'Identität bestätigen, um alle Funktionen zu nutzen',kycBtnBadgeApproved:'Verifiziert ✓',kycBtnBadgeProcessing:'In Prüfung',kycBtnBadgeNone:'Nicht verifiziert',kycBtnProgressApproved:'Verifizierung abgeschlossen',kycBtnProgressProcessing:'Prüfung läuft',kycBtnProgressNone:'Bereit zum Start',pcSubMembersLabel:'Mitglieder anzeigen',pcSubMembersBtnLabel:'Zur Ansicht',pcSubMembersCountSub:'Mitgl.',pcmTitleMain:'Untermitglieder',pcmTitleSub:'Mitglieder über Ihren Einladungscode',pcmStatTotalLbl:'Gesamt',pcmStatActiveLbl:'Aktiv jetzt',pcmStatEarnLbl:'Prämien USDT',pcmFilterAll:'Alle',pcmFilterActive:'Aktive',pcmFilterInactive:'Inaktive',pcmFilterVip:'Nur VIP',pcmListTitle:'Mitgliederliste',pcmShareBtnLabel:'Link kopieren',pcmShareCopied:'✅ Kopiert!',pcmShareCopiedToast:'🔗 Link kopiert',pcmMemberWord:'Mitgl.',pcmEmptyTitle:'Keine Ergebnisse',pcmEmptySub:'Keine Mitglieder in dieser Kategorie.',pcmVipNormal:'Standard',pcmStatusActive:'Aktiv',kycGalleryLabel:'Aus Galerie',kycSelfieCaptureLabel:'&#x1F933; Selfie aufnehmen',kycFrontStatusEmpty:'Noch nicht ausgewählt',kycBackStatusEmpty:'Noch nicht ausgewählt',kycSelfieStatusEmpty:'Noch kein Selfie aufgenommen',kycGuideOvalText:'Platzieren Sie Ihr Gesicht im Rahmen',kycGuideRectText:'Platzieren Sie das Dokument im Rahmen',kycProcSub:'Bitte warten — Sie werden benachrichtigt, wenn der Vorgang abgeschlossen ist',pcmStatusInactive:'Inaktiv'},
     fr:{htmlLang:'fr',dir:'ltr',badge:'FR',
       navHome:'Accueil',navMarkets:'Marchés',navDerivatives:'Dérivés',navPerpetual:'Perpétuel',navAssets:'Actifs',
       qaWithdraw:'Retrait',qaDeposit:'Dépôt',qaExchange:'Échange',qaSync:'Sync.',syncTabTitle:'Sync',syncHistoryTitle:'Historique de sync',syncHistoryEmpty:'Aucune transaction',syncHistoryEmptySub:'Aucune synchronisation enregistrée',syncHeroTitle:'Invitez des amis à synchroniser ensemble',syncHeroSub:'Gagnez des commissions de parrainage élevées',syncInputPh:'Veuillez entrer le code de demande',syncConfirmBtnText:'Synchroniser ce trade',syncAvailableTradersTitle:'Traders disponibles',syncCardReturnLabel:'Rendement',syncCardSyncBtn:'Sync',syncListTitle:'Liste de sync',syncSubDetailsTitle:'Détails abonnement',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Taux de rendement',syncSubFeeLabel:'Frais abonnement',syncSubPerMonth:'mois',syncSubAvailBalance:'Votre solde',syncSubConfirmBtn:'Confirmer l\'abonnement',syncSubInsufficient:'⚠️ Solde insuffisant',syncSubCancelBtn:'Annuler',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Abonnement activé',syncAddTitle:'Ajouter un trader',syncAddNameLabel:'Nom du trader / bot',syncAddInitialsLabel:'Initiales (2 car.)',syncAddRateLabel:'Rendement (%)',syncAddProgressLabel:'Progression (0-100)',syncAddBadgeLabel:'Type de badge',syncAddSubmitBtn:'Ajouter à la liste',syncAddSuccessToast:'✅ Ajouté avec succès',
@@ -16850,7 +17229,7 @@ body.light-mode .nav-item.active::before {
       derrTitle:'Une erreur est survenue',derrSub:'Ce service est actuellement indisponible',derivSupportEnterCodeTitle:"Entrez le code de l'ordre",derivSupportEnterCodeSub:"Veuillez entrer un code d'ordre pour continuer",derivSupportEnterCodeToast:"⚠️ Entrez le code de l'ordre",derivSupportNoBalTitle:'Solde insuffisant',derivSupportNoBalSub:'Solde insuffisant pour cette opération',
       assetRefreshToast:'🔄 Données actualisées',assetSwitchToast:'🔁 Type de compte changé',assetLiveConnected:'Connecté — En direct',assetLastUpdateNow:'Mis à jour maintenant',assetLastUpdatePrefix:'Mis à jour à ',deriv24hHighLbl:'24H Haut',deriv24hLowLbl:'24H Bas',deriv24hVolLbl:'Volume 24H',deriv24hFundingLbl:'Taux financement',wpTradesUnit:'trades',
       toast:'🌐 Langue changée en Français',loginPassOldEmpty:'⚠️ Entrez le mot de passe actuel',loginPassTooShort:'⚠️ Le mot de passe doit comporter au moins 8 caractères',loginPassMismatch:'⚠️ Les mots de passe ne correspondent pas',loginPassSuccess:'✅ Mot de passe modifié avec succès',pcPassStrLabels:['','Faible','Moyen','Bon','Très fort'],pinCorrectToast:'✅ Correct — entrez le nouveau PIN',pinWrongToast:'⚠️ PIN incorrect, réessayez',pinReenterToast:'🔁 Ré-entrez le PIN pour confirmer',pinSavedToast:'✅ PIN enregistré avec succès',pinMismatchToast:'⚠️ Les PIN ne correspondent pas',notifNoneToast:'🔔 Aucune nouvelle notification',notifOnToast:'🔔 Notifications activées',notifOffToast:'🔕 Notifications désactivées',darkModeLabel:'Mode sombre',darkModeToast:'🌙 Mode sombre activé',lightModeLabel:'Mode clair',lightModeToast:'☀️ Mode clair activé',logoutToast:'👋 Déconnexion réussie',kycLabelCountryIssue:"Pays d'émission",kycLabelDocType:'Type de document',dateLocale:'fr-FR',wfTitle:'Portefeuille Futures',wfBalanceLabel:'Solde total du portefeuille',wfUnrealizedLabel:'PnL non réalisé total :',wfAvailMarginLabel:'Marge disponible',wfPosMrgLabel:'Marge de position',wfOrdMrgLabel:'Marge de commande',wfMrgRatioLabel:'Ratio de marge',wfMaxLevLabel:'Levier max',wfTodayPerfLabel:'Performance du jour',wfTodayProfitLabel:'Profit du jour',wfTradesCountLabel:'Transactions',wfTradesUnit:'trades',wfWinRateLabel:'Taux de réussite',wfWinRateUnit:'des trades',wfOpenPosLabel:'Positions ouvertes',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Achat (Long)',wfEntryPriceLabel:"Prix d'entrée",wfCurPriceLabel:'Prix actuel',wfPnlLabel:'PnL',wfNoPosLabel:'Aucune autre position ouverte',wfTotalProfitLabel:'Profit total (tout le temps)',wfTotalTradesLabel:'Total des trades exécutés',wfTotalTradesVal:'0.000',wfLiqLabel:'Prix de liquidation estimé',
-      wpTitle:'Portefeuille Perpétuel',wpBalanceLabel:'Solde total du portefeuille',wpUnrealizedLabel:'PnL non réalisé :',wpAvailMarginLabel:'Marge disponible',wpPosMrgLabel:'Marge de position',wpTotalPosLabel:'Valeur totale des positions',wpMrgRatioLabel:'Ratio de marge',wpMaxLevLabel:'Levier max',wpFundingRateTitle:'Taux de financement actuel',wpEvery8h:'Toutes les 8h',wpOpenPosLabel:'Positions perpétuelles ouvertes',wpNoPosMsg:'Aucune position perpétuelle ouverte',wpNoPosHint:'Ouvrez une position depuis l\'onglet Perpétuel',wpStatsLabel:'Statistiques du portefeuille',wpTotalFundingLabel:'Total des frais de financement',wpTotalProfitLabel:'Profit total',wpTradesLabel:'Nombre de trades',wpAvgLevLabel:'Levier moyen',wpRiskTitle:'Avertissement de risque',wpRiskText:'Le trading de contrats perpétuels comporte des risques élevés en raison du levier. Gérez le risque avec soin et définissez des ordres stop-loss.',kycBtnSubtitleApproved:'Identité vérifiée — limite de retrait illimitée',kycBtnSubtitleProcessing:'Vos documents sont en cours d\'examen...',kycBtnSubtitleNone:'Vérifiez votre identité pour accéder à toutes les fonctionnalités',kycBtnBadgeApproved:'Vérifié ✓',kycBtnBadgeProcessing:'En cours',kycBtnBadgeNone:'Non vérifié',kycBtnProgressApproved:'Vérification terminée',kycBtnProgressProcessing:'Examen en cours',kycBtnProgressNone:'Prêt à commencer'},
+      wpTitle:'Portefeuille Perpétuel',wpBalanceLabel:'Solde total du portefeuille',wpUnrealizedLabel:'PnL non réalisé :',wpAvailMarginLabel:'Marge disponible',wpPosMrgLabel:'Marge de position',wpTotalPosLabel:'Valeur totale des positions',wpMrgRatioLabel:'Ratio de marge',wpMaxLevLabel:'Levier max',wpFundingRateTitle:'Taux de financement actuel',wpEvery8h:'Toutes les 8h',wpOpenPosLabel:'Positions perpétuelles ouvertes',wpNoPosMsg:'Aucune position perpétuelle ouverte',wpNoPosHint:'Ouvrez une position depuis l\'onglet Perpétuel',wpStatsLabel:'Statistiques du portefeuille',wpTotalFundingLabel:'Total des frais de financement',wpTotalProfitLabel:'Profit total',wpTradesLabel:'Nombre de trades',wpAvgLevLabel:'Levier moyen',wpRiskTitle:'Avertissement de risque',wpRiskText:'Le trading de contrats perpétuels comporte des risques élevés en raison du levier. Gérez le risque avec soin et définissez des ordres stop-loss.',kycBtnSubtitleApproved:'Identité vérifiée — limite de retrait illimitée',kycBtnSubtitleProcessing:'Vos documents sont en cours d\'examen...',kycBtnSubtitleNone:'Vérifiez votre identité pour accéder à toutes les fonctionnalités',kycBtnBadgeApproved:'Vérifié ✓',kycBtnBadgeProcessing:'En cours',kycBtnBadgeNone:'Non vérifié',kycBtnProgressApproved:'Vérification terminée',kycBtnProgressProcessing:'Examen en cours',kycBtnProgressNone:'Prêt à commencer',pcSubMembersLabel:'Voir les membres',pcSubMembersBtnLabel:'Aller voir',pcSubMembersCountSub:'membre',pcmTitleMain:'Sous-membres',pcmTitleSub:"Membres via votre code d'invitation",pcmStatTotalLbl:'Total membres',pcmStatActiveLbl:'Actifs maintenant',pcmStatEarnLbl:'Récompenses USDT',pcmFilterAll:'Tous',pcmFilterActive:'Actifs',pcmFilterInactive:'Inactifs',pcmFilterVip:'VIP seulement',pcmListTitle:'Liste des membres',pcmShareBtnLabel:'Copier le lien',pcmShareCopied:'✅ Copié !',pcmShareCopiedToast:'🔗 Lien copié',pcmMemberWord:'membre',pcmEmptyTitle:'Aucun résultat',pcmEmptySub:'Aucun membre dans cette catégorie.',pcmVipNormal:'Standard',pcmStatusActive:'Actif',kycGalleryLabel:'Depuis la galerie',kycSelfieCaptureLabel:'&#x1F933; Prendre un selfie',kycFrontStatusEmpty:'Non sélectionné',kycBackStatusEmpty:'Non sélectionné',kycSelfieStatusEmpty:'Selfie non encore pris',kycGuideOvalText:'Placez votre visage dans le cadre',kycGuideRectText:'Placez le document dans le cadre',kycProcSub:'Veuillez patienter, vous serez notifié dès la fin',pcmStatusInactive:'Inactif'},
     sg:{htmlLang:'en-SG',dir:'ltr',badge:'SG',
       navHome:'Home',navMarkets:'Markets',navDerivatives:'Derivatives',navPerpetual:'Perpetual',navAssets:'Assets',
       qaWithdraw:'Withdraw',qaDeposit:'Top Up',qaExchange:'Swap Lah',qaSync:'Sync',syncTabTitle:'Sync',syncHistoryTitle:'Sync History',syncHistoryEmpty:'No transactions',syncHistoryEmptySub:'No sync records yet lah',syncHeroTitle:'Invite your kakis to sync together lah',syncHeroSub:'Earn high referral commission one',syncInputPh:'Please enter the request code lah',syncConfirmBtnText:'Sync This Trade Lah',syncAvailableTradersTitle:'Available Traders',syncCardReturnLabel:'Returns',syncCardSyncBtn:'Sync',syncListTitle:'Sync List',syncSubDetailsTitle:'Subscription Details',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Return Rate',syncSubFeeLabel:'Subscription Fee',syncSubPerMonth:'mo',syncSubAvailBalance:'Your Balance',syncSubConfirmBtn:'Confirm Subscription',syncSubInsufficient:'⚠️ Not enough balance lah',syncSubCancelBtn:'Cancel',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Subscription activated lah',syncAddTitle:'Add Trader',syncAddNameLabel:'Trader / Bot Name',syncAddInitialsLabel:'Initials (2 chars)',syncAddRateLabel:'Return Rate (%)',syncAddProgressLabel:'Progress (0-100)',syncAddBadgeLabel:'Badge Type',syncAddSubmitBtn:'Add to List',syncAddSuccessToast:'✅ Added lah',syncCardReturnLabel:'Return',syncCardSyncBtn:'Sync',syncListTitle:'Sync List',syncSubDetailsTitle:'Subscription Details',syncSubTraderLabel:'Trader',syncSubReturnRateLabel:'Return Rate',syncSubFeeLabel:'Subscription Fee',syncSubPerMonth:'mo',syncSubAvailBalance:'Your Balance',syncSubConfirmBtn:'Confirm Subscription',syncSubInsufficient:'⚠️ Insufficient balance',syncSubCancelBtn:'Cancel',syncSubLoadingBtn:'⏳',syncSubActivatedBtn:'✅',syncSubSuccessToast:'✅ Subscription activated',syncAddTitle:'Add Trader',syncAddNameLabel:'Trader / Bot Name',syncAddInitialsLabel:'Initials (2 chars)',syncAddRateLabel:'Return Rate (%)',syncAddProgressLabel:'Progress (0-100)',syncAddBadgeLabel:'Badge Type',syncAddSubmitBtn:'Add to List',syncAddSuccessToast:'✅ Added successfully',
@@ -16922,7 +17301,7 @@ body.light-mode .nav-item.active::before {
       derrTitle:'Something went wrong lah',derrSub:'This service is temporarily unavailable',derivSupportEnterCodeTitle:'Enter Order Code Lah',derivSupportEnterCodeSub:'Please enter order code first lah',derivSupportEnterCodeToast:'⚠️ Enter order code lah',derivSupportNoBalTitle:'Not Enough Balance Lah',derivSupportNoBalSub:'Not enough balance for this operation lah',
       assetRefreshToast:'🔄 Data refreshed lah',assetSwitchToast:'🔁 Account type switched',assetLiveConnected:'Connected Lah — Live',assetLastUpdateNow:'Just updated lah',assetLastUpdatePrefix:'Updated at ',deriv24hHighLbl:'24H High',deriv24hLowLbl:'24H Low',deriv24hVolLbl:'24H Volume',deriv24hFundingLbl:'Funding Rate',wpTradesUnit:'trades',
       toast:'🌐 Language changed to Singapore English',loginPassOldEmpty:'⚠️ Enter current password lah',loginPassTooShort:'⚠️ Password must be at least 8 characters',loginPassMismatch:'⚠️ Passwords no match lah',loginPassSuccess:'✅ Password changed successfully lah',pcPassStrLabels:['','Weak','OK Only','Good','Very Strong Lah'],pinCorrectToast:'✅ Correct lah — enter new PIN now',pinWrongToast:'⚠️ Wrong PIN lah, try again',pinReenterToast:'🔁 Re-enter PIN to confirm lah',pinSavedToast:'✅ PIN saved lah!',pinMismatchToast:'⚠️ PINs no match lah',notifNoneToast:'🔔 No new notifications lah',notifOnToast:'🔔 Notifications on lah',notifOffToast:'🔕 Notifications off lah',darkModeLabel:'Dark Mode',darkModeToast:'🌙 Dark mode on lah',lightModeLabel:'Light Mode',lightModeToast:'☀️ Light mode on lah',logoutToast:'👋 Logged out lah!',kycLabelCountryIssue:'Issuing Country',kycLabelDocType:'Document Type',dateLocale:'en-SG',wfTitle:'Futures Wallet',wfBalanceLabel:'Total Wallet Balance',wfUnrealizedLabel:'Total Unrealized PnL:',wfAvailMarginLabel:'Available Margin',wfPosMrgLabel:'Position Margin',wfOrdMrgLabel:'Order Margin',wfMrgRatioLabel:'Margin Ratio',wfMaxLevLabel:'Max Leverage',wfTodayPerfLabel:"Today's Performance lah",wfTodayProfitLabel:"Today's Profit",wfTradesCountLabel:'Trades',wfTradesUnit:'trades',wfWinRateLabel:'Win Rate',wfWinRateUnit:'of trades',wfOpenPosLabel:'Open Positions',wfContractTypeLabel:'Futures · 20×',wfBuyLongLabel:'Buy (Long)',wfEntryPriceLabel:'Entry Price',wfCurPriceLabel:'Current Price',wfPnlLabel:'PnL',wfNoPosLabel:'No other open positions lah',wfTotalProfitLabel:'Total Profit (All Time)',wfTotalTradesLabel:'Total Executed Trades',wfTotalTradesVal:'0.000',wfLiqLabel:'Est. Liquidation Price',
-      wpTitle:'Perpetual Wallet Lah',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate Lah',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions lah',wpNoPosHint:'Open a position from the Perpetual tab lah',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning Lah',wpRiskText:'Trading perpetual contracts is very risky one because of leverage. Please manage risk carefully and set stop-loss orders lah.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit lah!',kycBtnSubtitleProcessing:'Your documents being reviewed lah...',kycBtnSubtitleNone:'Verify your identity to unlock all features lah',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Not Verified',kycBtnProgressApproved:'Verification done lah',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start lah'}
+      wpTitle:'Perpetual Wallet Lah',wpBalanceLabel:'Total Wallet Balance',wpUnrealizedLabel:'Unrealized PnL:',wpAvailMarginLabel:'Available Margin',wpPosMrgLabel:'Position Margin',wpTotalPosLabel:'Total Position Value',wpMrgRatioLabel:'Margin Ratio',wpMaxLevLabel:'Max Leverage',wpFundingRateTitle:'Current Funding Rate Lah',wpEvery8h:'Every 8h',wpOpenPosLabel:'Open Perpetual Positions',wpNoPosMsg:'No open perpetual positions lah',wpNoPosHint:'Open a position from the Perpetual tab lah',wpStatsLabel:'Wallet Statistics',wpTotalFundingLabel:'Total Funding Paid',wpTotalProfitLabel:'Total Profit',wpTradesLabel:'Number of Trades',wpAvgLevLabel:'Avg. Leverage',wpRiskTitle:'Risk Warning Lah',wpRiskText:'Trading perpetual contracts is very risky one because of leverage. Please manage risk carefully and set stop-loss orders lah.',kycBtnSubtitleApproved:'Identity verified — unlimited withdrawal limit lah!',kycBtnSubtitleProcessing:'Your documents being reviewed lah...',kycBtnSubtitleNone:'Verify your identity to unlock all features lah',kycBtnBadgeApproved:'Verified ✓',kycBtnBadgeProcessing:'Under Review',kycBtnBadgeNone:'Not Verified',kycBtnProgressApproved:'Verification done lah',kycBtnProgressProcessing:'Review in progress',kycBtnProgressNone:'Ready to start lah',pcSubMembersLabel:'View Sub-Members',pcSubMembersBtnLabel:'Go to View',pcSubMembersCountSub:'member',pcmTitleMain:'Sub-Members',pcmTitleSub:'Members who joined via your invite code',pcmStatTotalLbl:'Total Members',pcmStatActiveLbl:'Active Now',pcmStatEarnLbl:'Rewards USDT',pcmFilterAll:'All',pcmFilterActive:'Active',pcmFilterInactive:'Inactive',pcmFilterVip:'VIP Only',pcmListTitle:'Member List',pcmShareBtnLabel:'Copy Share Link',pcmShareCopied:'✅ Copied!',pcmShareCopiedToast:'🔗 Share link copied',pcmMemberWord:'member',pcmEmptyTitle:'No results',pcmEmptySub:'No members in this category.',pcmVipNormal:'Regular',pcmStatusActive:'Active',pcmStatusInactive:'Inactive',kycGlobalSubtitle:'Global Verification System',kycCountryHint1:'Choose your document issuing country',kycCountryHint2:'International countries appear first, followed by Arab countries',kycDocDLTitle:'Driving Licence',kycDocDLSub:'Valid government driving licence lah',kycDocSelfieTitle:'Selfie Verification Lah',kycDocSelfieSub:'New verification method — extra secure lah',kycSelfieInstructions:'&#x1F4CC; Take a clear selfie with your front camera lah<br>&#x2705; Make sure your full face is visible<br>&#x1F4A1; Find a well-lit spot',kycReviewHint:'Check all your data is correct lah',kycReviewSummaryHeader:'&#x1F4CB; Verification Summary Lah',kycReviewSecurityNotes:'&#x1F512; Your data is SSL 256-bit encrypted lah<br>&#x23F1;&#xFE0F; Review takes 4-10 min<br>&#x2705; All features unlock after verification'},kycGalleryLabel:'From Gallery',kycSelfieCaptureLabel:'&#x1F933; Take Selfie Lah',kycFrontStatusEmpty:'Not selected yet lah',kycBackStatusEmpty:'Not selected yet lah',kycSelfieStatusEmpty:'Selfie not taken yet lah',kycGuideOvalText:'Put your face inside the frame lah',kycGuideRectText:'Put the document inside the frame lah',kycProcSub:'Please wait lah, we will notify you when done'
   }; window._T=T;
   function st(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
   function si(id,html){var e=document.getElementById(id);if(e)e.innerHTML=html;}
@@ -17073,6 +17452,16 @@ body.light-mode .nav-item.active::before {
     st('kycScreenTitle',t.kycScreenTitle);st('kycStep1Label',t.kycStep1Label);st('kycStep1Title',t.kycStep1Title);
     if(t.kycStepLabel2){st('kycStepLabel2',t.kycStepLabel2);st('kycStepLabel3',t.kycStepLabel3);st('kycStepLabel4',t.kycStepLabel4);st('kycStepLabel5',t.kycStepLabel5);}
     if(t.pcSectionAccount){st('pcSectionAccount',t.pcSectionAccount);st('pcSectionNotif',t.pcSectionNotif);st('pcSectionApp',t.pcSectionApp);}
+    // ── بطاقة ومودال الأعضاء التابعين
+    if(t.pcSubMembersLabel){
+      st('pcSubMembersLabel',t.pcSubMembersLabel);st('pcSubMembersBtnLabel',t.pcSubMembersBtnLabel);st('pcSubMembersCountSub',t.pcSubMembersCountSub);
+      st('pcmTitleMain',t.pcmTitleMain);st('pcmTitleSub',t.pcmTitleSub);
+      st('pcmStatTotalLbl',t.pcmStatTotalLbl);st('pcmStatActiveLbl',t.pcmStatActiveLbl);st('pcmStatEarnLbl',t.pcmStatEarnLbl);
+      st('pcmFilterAllTab',t.pcmFilterAll);st('pcmFilterActiveTab',t.pcmFilterActive);st('pcmFilterInactiveTab',t.pcmFilterInactive);st('pcmFilterVipTab',t.pcmFilterVip);
+      st('pcmListTitle',t.pcmListTitle);st('pcmShareBtnLabel',t.pcmShareBtnLabel);
+      var _pcmM=document.getElementById('pcSubMembersModal');if(_pcmM){_pcmM.dir=t.dir;_pcmM.style.direction=t.dir;}
+      if(typeof _pcmRenderList==='function')_pcmRenderList(window._pcmCurrentFilter||'all');
+    }
     var _cs=document.getElementById('kycCountrySearch');if(_cs)_cs.placeholder=t.kycCountryPlaceholder;
     st('kycStep2Title',t.kycStep2Title);st('kycDocNIDTitle',t.kycDocNIDTitle);st('kycDocNIDSub',t.kycDocNIDSub);
     st('kycDocPPTitle',t.kycDocPPTitle);st('kycDocPPSub',t.kycDocPPSub);st('kycDocRESTitle',t.kycDocRESTitle);st('kycDocRESSub',t.kycDocRESSub);
@@ -17088,9 +17477,38 @@ body.light-mode .nav-item.active::before {
     st('kycDocSelfieTitle',t.kycDocSelfieTitle);st('kycDocSelfieSub',t.kycDocSelfieSub);
     si('kycSelfieInstructions',t.kycSelfieInstructions);
     st('kycReviewHint',t.kycReviewHint);si('kycReviewSummaryHeader',t.kycReviewSummaryHeader);si('kycReviewSecurityNotes',t.kycReviewSecurityNotes);
+    // ── KYC UI elements not previously translated
+    if(t.kycGalleryLabel){st('kycFrontGalleryLabel',t.kycGalleryLabel);st('kycBackGalleryLabel',t.kycGalleryLabel);st('kycSelfieGalleryLabel',t.kycGalleryLabel);}
+    if(t.kycSelfieCaptureLabel){si('kycSelfieCaptureLabel',t.kycSelfieCaptureLabel);}
+    if(t.kycFrontStatusEmpty){var _kfs=document.getElementById('kycFrontStatus');if(_kfs&&_kfs.textContent.trim()===''||(_kfs&&!window._kycDocFrontCaptured))_kfs.textContent=t.kycFrontStatusEmpty;}
+    if(t.kycBackStatusEmpty){var _kbs=document.getElementById('kycBackStatus');if(_kbs&&!window._kycDocBackCaptured)_kbs.textContent=t.kycBackStatusEmpty;}
+    if(t.kycSelfieStatusEmpty){var _kss=document.getElementById('kycSelfieStatus');if(_kss&&!window._kycSelfieCaptured)_kss.textContent=t.kycSelfieStatusEmpty;}
+    if(t.kycGuideOvalText)st('kycGuideOvalText',t.kycGuideOvalText);
+    if(t.kycGuideRectText)st('kycGuideRectText',t.kycGuideRectText);
+    if(t.kycProcSub)st('kycProcSub',t.kycProcSub);
+    if(typeof kycRenderCountryList==='function') kycRenderCountryList((document.getElementById('kycCountrySearch')||{}).value||'');
     var _kycSc=document.getElementById('pcKYCScreen');if(_kycSc){_kycSc.dir=t.dir;_kycSc.style.direction=t.dir;}
     var _pcSc=document.getElementById('personalCenterScreen');if(_pcSc){_pcSc.dir=t.dir;_pcSc.style.direction=t.dir;}
     if(typeof kycUpdateMainBtn==='function') kycUpdateMainBtn();
+    // ── KYC dynamic content re-render on language change
+    // Update country label in step 2 header
+    if(window._kycCountry){
+      var _lbl2=document.getElementById('kycStep2Country');
+      if(_lbl2){
+        var _isArL=lang==='ar';
+        var _allCL=(_kycCountriesIntl||[]).concat(_kycCountriesArab||[]);
+        var _foundCL=null;
+        for(var _cli=0;_cli<_allCL.length;_cli++){if(_allCL[_cli].name===window._kycCountry){_foundCL=_allCL[_cli];break;}}
+        _lbl2.textContent=_isArL?window._kycCountry:(_foundCL?_foundCL.en:window._kycCountry);
+      }
+    }
+    // Re-render review summary (step 5) so country + doc type update
+    if(typeof kycRenderReview==='function' && window._kycStep===5) kycRenderReview();
+    // Re-render approved details so country + doc type update
+    if(typeof kycRenderApproved==='function'){
+      var _kycSt=localStorage.getItem('kycState');
+      if(_kycSt==='approved') kycRenderApproved();
+    }
     // ── Help Screen
     st('helpScreenTitle',t.helpScreenTitle);var _hs=document.querySelector('#pcHelpScreen input[type="text"]');if(_hs)_hs.placeholder=t.helpSearchPlaceholder;
     st('helpDirectTitle',t.helpDirectTitle);st('helpDirectSub',t.helpDirectSub);st('helpContactBtn',t.helpContactBtn);st('contactModalTitle',t.contactModalTitle);st('contactModalSub',t.contactModalSub);st('contactWaLabel',t.contactWaLabel);st('contactTgLabel',t.contactTgLabel);var _cm=document.getElementById('contactModal');if(_cm){_cm.dir=t.dir;_cm.style.direction=t.dir;}
@@ -18559,6 +18977,319 @@ body.x-scrolling .tab-panel.active { display: block !important; }
         body.light-mode #bsPriceInp, body.light-mode #bsAmtInp { color: var(--text) !important; }
         /* dark-mode: shrink dark overrides padding */
         body:not(.light-mode) .deriv-trade-btns { padding: 4px 10px 3px !important; }
+
+  /* ===== بطاقة الأعضاء التابعين ===== */
+  .pc-sub-members-card {
+    margin: 0 16px 14px;
+    background: linear-gradient(135deg, rgba(37,99,235,0.85) 0%, rgba(29,78,216,0.9) 50%, rgba(67,56,202,0.85) 100%);
+    border-radius: 18px;
+    padding: 0;
+    cursor: pointer;
+    overflow: hidden;
+    border: 1px solid rgba(99,102,241,0.35);
+    box-shadow: 0 8px 32px rgba(29,78,216,0.35), 0 2px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s, box-shadow 0.2s;
+    position: relative;
+    animation: pcCardIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    animation-delay: 0.05s;
+  }
+  .pc-sub-members-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(165,180,252,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .pc-sub-members-card:active { transform: scale(0.97); box-shadow: 0 4px 16px rgba(29,78,216,0.3); }
+  .pc-sub-members-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    position: relative;
+    z-index: 1;
+  }
+  .pc-sub-members-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .pc-sub-members-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  .pc-sub-members-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    margin-bottom: 3px;
+    letter-spacing: 0.3px;
+  }
+  .pc-sub-members-count-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .pc-sub-members-count {
+    font-size: 26px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .pc-sub-members-count-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    font-weight: 500;
+  }
+  .pc-sub-members-btn {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border-radius: 22px;
+    padding: 9px 16px;
+    color: #1e1b0e;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 4px 14px rgba(245,158,11,0.45);
+    flex-shrink: 0;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .pc-sub-members-card:active .pc-sub-members-btn {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(245,158,11,0.3);
+  }
+  .pc-sub-members-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.12);
+    margin: 0 16px 0;
+    border-radius: 0 0 2px 2px;
+    overflow: hidden;
+  }
+  .pc-sub-members-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #fbbf24, #a78bfa);
+    border-radius: 2px;
+    width: 0%;
+    transition: width 1.2s ease;
+  }
+  /* light mode */
+  body.light-mode .pc-sub-members-card {
+    background: linear-gradient(135deg, #1d4ed8, #4338ca);
+    border-color: rgba(67,56,202,0.4);
+    box-shadow: 0 8px 32px rgba(29,78,216,0.25);
+  }
+
+  /* ===== مودال الأعضاء التابعين ===== */
+  #pcSubMembersModal {
+    position: fixed;
+    inset: 0;
+    z-index: 100001;
+    background: var(--bg, #0a1628);
+    overflow-y: auto;
+    direction: rtl;
+    font-family: inherit;
+    -webkit-overflow-scrolling: touch;
+    display: none;
+  }
+  .pcm-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, #1a2a5e, #1d3a6c);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    border-bottom: 1px solid rgba(99,102,241,0.2);
+  }
+  .pcm-back-btn {
+    width: 38px; height: 38px;
+    border-radius: 11px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .pcm-back-btn:active { background: rgba(255,255,255,0.2); }
+  .pcm-title { flex: 1; text-align: center; }
+  .pcm-title-main { font-size: 16px; font-weight: 800; color: #fff; }
+  .pcm-title-sub { font-size: 10px; color: rgba(255,255,255,0.55); margin-top: 1px; }
+  .pcm-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    padding: 16px 14px 12px;
+  }
+  .pcm-stat-box {
+    background: linear-gradient(135deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 14px;
+    padding: 12px 10px;
+    text-align: center;
+  }
+  .pcm-stat-val {
+    font-size: 22px;
+    font-weight: 900;
+    color: #a78bfa;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .pcm-stat-val.green { color: #34d399; }
+  .pcm-stat-val.gold { color: #fbbf24; }
+  .pcm-stat-lbl {
+    font-size: 10px;
+    color: rgba(148,163,184,0.7);
+    font-weight: 500;
+    line-height: 1.3;
+  }
+  .pcm-section-head {
+    padding: 6px 16px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(148,163,184,0.6);
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .pcm-filter-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 0 14px 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .pcm-filter-tabs::-webkit-scrollbar { display: none; }
+  .pcm-filter-tab {
+    flex-shrink: 0;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: rgba(30,41,59,0.8);
+    border: 1px solid rgba(99,102,241,0.2);
+    color: rgba(148,163,184,0.8);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .pcm-filter-tab.active {
+    background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(79,70,229,0.4));
+    border-color: rgba(99,102,241,0.5);
+    color: #a78bfa;
+  }
+  .pcm-list { padding: 0 14px 100px; }
+  .pcm-member-card {
+    background: linear-gradient(135deg, rgba(30,41,59,0.7), rgba(15,23,42,0.8));
+    border: 1px solid rgba(99,102,241,0.15);
+    border-radius: 16px;
+    padding: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.2s;
+    animation: pcCardIn 0.35s ease both;
+  }
+  .pcm-member-card:active { background: rgba(99,102,241,0.1); transform: scale(0.99); }
+  .pcm-avatar {
+    width: 44px; height: 44px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+    position: relative;
+  }
+  .pcm-avatar-status {
+    position: absolute;
+    bottom: -1px; left: -1px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--bg, #0a1628);
+  }
+  .pcm-avatar-status.online { background: #10b981; box-shadow: 0 0 6px rgba(16,185,129,0.6); }
+  .pcm-avatar-status.offline { background: #475569; }
+  .pcm-member-info { flex: 1; min-width: 0; }
+  .pcm-member-name {
+    font-size: 13px; font-weight: 700; color: #e2e8f0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    margin-bottom: 3px;
+  }
+  .pcm-member-meta {
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .pcm-member-date {
+    font-size: 10px; color: rgba(148,163,184,0.6);
+  }
+  .pcm-vip-badge {
+    font-size: 9px; font-weight: 800;
+    padding: 2px 7px; border-radius: 20px;
+    background: rgba(245,158,11,0.12);
+    border: 1px solid rgba(245,158,11,0.3);
+    color: #fbbf24;
+  }
+  .pcm-vip-badge.vip0 { background: rgba(99,102,241,0.12); border-color: rgba(99,102,241,0.3); color: #818cf8; }
+  .pcm-member-right { text-align: left; flex-shrink: 0; }
+  .pcm-member-status-badge {
+    font-size: 10px; font-weight: 700;
+    padding: 3px 9px; border-radius: 20px;
+    margin-bottom: 4px; display: inline-block;
+  }
+  .pcm-member-status-badge.active {
+    background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.3); color: #34d399;
+  }
+  .pcm-member-status-badge.inactive {
+    background: rgba(71,85,105,0.2); border: 1px solid rgba(71,85,105,0.3); color: #64748b;
+  }
+  .pcm-member-earn {
+    font-size: 11px; font-weight: 700; color: #fbbf24; text-align: left;
+  }
+  .pcm-empty {
+    text-align: center;
+    padding: 60px 20px 40px;
+  }
+  .pcm-empty-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(79,70,229,0.1));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    border: 1px solid rgba(99,102,241,0.2);
+  }
+  .pcm-empty-title { font-size: 15px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px; }
+  .pcm-empty-sub { font-size: 12px; color: rgba(148,163,184,0.6); line-height: 1.6; margin-bottom: 24px; }
+  .pcm-invite-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(79,70,229,0.4));
+    border: 1px solid rgba(99,102,241,0.4);
+    border-radius: 14px;
+    padding: 12px 24px;
+    color: #a78bfa; font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+    font-family: inherit;
+  }
+  .pcm-invite-btn:active { transform: scale(0.96); }
+  /* light mode overrides */
+  body.light-mode #pcSubMembersModal { background: #f0f4f8; }
+  body.light-mode .pcm-stat-box { background: rgba(255,255,255,0.9); border-color: rgba(99,102,241,0.2); }
+  body.light-mode .pcm-member-card { background: rgba(255,255,255,0.9); border-color: rgba(99,102,241,0.15); }
+  body.light-mode .pcm-member-name { color: #0f172a; }
+  body.light-mode .pcm-filter-tab { background: rgba(255,255,255,0.9); }
+</style>
 </style>
 
 
